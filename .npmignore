@@ -1,0 +1,36 @@
+# Source files
+src/
+*.ts
+*.tsx
+*.js
+*.jsx
+
+# Development files
+.vscode/
+.idea/
+*.log
+*.lock
+node_modules/
+
+# Build files (except dist)
+vite.config.ts
+vite.lib.config.ts
+tsconfig*.json
+eslint.config.js
+components.json
+
+# Development dependencies
+public/
+index.html
+
+# Git
+.git/
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp 
