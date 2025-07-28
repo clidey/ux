@@ -10,6 +10,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { ModeToggle } from "./components/theme/toggle"
 import { ChevronRight, Home, User } from "lucide-react"
+import { EmptyState } from "@/components/ui/empty-state"
 
 function App() {
   return (
@@ -301,6 +302,13 @@ function App() {
                 </p>
               </CardContent>
             </Card>
+            <div className="flex h-[500px]">
+              <EmptyState
+                title="No navigation found"
+                description="No navigation found"
+                icon={<Home className="h-4 w-4" />}
+              />
+            </div>
           </TabsContent>
         </Tabs>
       </div>

@@ -7,13 +7,14 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
-      insertTypesEntry: true,
+      tsconfigPath: resolve(__dirname, "tsconfig.lib.json"),
+      rollupTypes: true,
     }),
   ],
   css: {
     modules: false,
   },
-  build: {
+  build: { 
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'ClideyUX',
@@ -46,13 +47,19 @@ export default defineConfig({
           react: 'React',
           'react-dom': 'ReactDOM',
         },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'styles.css') {
+            return 'styles.css'
+          }
+          return assetInfo.name || 'asset'
+        },
       },
     },
-    cssCodeSplit: false,
+    cssCodeSplit: true,
   },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
     },
   },
-}) 
+})
