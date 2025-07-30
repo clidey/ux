@@ -25,7 +25,6 @@ pnpm add @clidey/ux
 
 ```tsx
 import { Button, Card, ThemeProvider } from '@clidey/ux'
-import '@clidey/ux/styles'
 
 function App() {
   return (
@@ -42,6 +41,8 @@ function App() {
   )
 }
 ```
+
+**Note:** Styles are automatically included when you import components. No additional CSS imports are required.
 
 ## Components
 
@@ -192,70 +193,63 @@ function App() {
 
 ## Styling
 
-The components are built with Tailwind CSS. To use them properly, make sure you have Tailwind CSS configured in your project.
+The components are built with Tailwind CSS v4 and include all necessary styles automatically. When you import any component, the styles are automatically included in your bundle.
 
-### Required Tailwind CSS Configuration
+### Requirements
 
-Add the following to your `tailwind.config.js`:
+To use the components properly, you need to have Tailwind CSS v4 installed in your project:
+
+```bash
+npm install tailwindcss@next
+```
+
+### Configuration
+
+Configure your build tool to process CSS. For example, with Vite:
 
 ```js
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: ["class"],
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-    './node_modules/@clidey/ux/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
+// vite.config.js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  css: {
+    postcss: {
+      plugins: [
+        require('tailwindcss'),
+      ],
     },
   },
-  plugins: [],
+})
+```
+
+### CSS Variables
+
+The package provides CSS custom properties for theming that are automatically included:
+
+```css
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  /* ... more variables */
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  /* ... dark mode variables */
 }
 ```
+
+### Troubleshooting
+
+If the styles aren't loading properly:
+
+1. **Check your build tool configuration** - Make sure CSS imports are being processed
+2. **Verify Tailwind CSS version** - Ensure you're using Tailwind CSS v4
+3. **Clear cache** - Try clearing your build cache and node_modules
 
 ## Dependencies
 
