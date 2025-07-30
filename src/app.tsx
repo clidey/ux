@@ -12,6 +12,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ChevronRight, Home, User } from "lucide-react"
 import { ModeToggle } from "./components/theme/toggle"
 import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "./components/ui/sidebar"
+import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
+import { Select, SelectSeparator, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./components/ui/select"
 
 function App() {
   return (
@@ -212,6 +214,76 @@ function App() {
                 </CardContent>
               </Card>
             </div>
+
+
+            {/* Dropdown */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Dropdown</CardTitle>
+                <CardDescription>Dropdown component</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">Open</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <a href="/">Home</a>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </CardContent>
+            </Card>
+
+            {/* Select */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Select</CardTitle>
+                <CardDescription>Accessible select dropdown component</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-4 max-w-xs">
+                  <div>
+                    <Label htmlFor="framework">Framework</Label>
+                    <Select>
+                      <SelectTrigger id="framework" className="w-full">
+                        <SelectValue placeholder="Select a framework" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Popular</SelectLabel>
+                          <SelectItem value="react">React</SelectItem>
+                          <SelectItem value="vue">Vue</SelectItem>
+                          <SelectItem value="svelte">Svelte</SelectItem>
+                          <SelectItem value="angular">Angular</SelectItem>
+                        </SelectGroup>
+                        <SelectSeparator />
+                        <SelectGroup>
+                          <SelectLabel>Other</SelectLabel>
+                          <SelectItem value="solid">Solid</SelectItem>
+                          <SelectItem value="qwik">Qwik</SelectItem>
+                          <SelectItem value="alpine">Alpine</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="size">Size</Label>
+                    <Select>
+                      <SelectTrigger id="size" size="sm" className="w-32">
+                        <SelectValue placeholder="Size" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sm">Small</SelectItem>
+                        <SelectItem value="default">Default</SelectItem>
+                        <SelectItem value="lg">Large</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Navigation Showcase */}
