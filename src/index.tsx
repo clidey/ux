@@ -6,7 +6,7 @@ import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="@clidey/ux/theme">
+    <ThemeProvider>
       <App />
     </ThemeProvider>
   </StrictMode>,
