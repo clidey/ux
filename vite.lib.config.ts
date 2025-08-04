@@ -45,9 +45,10 @@ export default defineConfig({
         'lucide-react',
         'next-themes',
         'sonner',
+        'tw-animate-css',
+        'react-window',
         'tailwind-merge',
         'vaul',
-        'tw-animate-css',
       ],
       output: {
         globals: {

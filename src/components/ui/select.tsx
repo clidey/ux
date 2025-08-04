@@ -1,8 +1,21 @@
-import * as React from "react"
-import * as SelectPrimitive from "@radix-ui/react-select"
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
-
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import * as SelectPrimitive from "@radix-ui/react-select";
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, ChevronsUpDownIcon } from "lucide-react";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 function Select({
   ...props
@@ -169,8 +182,125 @@ function SelectScrollDownButton({
   )
 }
 
+type SearchSelectOption = {
+  value: string
+  label: string
+  icon?: React.ReactNode
+}
+
+type SearchSelectProps = {
+  options: SearchSelectOption[]
+  placeholder?: string
+  searchPlaceholder?: string
+  value?: string
+  onChange?: (value: string) => void
+  buttonClassName?: string
+  contentClassName?: string
+  disabled?: boolean
+  extraOptions?: React.ReactNode
+  side?: "top" | "bottom" | "left" | "right"
+  align?: "start" | "center" | "end"
+}
+
+function SearchSelect({
+  options,
+  placeholder = "Select option...",
+  searchPlaceholder = "Search...",
+  value,
+  onChange,
+  buttonClassName,
+  contentClassName,
+  disabled = false,
+  extraOptions,
+  side = "bottom",
+  align = "start",
+}: SearchSelectProps) {
+  const [open, setOpen] = React.useState(false);
+  const [internalValue, setInternalValue] = React.useState<string>("");
+
+  // Use controlled or uncontrolled value
+  const selectedValue = value != null ? value : internalValue;
+
+  // Filter options based on search
+  const [search, setSearch] = React.useState("");
+  const filteredOptions = React.useMemo(
+    () =>
+      options.filter((option) =>
+        option.label.toLowerCase().includes(search.toLowerCase())
+      ),
+    [options, search]
+  );
+
+  const handleSelect = (currentValue: string) => {
+    if (value === undefined) {
+      setInternalValue(currentValue === selectedValue ? "" : currentValue);
+    }
+    onChange?.(currentValue === selectedValue ? "" : currentValue);
+    setOpen(false);
+  };
+
+  const selectedLabel =
+    options.find((option) => option.value === selectedValue)?.label;
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className={cn("w-full justify-between", buttonClassName)}
+          disabled={disabled}
+        >
+          <span
+            className={cn({
+              "text-muted-foreground": !selectedLabel && !!placeholder,
+            })}
+          >
+            {selectedLabel ? selectedLabel : placeholder}
+          </span>
+          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className={cn("p-0", contentClassName)} side={side} align={align}>
+        <Command>
+          <CommandInput
+            placeholder={searchPlaceholder}
+            value={search}
+            onValueChange={setSearch}
+          />
+          <CommandList>
+            <CommandEmpty>No option found.</CommandEmpty>
+            <CommandGroup>
+              {filteredOptions.map((option) => (
+                <CommandItem
+                  key={option.value}
+                  value={option.value}
+                  onSelect={(currentValue) => handleSelect(currentValue)}
+                >
+                  <CheckIcon
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      selectedValue === option.value
+                        ? "opacity-100"
+                        : "opacity-0"
+                    )}
+                  />
+                  {option.icon}
+                  {option.label}
+                </CommandItem>
+              ))}
+              {extraOptions}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
 export {
-  Select,
+  SearchSelect, Select,
   SelectContent,
   SelectGroup,
   SelectItem,
@@ -179,5 +309,6 @@ export {
   SelectScrollUpButton,
   SelectSeparator,
   SelectTrigger,
-  SelectValue,
-}
+  SelectValue
+};
+

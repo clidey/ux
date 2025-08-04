@@ -1,8 +1,43 @@
-"use client"
-
 import * as React from "react"
+import { FixedSizeList, type ListChildComponentProps } from "react-window"
 
 import { cn } from "@/lib/utils"
+import { Fragment } from "react"
+
+type VirtualizedTableBodyProps = {
+  rowCount: number
+  rowHeight?: number
+  height?: number
+  className?: string
+  style?: React.CSSProperties
+  children: (index: number, style: React.CSSProperties) => React.ReactNode
+}
+
+function VirtualizedTableBody({
+  rowCount,
+  rowHeight = 48,
+  height = 400,
+  className,
+  children,
+}: VirtualizedTableBodyProps) {
+  return (
+    <FixedSizeList
+      className={cn("w-full", className)}
+      height={height}
+      itemCount={rowCount}
+      itemSize={rowHeight}
+      width="100%"
+      outerElementType={TableBody}
+      innerElementType={Fragment}
+    >
+      {({ index, style }: ListChildComponentProps) => (
+        <TableRow style={style} key={index}>
+          {children(index, style)}
+        </TableRow>
+      )}
+    </FixedSizeList>
+  )
+}
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -52,14 +87,16 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   )
 }
 
-function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+function TableRow({ className, style, ...props }: React.ComponentProps<"tr">) {
+  // Accepts style prop for virtualization
   return (
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
+        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors flex items-center",
         className
       )}
+      style={style}
       {...props}
     />
   )
@@ -70,7 +107,8 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        
+        "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] w-full flex items-center",
         className
       )}
       {...props}
@@ -83,7 +121,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] w-full flex items-center",
         className
       )}
       {...props}
@@ -105,12 +143,7 @@ function TableCaption({
 }
 
 export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
+  Table, TableBody, TableCaption, TableCell, TableFooter,
+  TableHead, TableHeader, TableRow, VirtualizedTableBody
 }
+

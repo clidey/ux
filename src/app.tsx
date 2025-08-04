@@ -14,6 +14,7 @@ import { ModeToggle } from "./components/theme/toggle"
 import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "./components/ui/sidebar"
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
 import { Select, SelectSeparator, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./components/ui/select"
+import { toast, Toaster } from "sonner"
 
 function App() {
   return (
@@ -403,6 +404,13 @@ function App() {
                 description="No navigation found"
                 icon={<Home className="h-4 w-4" />}
               />
+            </div>
+            <div className="flex gap-2">
+              <Button onClick={() => toast.success("Hello")} className="bg-green-500">Success</Button>
+              <Button onClick={() => toast.error("Hello")} className="bg-red-500">Error</Button>
+              <Button onClick={() => toast.info("Hello")} className="bg-blue-500">Info</Button>
+              <Button onClick={() => toast.warning("Hello")} className="bg-yellow-500">Warning</Button>
+              <Toaster className="z-50" />
             </div>
           </TabsContent>
         </Tabs>

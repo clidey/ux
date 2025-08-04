@@ -11,15 +11,19 @@ export { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 export { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover'
 export { Skeleton } from './components/ui/skeleton'
 export { Toaster, toast } from './components/ui/sonner'
-export { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from './components/ui/table'
+export { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, VirtualizedTableBody } from './components/ui/table'
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip'
 export { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './components/ui/breadcrumb'
-export { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './components/ui/select'
+export { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue, SearchSelect } from './components/ui/select'
 export { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarSeparator, SidebarTrigger, useSidebar } from './components/ui/sidebar'
 export { Separator } from './components/ui/separator'
 export { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './components/ui/sheet'
 export { ScrollArea } from "./components/ui/scroll-area";
+export { StackList, StackListItem } from "./components/ui/stack-list";
+export { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./components/ui/command";
+export { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./components/ui/dialog";
+export { Checkbox } from "./components/ui/checkbox";
 
 // Theme Components
 export { ThemeProvider, useTheme } from './components/theme/provider'
