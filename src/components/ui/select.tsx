@@ -200,6 +200,7 @@ type SearchSelectProps = {
   extraOptions?: React.ReactNode
   side?: "top" | "bottom" | "left" | "right"
   align?: "start" | "center" | "end"
+  onlyIcon?: boolean
 }
 
 function SearchSelect({
@@ -214,6 +215,7 @@ function SearchSelect({
   extraOptions,
   side = "bottom",
   align = "start",
+  onlyIcon = false,
 }: SearchSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [internalValue, setInternalValue] = React.useState<string>("");
@@ -239,8 +241,8 @@ function SearchSelect({
     setOpen(false);
   };
 
-  const selectedLabel =
-    options.find((option) => option.value === selectedValue)?.label;
+  const selectedOption =
+    options.find((option) => option.value === selectedValue);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -249,15 +251,26 @@ function SearchSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn("w-full justify-between", buttonClassName)}
+          className={cn("w-full justify-between", buttonClassName, {
+            "has-[>svg]:px-2 px-2": onlyIcon,
+          })}
           disabled={disabled}
         >
           <span
-            className={cn({
-              "text-muted-foreground": !selectedLabel && !!placeholder,
+            className={cn("flex items-center gap-2", {
+              "text-muted-foreground": !selectedOption && !!placeholder,
             })}
           >
-            {selectedLabel ? selectedLabel : placeholder}
+            {selectedOption ? (
+              <>
+                {onlyIcon ? selectedOption.icon : <>
+                  {selectedOption.icon}
+                  {selectedOption.label}
+                </>}
+              </>
+            ) : (
+              placeholder
+            )}
           </span>
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

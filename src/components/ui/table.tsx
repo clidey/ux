@@ -22,14 +22,13 @@ function VirtualizedTableBody({
 }: VirtualizedTableBodyProps) {
   return (
     <FixedSizeList
-      className={cn("w-full", className)}
+      className={cn("w-full relative block", className)}
       height={height}
       itemCount={rowCount}
       itemSize={rowHeight}
       width="100%"
       outerElementType={TableBody}
-      innerElementType={Fragment}
-    >
+      innerElementType={Fragment}>
       {({ index, style }: ListChildComponentProps) => (
         <TableRow style={style} key={index}>
           {children(index, style)}
@@ -43,7 +42,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      className="w-full overflow-x-auto h-full"
     >
       <table
         data-slot="table"
@@ -102,17 +101,22 @@ function TableRow({ className, style, ...props }: React.ComponentProps<"tr">) {
   )
 }
 
-function TableHead({ className, ...props }: React.ComponentProps<"th">) {
+function TableHead({ className, ...props }: React.ComponentProps<"th"> & { icon?: React.ReactNode}) {
+  const { icon: Icon, ...rest } = props
+  const { children } = rest
   return (
     <th
       data-slot="table-head"
       className={cn(
-        
+        Icon && "gap-2",
         "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] w-full flex items-center",
         className
       )}
-      {...props}
-    />
+      {...rest}
+    >
+      {Icon}
+      {children}
+    </th>
   )
 }
 

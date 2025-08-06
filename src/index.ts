@@ -25,10 +25,13 @@ export { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 export { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./components/ui/dialog";
 export { Checkbox } from "./components/ui/checkbox";
 export { EmptyState } from "./components/ui/empty-state";
+export { Tree, type TreeDataItem } from "./components/ui/tree";
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./components/ui/accordion";
+export { ResizablePanel, ResizablePanelGroup, ResizableHandle } from "./components/ui/resizable";
 
 // Theme Components
 export { ThemeProvider, useTheme } from './components/theme/provider'
 export { ModeToggle } from './components/theme/toggle'
 
 // Utilities
-export { cn } from './lib/utils'
+export { cn, toTitleCase } from './lib/utils'

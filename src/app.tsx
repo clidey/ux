@@ -9,12 +9,13 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 import { Skeleton } from "@/components/ui/skeleton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChevronRight, Home, User } from "lucide-react"
+import { ChevronRight, Folder, Home, User } from "lucide-react"
 import { ModeToggle } from "./components/theme/toggle"
 import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "./components/ui/sidebar"
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
 import { Select, SelectSeparator, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./components/ui/select"
 import { toast, Toaster } from "sonner"
+import { Tree } from "./components/ui/tree"
 
 function App() {
   return (
@@ -352,6 +353,61 @@ function App() {
                       </PaginationItem>
                     </PaginationContent>
                   </Pagination>
+                </CardContent>
+              </Card>
+
+              {/* Tree */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Tree</CardTitle>
+                  <CardDescription>Tree component</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Tree className="h-96" data={[
+                    {
+                      id: "1",
+                      name: "Root",
+                      children: [
+                        {
+                          id: "2",
+                          name: "Child 1",
+                          icon: Folder,
+                          children: [
+                            {
+                              id: "3",
+                              name: "Grandchild 1",
+                              icon: Folder,
+                              children: [
+                                {
+                                  id: "4",
+                                  name: "Great Grandchild 1"
+                                },
+                                {
+                                  id: "5",
+                                  name: "Great Grandchild 2"
+                                }
+                              ]
+                            },
+                            {
+                              id: "6",
+                              name: "Grandchild 2"
+                            }
+                          ]
+                        },
+                        {
+                          id: "7",
+                          name: "Child 2",
+                          icon: Folder,
+                          children: [
+                            {
+                              id: "8",
+                              name: "Grandchild 3"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]} />
                 </CardContent>
               </Card>
             </div>
