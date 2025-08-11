@@ -23,7 +23,7 @@ function App() {
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <h1 className="text-2xl font-bold">Clidey UX</h1>
+          <h1 className="text-brand-foreground dark:text-brand-foreground font-bold">Clidey UX</h1>
           <ModeToggle />
         </div>
       </header>
