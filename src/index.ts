@@ -31,6 +31,7 @@ export { ResizablePanel, ResizablePanelGroup, ResizableHandle } from "./componen
 export { Alert, AlertTitle, AlertDescription } from "./components/ui/alert";
 export { Icon } from "./components/ui/icon";
 export { Switch } from "./components/ui/switch";
+export { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "./components/ui/alert-dialog";
 
 // Theme Components
 export { ThemeProvider, useTheme } from './components/theme/provider'
