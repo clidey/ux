@@ -302,6 +302,7 @@ function SearchSelect({
                   key={option.value}
                   value={option.value}
                   onSelect={(currentValue) => handleSelect(currentValue)}
+                  className="break-all"
                 >
                   <CheckIcon
                     className={cn(
