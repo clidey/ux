@@ -201,6 +201,7 @@ type SearchSelectProps = {
   side?: "top" | "bottom" | "left" | "right"
   align?: "start" | "center" | "end"
   onlyIcon?: boolean
+  label?: string
 }
 
 function SearchSelect({
@@ -216,6 +217,7 @@ function SearchSelect({
   side = "bottom",
   align = "start",
   onlyIcon = false,
+  label,
 }: SearchSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [internalValue, setInternalValue] = React.useState<string>("");
@@ -251,25 +253,35 @@ function SearchSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn("w-full justify-between", buttonClassName, {
-            "has-[>svg]:px-2 px-2": onlyIcon,
-          })}
+          className={cn(
+            "w-full justify-between overflow-hidden", // Add overflow-hidden
+            buttonClassName,
+            {
+              "has-[>svg]:px-2 px-2": onlyIcon,
+            }
+          )}
           disabled={disabled}
         >
           <span
-            className={cn("flex items-center gap-2", {
-              "text-muted-foreground": !selectedOption && !!placeholder,
-            })}
+            className={cn(
+              "flex items-center gap-2",
+              {
+                "text-muted-foreground": !selectedOption && !!placeholder,
+                "min-w-0 truncate": !onlyIcon,
+              }
+            )}
           >
             {selectedOption ? (
               <>
-                {onlyIcon ? selectedOption.icon : <>
-                  {selectedOption.icon}
-                  {selectedOption.label}
-                </>}
+                {onlyIcon ? selectedOption.icon : (
+                  <>
+                    {selectedOption.icon}
+                    <span className="truncate">{selectedOption.label}</span>
+                  </>
+                )}
               </>
             ) : (
-              placeholder
+              <span className="truncate">{placeholder}</span>
             )}
           </span>
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -283,7 +295,7 @@ function SearchSelect({
             onValueChange={setSearch}
           />
           <CommandList>
-            <CommandEmpty>No option found.</CommandEmpty>
+            <CommandEmpty>No {label?.toLowerCase() ?? "option"} found.</CommandEmpty>
             <CommandGroup>
               {filteredOptions.map((option) => (
                 <CommandItem
