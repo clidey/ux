@@ -202,6 +202,7 @@ type SearchSelectProps = {
   align?: "start" | "center" | "end"
   onlyIcon?: boolean
   label?: string
+  inputProps?: React.ComponentProps<typeof CommandInput>
 }
 
 function SearchSelect({
@@ -218,6 +219,7 @@ function SearchSelect({
   align = "start",
   onlyIcon = false,
   label,
+  inputProps,
 }: SearchSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [internalValue, setInternalValue] = React.useState<string>("");
@@ -293,6 +295,7 @@ function SearchSelect({
             placeholder={searchPlaceholder}
             value={search}
             onValueChange={setSearch}
+            {...inputProps}
           />
           <CommandList>
             <CommandEmpty>No {label?.toLowerCase() ?? "option"} found.</CommandEmpty>
