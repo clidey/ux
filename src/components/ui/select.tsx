@@ -249,7 +249,7 @@ function SearchSelect({
     options.find((option) => option.value === selectedValue);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={setOpen} modal={true}>
       <PopoverTrigger>
         <Button
           variant="outline"
