@@ -16,6 +16,7 @@ import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigge
 import { Select, SelectSeparator, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./components/ui/select"
 import { toast, Toaster } from "sonner"
 import { Tree } from "./components/ui/tree"
+import { Spinner } from "./components/ui/spinner"
 
 function App() {
   return (
@@ -200,9 +201,12 @@ function App() {
               <Card>
                 <CardHeader>
                   <CardTitle>Loading States</CardTitle>
-                  <CardDescription>Skeleton components for loading states</CardDescription>
+                  <CardDescription>Skeleton and Spinner components for loading states</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Spinner variant="primary" size="lg" />
+                  </div>
                   <div className="space-y-2">
                     <Skeleton className="h-4 w-[250px]" />
                     <Skeleton className="h-4 w-[200px]" />
