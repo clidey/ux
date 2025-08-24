@@ -22,7 +22,7 @@ function VirtualizedTableBody({
 }: VirtualizedTableBodyProps) {
   return (
     <FixedSizeList
-      className={cn("w-full relative block", className)}
+      className={cn("w-full", className)}
       height={height}
       itemCount={rowCount}
       itemSize={rowHeight}
@@ -30,9 +30,7 @@ function VirtualizedTableBody({
       outerElementType={TableBody}
       innerElementType={Fragment}>
       {({ index, style }: ListChildComponentProps) => (
-        <TableRow style={style} key={index}>
-          {children(index, style)}
-        </TableRow>
+        children(index, style)
       )}
     </FixedSizeList>
   )
@@ -92,7 +90,7 @@ function TableRow({ className, style, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors flex items-center",
+        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
         className
       )}
       style={style}
@@ -108,14 +106,15 @@ function TableHead({ className, ...props }: React.ComponentProps<"th"> & { icon?
     <th
       data-slot="table-head"
       className={cn(
-        Icon && "gap-2",
-        "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] w-full flex items-center",
+        "text-foreground h-10 px-4 py-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] w-fit max-w-[500px] whitespace-nowrap overflow-hidden",
         className
       )}
       {...rest}
     >
-      {Icon}
-      {children}
+      <div className="flex items-center gap-2 w-fit">
+        {Icon}
+        <span className="truncate">{children}</span>
+      </div>
     </th>
   )
 }
@@ -125,7 +124,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] w-full flex items-center",
+        "px-4 py-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] max-w-[500px] min-w-0 whitespace-nowrap overflow-hidden",
         className
       )}
       {...props}

@@ -173,24 +173,77 @@ function App() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Email</TableHead>
+                        <TableHead>Name &amp; Title</TableHead>
+                        <TableHead>Email Address</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead>Role</TableHead>
+                        <TableHead>Notes</TableHead>
                         <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       <TableRow>
-                        <TableCell>John Doe</TableCell>
-                        <TableCell>john@example.com</TableCell>
-                        <TableCell><Badge variant="secondary">Active</Badge></TableCell>
-                        <TableCell><Button size="sm" variant="outline">Edit</Button></TableCell>
+                        <TableCell>
+                          Johnathan Alexander Doe the Third
+                          Senior Principal Software Engineer
+                        </TableCell>
+                        <TableCell>
+                          johnathan.alexander.doe.the.third@verylongcompanydomainname.com
+                        </TableCell>
+                        <TableCell>
+                          Active
+                        </TableCell>
+                        <TableCell>
+                          admin, superuser
+                        </TableCell>
+                        <TableCell>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, nisi eu consectetur.
+                        </TableCell>
+                        <TableCell>
+                          Edit
+                        </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell>Jane Smith</TableCell>
-                        <TableCell>jane@example.com</TableCell>
-                        <TableCell><Badge variant="destructive">Inactive</Badge></TableCell>
-                        <TableCell><Button size="sm" variant="outline">Edit</Button></TableCell>
+                        <TableCell>
+                          Jane Elizabeth Smith-Williams
+                          Director of International Operations
+                        </TableCell>
+                        <TableCell>
+                          jane.smith-williams@global-enterprises-international.com
+                        </TableCell>
+                        <TableCell>
+                          Inactive
+                        </TableCell>
+                        <TableCell>
+                          manager
+                        </TableCell>
+                        <TableCell>
+                          Temporarily on leave. Will return in Q4. Please contact assistant for urgent matters.
+                        </TableCell>
+                        <TableCell>
+                          Edit
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          Dr. Maximilian von Humboldt-Schmidt
+                          Chief Scientific Officer
+                        </TableCell>
+                        <TableCell>
+                          maximilian.von.humboldt-schmidt@science-lab.org
+                        </TableCell>
+                        <TableCell>
+                          Active
+                        </TableCell>
+                        <TableCell>
+                          scientist
+                        </TableCell>
+                        <TableCell>
+                          Leads the research division. Specializes in quantum computing and AI ethics.
+                        </TableCell>
+                        <TableCell>
+                          Edit
+                        </TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
