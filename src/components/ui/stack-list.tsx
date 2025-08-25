@@ -1,5 +1,6 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "../../lib/utils";
 
 type StackListProps = {
   children: React.ReactNode;
@@ -15,21 +16,20 @@ type StackListItemProps = {
   itemClassName?: string;
 };
 
-// Define as a function, not React.FC, to avoid JSX type issues
 export function StackListItem({
   item,
   children,
-  keyClassName = "font-semibold min-w-1/2",
-  valueClassName = "ml-4",
-  rowClassName = "flex flex-row items-center text-lg py-3",
-  itemClassName = "flex flex-col",
+  keyClassName,
+  valueClassName,
+  rowClassName,
+  itemClassName,
 }: StackListItemProps) {
   return (
-    <div className={itemClassName}>
-      <div className={rowClassName}>
-        <span className={keyClassName}>{item}</span>
-        <span className={valueClassName}>{children}</span>
-      </div>
+    <div className={cn("flex flex-col", itemClassName)}>
+      <p className={cn("flex flex-row items-center text-lg py-3", rowClassName)}>
+        <span className={cn("font-semibold min-w-1/2", keyClassName)}>{item}</span>
+        <span className={cn("ml-4", valueClassName)}>{children}</span>
+      </p>
     </div>
   );
 }
