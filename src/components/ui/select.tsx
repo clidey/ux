@@ -186,6 +186,7 @@ type SearchSelectOption = {
   value: string
   label: string
   icon?: React.ReactNode
+  rightIcon?: React.ReactNode;
 }
 
 type SearchSelectProps = {
@@ -203,6 +204,7 @@ type SearchSelectProps = {
   onlyIcon?: boolean
   label?: string
   inputProps?: React.ComponentProps<typeof CommandInput>
+  buttonProps?: React.ComponentProps<typeof Button>
 }
 
 function SearchSelect({
@@ -220,6 +222,7 @@ function SearchSelect({
   onlyIcon = false,
   label,
   inputProps,
+  buttonProps,
 }: SearchSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [internalValue, setInternalValue] = React.useState<string>("");
@@ -263,6 +266,7 @@ function SearchSelect({
             }
           )}
           disabled={disabled}
+          {...buttonProps}
         >
           <span
             className={cn(
@@ -278,7 +282,8 @@ function SearchSelect({
                 {onlyIcon ? selectedOption.icon : (
                   <>
                     {selectedOption.icon}
-                    <span className="truncate">{selectedOption.label}</span>
+                    <p className="grow truncate">{selectedOption.label}</p>
+                    {selectedOption.rightIcon}
                   </>
                 )}
               </>
@@ -316,7 +321,8 @@ function SearchSelect({
                     )}
                   />
                   {option.icon}
-                  {option.label}
+                  <p className="grow truncate">{option.label}</p>
+                  {option.rightIcon}
                 </CommandItem>
               ))}
               {extraOptions}

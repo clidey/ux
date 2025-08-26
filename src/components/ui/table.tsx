@@ -22,7 +22,7 @@ function VirtualizedTableBody({
 }: VirtualizedTableBodyProps) {
   return (
     <FixedSizeList
-      className={cn("w-full", className)}
+      className={cn("w-full contents", className)}
       height={height}
       itemCount={rowCount}
       itemSize={rowHeight}
