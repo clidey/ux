@@ -1,11 +1,12 @@
 import * as React from "react"
-import { Search } from "lucide-react";
+import {Search} from "lucide-react";
 
-import { cn } from "@/lib/utils"
+import {cn} from "@/lib/utils"
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
     <input
+        data-testid="input"
       type={type}
       data-slot="input"
       className={cn(

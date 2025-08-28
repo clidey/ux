@@ -1,21 +1,10 @@
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import {Button} from "@/components/ui/button";
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,} from "@/components/ui/command";
+import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon, ChevronsUpDownIcon } from "lucide-react";
+import {CheckIcon, ChevronDownIcon, ChevronsUpDownIcon, ChevronUpIcon} from "lucide-react";
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import {cn} from "@/lib/utils";
 
 function Select({
   ...props
@@ -194,7 +183,10 @@ type SearchSelectProps = {
   placeholder?: string
   searchPlaceholder?: string
   value?: string
+    defaultValue?: string
   onChange?: (value: string) => void
+    onValueChange?: (value: string) => void
+    notFoundMessage?: string
   buttonClassName?: string
   contentClassName?: string
   disabled?: boolean
@@ -212,7 +204,10 @@ function SearchSelect({
   placeholder = "Select option...",
   searchPlaceholder = "Search...",
   value,
+                          defaultValue,
   onChange,
+                          onValueChange,
+                          notFoundMessage,
   buttonClassName,
   contentClassName,
   disabled = false,
@@ -225,7 +220,7 @@ function SearchSelect({
   buttonProps,
 }: SearchSelectProps) {
   const [open, setOpen] = React.useState(false);
-  const [internalValue, setInternalValue] = React.useState<string>("");
+    const [internalValue, setInternalValue] = React.useState<string>(defaultValue || "");
 
   // Use controlled or uncontrolled value
   const selectedValue = value != null ? value : internalValue;
@@ -241,10 +236,12 @@ function SearchSelect({
   );
 
   const handleSelect = (currentValue: string) => {
+      const newValue = currentValue === selectedValue ? "" : currentValue;
     if (value === undefined) {
-      setInternalValue(currentValue === selectedValue ? "" : currentValue);
+        setInternalValue(newValue);
     }
-    onChange?.(currentValue === selectedValue ? "" : currentValue);
+      onChange?.(newValue);
+      onValueChange?.(newValue);
     setOpen(false);
   };
 
@@ -252,8 +249,13 @@ function SearchSelect({
     options.find((option) => option.value === selectedValue);
 
   return (
-    <Popover open={open} onOpenChange={setOpen} modal={true}>
-      <PopoverTrigger>
+      <Popover open={open} onOpenChange={(newOpen) => {
+          setOpen(newOpen);
+          if (!newOpen) {
+              setSearch(""); // Clear search when closing
+          }
+      }} modal={true}>
+          <PopoverTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
@@ -303,7 +305,7 @@ function SearchSelect({
             {...inputProps}
           />
           <CommandList>
-            <CommandEmpty>No {label?.toLowerCase() ?? "option"} found.</CommandEmpty>
+              <CommandEmpty>{notFoundMessage || `No ${label?.toLowerCase() ?? "option"} found.`}</CommandEmpty>
             <CommandGroup>
               {filteredOptions.map((option) => (
                 <CommandItem

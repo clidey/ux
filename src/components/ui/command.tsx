@@ -1,15 +1,9 @@
 import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
-import { SearchIcon } from "lucide-react"
+import {Command as CommandPrimitive} from "cmdk"
+import {SearchIcon} from "lucide-react"
 
-import { cn } from "@/lib/utils"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import {cn} from "@/lib/utils"
+import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,} from "@/components/ui/dialog"
 
 function Command({
   className,
@@ -62,6 +56,24 @@ function CommandInput({
   className,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && inputRef.current) {
+        inputRef.current.value = '';
+        const event = new Event('input', {bubbles: true});
+        inputRef.current.dispatchEvent(event);
+      }
+    };
+
+    const input = inputRef.current;
+    if (input) {
+      input.addEventListener('keydown', handleKeyDown);
+      return () => input.removeEventListener('keydown', handleKeyDown);
+    }
+  }, []);
+  
   return (
     <div
       data-slot="command-input-wrapper"
@@ -69,6 +81,7 @@ function CommandInput({
     >
       <SearchIcon className="size-4 shrink-0 opacity-50" />
       <CommandPrimitive.Input
+          ref={inputRef}
         data-slot="command-input"
         className={cn(
           "placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",

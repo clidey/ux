@@ -1,27 +1,16 @@
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
-import { PanelLeftIcon } from "lucide-react"
+import {Slot} from "@radix-ui/react-slot"
+import {cva, type VariantProps} from "class-variance-authority"
+import {PanelLeftIcon} from "lucide-react"
 
-import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet"
-import { Skeleton } from "@/components/ui/skeleton"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import {useIsMobile} from "@/hooks/use-mobile"
+import {cn} from "@/lib/utils"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Separator} from "@/components/ui/separator"
+import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle,} from "@/components/ui/sheet"
+import {Skeleton} from "@/components/ui/skeleton"
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -244,7 +233,11 @@ function Sidebar({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          data-variant={variant}
+          className={cn(
+              "bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm",
+              className
+          )}
         >
           {children}
         </div>
@@ -308,6 +301,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
   return (
     <main
       data-slot="sidebar-inset"
+      data-sidebar="inset"
       className={cn(
         "bg-background relative flex w-full flex-1 flex-col",
         "md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
@@ -382,11 +376,12 @@ function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
+function SidebarGroup({className, collapsible, ...props}: React.ComponentProps<"div"> & { collapsible?: boolean }) {
   return (
     <div
       data-slot="sidebar-group"
       data-sidebar="group"
+      data-collapsible={collapsible ? "true" : undefined}
       className={cn("relative flex w-full min-w-0 flex-col p-2", className)}
       {...props}
     />
