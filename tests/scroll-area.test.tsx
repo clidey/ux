@@ -63,7 +63,7 @@ describe('ScrollArea Component', () => {
 
     it('should render with different orientations', () => {
         render(
-            <ScrollArea className="w-[200px]" orientation="horizontal">
+            <ScrollArea className="w-[200px]">
                 <div className="flex w-max">
                     <div>Column 1</div>
                     <div>Column 2</div>

@@ -18,7 +18,6 @@ import {render, screen} from '@testing-library/react';
 import {Icon} from '@/components/ui/icon';
 import {Home, Settings, User} from 'lucide-react';
 import {describe, expect, it} from 'vitest';
-import React from 'react';
 
 describe('Icon Component', () => {
     it('should render icon element', () => {

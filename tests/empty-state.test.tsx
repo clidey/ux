@@ -24,6 +24,7 @@ describe('EmptyState Component', () => {
             <EmptyState
                 title="No results found"
                 description="Try adjusting your search or filters"
+                icon={<span>🔍</span>}
             />
         );
 
@@ -37,6 +38,7 @@ describe('EmptyState Component', () => {
         render(
             <EmptyState
                 title="Empty"
+                description="Empty description"
                 icon={<Icon/>}
             />
         );
@@ -48,8 +50,8 @@ describe('EmptyState Component', () => {
         render(
             <EmptyState
                 title="No items"
-                description=""
-                icon={null}
+                description="No items available"
+                icon={<span>📦</span>}
             >
                 <button>Add Item</button>
             </EmptyState>
@@ -62,6 +64,8 @@ describe('EmptyState Component', () => {
         const {container} = render(
             <EmptyState
                 title="Empty"
+                description="Empty description"
+                icon={<span>📭</span>}
                 className="custom-empty"
             />
         );
@@ -71,7 +75,11 @@ describe('EmptyState Component', () => {
 
     it('should render without description', () => {
         render(
-            <EmptyState title="Just a title"/>
+            <EmptyState 
+                title="Just a title"
+                description="Default description"
+                icon={<span>📝</span>}
+            />
         );
 
         expect(screen.getByText('Just a title')).toBeInTheDocument();

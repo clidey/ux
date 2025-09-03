@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {useState} from "react"
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -104,8 +104,6 @@ import {
 } from "lucide-react"
 
 export function OverlaysShowcase() {
-    const [open, setOpen] = useState(false)
-
     return (
         <>
             <Card>

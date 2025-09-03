@@ -20,7 +20,7 @@ import {describe, expect, it} from 'vitest';
 describe('Drawer Component', () => {
     it('should render drawer components individually', () => {
         // Test components that don't require Drawer context
-        const {container} = render(
+        render(
             <div>
                 <div data-testid="drawer-header" className="drawer-header">
                     <h2 data-testid="drawer-title" className="drawer-title">Drawer Title</h2>
@@ -38,7 +38,7 @@ describe('Drawer Component', () => {
     });
 
     it('should accept custom className on components', () => {
-        const {container} = render(
+        render(
             <div>
                 <div className="custom-header" data-testid="header">Header</div>
                 <div className="custom-content" data-testid="content">Content</div>
