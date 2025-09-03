@@ -1,11 +1,27 @@
+/*
+ * Copyright 2025 Clidey, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 "use client";
 
 import React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import {ScrollArea} from "@/components/ui/scroll-area"
+import {ChevronRight, type LucideIcon} from "lucide-react";
 import useResizeObserver from "use-resize-observer";
-import { cn } from "../../lib/utils";
+import {cn} from "@/lib/utils";
 
 export interface TreeDataItem {
   id: string;
@@ -44,30 +60,38 @@ export const Tree = React.forwardRef<
   }, [onSelectChange]);
 
   const expandedItemIds = React.useMemo(() => {
-    if (!initialSelectedItemId) {
-      return [] as string[]
-    }
-
     const ids: string[] = []
 
-    function walkTreeItems(items: TreeDataItem[] | TreeDataItem, targetId: string) {
+      function walkTreeItems(items: TreeDataItem[] | TreeDataItem, targetId?: string) {
       if (items instanceof Array) {
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i = 0; i < items.length; i++) {
-          ids.push(items[i]!.id);
-          if (walkTreeItems(items[i]!, targetId) && !expandAll) {
-            return true;
-          }
-          if (!expandAll) ids.pop();
+            if (expandAll && items[i]!.children) {
+                ids.push(items[i]!.id);
+            } else if (targetId) {
+                ids.push(items[i]!.id);
+                if (walkTreeItems(items[i]!, targetId)) {
+                    return true;
+                }
+                if (!expandAll) ids.pop();
+            }
+            if (items[i]!.children) {
+                walkTreeItems(items[i]!.children!, targetId);
+            }
         }
-      } else if (!expandAll && items.id === targetId) {
+      } else if (targetId && items.id === targetId) {
         return true;
       } else if (items.children) {
+          if (expandAll) {
+              ids.push(items.id);
+          }
         return walkTreeItems(items.children, targetId)
       }
     }
 
-    walkTreeItems(data, initialSelectedItemId)
+      if (expandAll || initialSelectedItemId) {
+          walkTreeItems(data, initialSelectedItemId)
+      }
     return ids;
   }, [data, initialSelectedItemId, expandAll])
 
@@ -116,6 +140,7 @@ const TreeItem = React.forwardRef<
               <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
                 <AccordionPrimitive.Item value={item.id}>
                   <AccordionTrigger
+                      aria-label={item.name}
                     className={cn(
                       "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
                       selectedItemId === item.id && "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0"
@@ -173,18 +198,22 @@ const TreeItem = React.forwardRef<
 })
 
 const Leaf = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
+    HTMLButtonElement,
+    React.ButtonHTMLAttributes<HTMLButtonElement> & {
     item: TreeDataItem, isSelected?: boolean,
     Icon?: LucideIcon
   }
 >(({ className, item, isSelected, Icon, ...props }, ref) => {
   return (
-    <div
+      <button
       ref={ref}
+      type="button"
+      role="button"
+      aria-label={item.name}
+      data-state={isSelected ? "selected" : undefined}
       className={cn(
-        "flex items-center py-2 px-2 cursor-pointer \
-        hover:before:opacity-100 before:absolute before:left-0 before:right-1 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
+          "flex items-center py-2 px-2 cursor-pointer w-full text-left \
+          hover:before:opacity-100 before:absolute before:left-0 before:right-1 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
         className,
         isSelected && "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0"
       )}
@@ -193,7 +222,7 @@ const Leaf = React.forwardRef<
       {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
       {!item.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
       <p className="flex-grow text-sm truncate">{item.name}</p>
-    </div>
+      </button>
   );
 })
 
