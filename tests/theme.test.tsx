@@ -19,7 +19,6 @@ import userEvent from '@testing-library/user-event';
 import {ThemeProvider, useTheme} from '@/components/theme/provider';
 import {ModeToggle} from '@/components/theme/toggle';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
-import React from 'react';
 
 // Mock matchMedia
 beforeEach(() => {

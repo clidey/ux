@@ -33,6 +33,12 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         setupFiles: './tests/setup.ts',
+        exclude: [
+            'node_modules/**',
+            'dist/**',
+            'src/showcases/**',
+            'src/index.ts',
+        ],
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
@@ -43,6 +49,9 @@ export default defineConfig({
                 'src/app.tsx',
                 'src/index.tsx',
                 'src/vite-env.d.ts',
+                'dist/**',
+                'src/showcases/**',
+                'src/index.ts',
             ],
         },
     },

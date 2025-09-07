@@ -118,11 +118,11 @@ describe('Table Component', () => {
         expect(screen.getByText('Name')).toBeInTheDocument();
         const tbody = container.querySelector('[data-slot="table-body"]');
         expect(tbody).toBeInTheDocument();
-        expect(tbody.children).toHaveLength(0);
+        expect(tbody!.children).toHaveLength(0);
     });
 
     it('should render table with multiple columns and alignment', () => {
-        const {container} = render(
+        render(
             <Table>
                 <TableHeader>
                     <TableRow>
