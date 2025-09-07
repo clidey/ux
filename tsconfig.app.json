@@ -32,7 +32,6 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src",
-    "tests"
+    "src"
   ]
 }

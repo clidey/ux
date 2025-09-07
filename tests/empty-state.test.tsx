@@ -50,8 +50,8 @@ describe('EmptyState Component', () => {
         render(
             <EmptyState
                 title="No items"
-                description=""
-                icon={null}
+                description="No items available"
+                icon={<span>📦</span>}
             >
                 <button>Add Item</button>
             </EmptyState>

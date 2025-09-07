@@ -26,7 +26,6 @@ import {AlertCircle, AlertTriangle, CheckCircle2, FileX, Info, Package, Search, 
 
 export function FeedbackShowcase() {
     // @ts-ignore
-    // @ts-ignore
     return (
         <>
             <Card>
@@ -185,7 +184,7 @@ export function FeedbackShowcase() {
                         icon={<FileX className="h-12 w-12"/>}
                         title="No documents found"
                         description="Get started by creating your first document."
-                    />
+                    </EmptyState>
 
                     <Separator/>
 
@@ -193,7 +192,7 @@ export function FeedbackShowcase() {
                         icon={<Search className="h-12 w-12"/>}
                         title="No results found"
                         description="Try adjusting your search or filter to find what you're looking for."
-                    />
+                    </EmptyState>
 
                     <Separator/>
 
@@ -209,7 +208,7 @@ export function FeedbackShowcase() {
                         icon={<Users className="h-12 w-12"/>}
                         title="No team members"
                         description="Invite team members to collaborate on your projects."
-                    />
+                    </EmptyState>
                 </CardContent>
             </Card>
 
