@@ -219,12 +219,12 @@ function Table({ className, style, ...props }: React.ComponentProps<"table">) {
   return (
     <div
       data-slot="table-container"
-      className="w-full min-w-full overflow-x-auto h-full"
+      className="w-full overflow-x-auto h-full"
     >
       <table
         data-slot="table"
         className={cn(
-          "w-full min-w-full text-sm border-collapse table-fixed",
+          "w-full text-sm border-collapse table-auto",
           className
         )}
         style={{ ...style }}
@@ -281,9 +281,10 @@ function TableHead({
       data-slot="table-head"
       className={cn(
         "text-foreground h-12 px-4 py-2 text-left align-middle font-medium border-b",
-        "max-w-[500px] min-w-[120px] truncate", // enforce consistent column sizing
+        "min-w-[120px]",
         className
       )}
+      style={{ maxWidth: "500px", ...props.style }}
       {...props}
     >
       <div className="flex items-center gap-2 w-full min-w-0">
@@ -300,9 +301,10 @@ function TableCell({ className, children, ...props }: React.ComponentProps<"td">
       data-slot="table-cell"
       className={cn(
         "px-4 py-2 align-middle border-b",
-        "max-w-[500px] min-w-[120px] overflow-hidden whitespace-nowrap text-ellipsis",
+        "min-w-[120px] overflow-hidden whitespace-nowrap text-ellipsis",
         className
       )}
+      style={{ maxWidth: "500px", ...props.style }}
       {...props}
     >
       <div className="truncate min-w-0">
