@@ -38,7 +38,7 @@ export function Icon({
   return (
     <span
       className={cn(
-        "inline-flex items-center justify-center rounded-md bg-icon dark:bg-icon",
+        "inline-flex items-center justify-center rounded-md bg-icon dark:bg-icon p-2",
         className
       )}
       {...props}
