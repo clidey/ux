@@ -61,7 +61,7 @@ describe('ScrollArea Component', () => {
         expect(screen.getByText('Item 50')).toBeInTheDocument();
     });
 
-    it('should render with different orientations', () => {
+    it('should render with horizontal content', () => {
         render(
             <ScrollArea className="w-[200px]">
                 <div className="flex w-max">
