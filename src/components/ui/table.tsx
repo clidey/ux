@@ -15,7 +15,15 @@
  */
 
 import { cn } from "@/lib/utils"
+import { EyeIcon } from "lucide-react"
 import * as React from "react"
+import { Button } from "./button"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "./drawer"
 
 // Table Context Types
 interface TableContextValue {
@@ -24,6 +32,12 @@ interface TableContextValue {
   isHeaderWidthsSet: boolean
   setIsHeaderWidthsSet: (set: boolean) => void
   registerCellWidth: (columnIndex: number, width: number) => void
+  // Drawer state
+  isDrawerOpen: boolean
+  setIsDrawerOpen: (open: boolean) => void
+  drawerContent: string | React.ReactNode
+  setDrawerContent: (content: string | React.ReactNode) => void
+  openDrawer: (content: string | React.ReactNode) => void
 }
 
 const TableContext = React.createContext<TableContextValue | null>(null)
@@ -237,6 +251,10 @@ function TableProvider({ children }: TableProviderProps) {
   const [columnWidths, setColumnWidths] = React.useState<number[]>([])
   const [isHeaderWidthsSet, setIsHeaderWidthsSet] = React.useState(false)
   const [cellWidths, setCellWidths] = React.useState<Map<number, number>>(new Map())
+  
+  // Drawer state
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
+  const [drawerContent, setDrawerContent] = React.useState<string | React.ReactNode>("")
 
   const registerCellWidth = React.useCallback((columnIndex: number, width: number) => {
     setCellWidths(prev => {
@@ -244,6 +262,11 @@ function TableProvider({ children }: TableProviderProps) {
       newMap.set(columnIndex, width)
       return newMap
     })
+  }, [])
+
+  const openDrawer = React.useCallback((content: string | React.ReactNode) => {
+    setDrawerContent(content)
+    setIsDrawerOpen(true)
   }, [])
 
   // Update header widths when first row cells are measured
@@ -262,6 +285,11 @@ function TableProvider({ children }: TableProviderProps) {
     isHeaderWidthsSet,
     setIsHeaderWidthsSet,
     registerCellWidth,
+    isDrawerOpen,
+    setIsDrawerOpen,
+    drawerContent,
+    setDrawerContent,
+    openDrawer,
   }
 
   return (
@@ -271,9 +299,138 @@ function TableProvider({ children }: TableProviderProps) {
   )
 }
 
+// Helper function to check if content is valid JSON
+function isJsonContent(content: string | React.ReactNode): boolean {
+  if (typeof content !== 'string') return false
+  
+  const trimmed = content.trim()
+  if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) return false
+  
+  try {
+    JSON.parse(trimmed)
+    return true
+  } catch {
+    return false
+  }
+}
+
+// Helper function to format JSON with subtle ShadCN-like syntax highlighting
+function formatJson(jsonString: string): React.ReactNode {
+  try {
+    const parsed = JSON.parse(jsonString.trim())
+    const formatted = JSON.stringify(parsed, null, 2)
+
+    // Subtle ShadCN-inspired color classes
+    const colorMap: Record<string, string> = {
+      string: "text-green-700 dark:text-green-400/80",
+      number: "text-yellow-700 dark:text-yellow-400/80",
+      boolean: "text-blue-700 dark:text-blue-400/80",
+      null: "text-muted-foreground",
+      key: "text-primary/80 dark:text-primary/70",
+      punctuation: "text-muted-foreground",
+    }
+
+    // Regex for JSON tokens
+    const tokenRegex = /("(?:\\.|[^"\\])*"(\s*:)?|\b(true|false|null)\b|[{}[\],]|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g
+
+    function highlight(line: string, _lineIdx: number) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      const tokens = line.match(tokenRegex)
+      if (!tokens) return line
+
+      let lastIndex = 0
+      const spans: React.ReactNode[] = []
+
+      tokens.forEach((token, i) => {
+        const start = line.indexOf(token, lastIndex)
+        if (start > lastIndex) {
+          // Add any whitespace or non-token text
+          spans.push(
+            <span key={`ws-${i}`} className="">
+              {line.slice(lastIndex, start)}
+            </span>
+          )
+        }
+        let className = ""
+        if (/^"/.test(token)) {
+          if (/:$/.test(token)) {
+            className = colorMap.key
+          } else {
+            className = colorMap.string
+          }
+        } else if (/true|false/.test(token)) {
+          className = colorMap.boolean
+        } else if (/null/.test(token)) {
+          className = colorMap.null
+        } else if (/[{}[\],:]/.test(token)) {
+          className = colorMap.punctuation
+        } else if (/^-?\d/.test(token)) {
+          className = colorMap.number
+        }
+        spans.push(
+          <span key={`tok-${i}`} className={className}>
+            {token}
+          </span>
+        )
+        lastIndex = start + token.length
+      })
+      if (lastIndex < line.length) {
+        spans.push(
+          <span key="end" className="">
+            {line.slice(lastIndex)}
+          </span>
+        )
+      }
+      return spans
+    }
+
+    return (
+      <pre className="bg-muted/40 p-4 rounded-md overflow-auto text-sm font-mono">
+        <code className="text-foreground">
+          {formatted.split('\n').map((line, index) => (
+            <div key={index} className="leading-relaxed">
+              {highlight(line, index)}
+            </div>
+          ))}
+        </code>
+      </pre>
+    )
+  } catch {
+    return jsonString
+  }
+}
+
 /* --------------------------
 Table primitives
 -------------------------- */
+function TableDrawer() {
+  const context = useTableContext()
+  
+  const renderContent = () => {
+    if (typeof context.drawerContent === 'string' && isJsonContent(context.drawerContent)) {
+      return formatJson(context.drawerContent)
+    }
+    
+    return (
+      <div className="whitespace-pre-wrap break-words">
+        {context.drawerContent}
+      </div>
+    )
+  }
+  
+  return (
+    <Drawer open={context.isDrawerOpen} onOpenChange={context.setIsDrawerOpen}>
+      <DrawerContent className="min-h-[40vh] px-8 pb-8 max-h-[70vh]">
+        <DrawerHeader>
+          <DrawerTitle className="self-start">Preview</DrawerTitle>
+        </DrawerHeader>
+        <div className="p-4 overflow-y-auto">
+          {renderContent()}
+        </div>
+      </DrawerContent>
+    </Drawer>
+  )
+}
+
 function Table({ className, style, ...props }: React.ComponentProps<"table">) {
   return (
     <TableProvider>
@@ -290,6 +447,7 @@ function Table({ className, style, ...props }: React.ComponentProps<"table">) {
           style={{ ...style }}
           {...props}
         />
+        <TableDrawer />
       </div>
     </TableProvider>
   )
@@ -337,7 +495,7 @@ function TableHead({
   children,
   ...props
 }: React.ComponentProps<"th"> & { icon?: React.ReactNode }) {
-  const context = React.useContext(TableContext)
+  const context = useTableContext();
   const thRef = React.useRef<HTMLTableCellElement>(null)
   const [columnIndex, setColumnIndex] = React.useState<number>(-1)
 
@@ -355,7 +513,7 @@ function TableHead({
 
   // Apply width from context if available
   const width = context && columnIndex >= 0 && context.isHeaderWidthsSet 
-    ? context.columnWidths[columnIndex] 
+    ? context.columnWidths[columnIndex] - 4
     : undefined
 
   return (
@@ -384,10 +542,12 @@ function TableHead({
 }
 
 function TableCell({ className, children, ...props }: React.ComponentProps<"td">) {
-  const context = React.useContext(TableContext)
+  const context = useTableContext()
   const tdRef = React.useRef<HTMLTableCellElement>(null)
+  const contentRef = React.useRef<HTMLDivElement>(null)
   const [columnIndex, setColumnIndex] = React.useState<number>(-1)
   const [isFirstRow, setIsFirstRow] = React.useState(false)
+  const [isOverflowing, setIsOverflowing] = React.useState(false)
 
   // Get column index and check if this is the first row
   React.useEffect(() => {
@@ -435,17 +595,50 @@ function TableCell({ className, children, ...props }: React.ComponentProps<"td">
     }
   }, [context, isFirstRow, columnIndex])
 
+  // Check for overflow
+  React.useEffect(() => {
+    if (contentRef.current && tdRef.current) {
+      const checkOverflow = () => {
+        const content = contentRef.current
+        const cell = tdRef.current
+        if (content && cell) {
+          const isOverflow = content.scrollWidth > content.clientWidth
+          setIsOverflowing(isOverflow)
+        }
+      }
+
+      // Check overflow on mount and when content changes
+      checkOverflow()
+
+      // Use ResizeObserver to check overflow when cell size changes
+      const resizeObserver = new ResizeObserver(() => {
+        checkOverflow()
+      })
+
+      resizeObserver.observe(tdRef.current)
+      resizeObserver.observe(contentRef.current)
+
+      return () => {
+        resizeObserver.disconnect()
+      }
+    }
+  }, [children])
+
   // Apply width from context if available
   const width = context && columnIndex >= 0 && context.isHeaderWidthsSet 
     ? context.columnWidths[columnIndex] 
     : undefined
+
+  const handleEyeClick = () => {
+    context.openDrawer(children)
+  }
 
   return (
     <td
       ref={tdRef}
       data-slot="table-cell"
       className={cn(
-        "p-2 align-middle border-b first:pl-4 last:pr-4",
+        "p-2 align-middle border-b first:pl-4 last:pr-4 relative group",
         "min-w-[120px] overflow-hidden whitespace-nowrap text-ellipsis",
         className
       )}
@@ -457,9 +650,21 @@ function TableCell({ className, children, ...props }: React.ComponentProps<"td">
       }}
       {...props}
     >
-      <div className="truncate min-w-0">
+      <div ref={contentRef} className="truncate min-w-0 pr-8">
         {children}
       </div>
+      
+      {isOverflowing && (
+        <Button
+          onClick={handleEyeClick}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-muted/50 rounded-sm"
+          aria-label="View full content"
+          variant="ghost"
+          size="icon"
+        >
+          <EyeIcon className="w-4 h-4" />
+        </Button>
+      )}
     </td>
   )
 }
@@ -479,8 +684,8 @@ export {
   TableFooter,
   TableHead,
   TableHeader,
+  TableProvider,
   TableRow,
   VirtualizedTableBody,
-  TableProvider,
-  useTableContext,
 }
+

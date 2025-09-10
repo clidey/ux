@@ -484,7 +484,17 @@ function VirtualizedTableExample() {
             role: ['Admin', 'User', 'Moderator', 'Guest'][index % 4],
             status: ['Active', 'Inactive', 'Pending'][index % 3],
             lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString(),
-            random: `This is a long description for row ${index + 1} that demonstrates text truncation and wrapping behavior in the virtualized table component.`
+            // random: `This is a long description for row ${index + 1} that demonstrates text truncation and wrapping behavior in the virtualized table component.`
+            random: JSON.stringify({
+                id: Math.floor(Math.random() * 10000),
+                active: Math.random() > 0.5,
+                tags: ["alpha", "beta", "gamma"].filter(() => Math.random() > 0.5),
+                score: +(Math.random() * 100).toFixed(2),
+                meta: {
+                    created: new Date(Date.now() - Math.random() * 1e9).toISOString(),
+                    updated: new Date().toISOString()
+                }
+            }, null, 2)
         }))
     }
 
