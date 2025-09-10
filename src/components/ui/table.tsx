@@ -17,6 +17,26 @@
 import { cn } from "@/lib/utils"
 import * as React from "react"
 
+// Table Context Types
+interface TableContextValue {
+  columnWidths: number[]
+  setColumnWidths: (widths: number[]) => void
+  isHeaderWidthsSet: boolean
+  setIsHeaderWidthsSet: (set: boolean) => void
+  registerCellWidth: (columnIndex: number, width: number) => void
+}
+
+const TableContext = React.createContext<TableContextValue | null>(null)
+
+// Hook to use table context
+function useTableContext() {
+  const context = React.useContext(TableContext)
+  if (!context) {
+    throw new Error("useTableContext must be used within a TableProvider")
+  }
+  return context
+}
+
 export type TableColumn = {
   dataKey: string
   label: string
@@ -75,11 +95,9 @@ function VirtualizedTableBody({
         })
       }
     }
-    el.addEventListener("scroll", onScroll, { passive: true })
+    el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll)
   }, [])
-
-  /** -------- row height & position helpers -------- */
 
   const getRowHeight = React.useCallback(
     (index: number): number =>
@@ -119,8 +137,6 @@ function VirtualizedTableBody({
       return offsetsRef.current![rowCount]
     }
   }, [rowHeight, rowCount, ensureOffsets, isConstant])
-
-  /** -------- find visible range efficiently -------- */
 
   const findStartIndex = React.useCallback((): number => {
     if (isConstant) {
@@ -171,8 +187,6 @@ function VirtualizedTableBody({
     [scrollTop, innerHeight, rowCount, rowHeight, overscan, ensureOffsets, isConstant]
   )
 
-  /** -------- render -------- */
-
   const totalHeight = getTotalHeight()
   const startIndex = findStartIndex()
   const endIndex = findEndIndex(startIndex)
@@ -188,7 +202,7 @@ function VirtualizedTableBody({
         height: innerHeight,
         ...style,
       }}
-      className={cn("[&_tr:last-child]:border-0 block overflow-y-auto w-full box-border", className)}
+      className={cn("block [&_tr:last-child]:border-0 overflow-hidden overflow-y-visible w-full", className)}
     >
       {topSpacerHeight > 0 && (
         <TableRow aria-hidden style={{ height: topSpacerHeight }}>
@@ -213,24 +227,71 @@ function VirtualizedTableBody({
 }
 
 /* --------------------------
+Table Provider
+-------------------------- */
+interface TableProviderProps {
+  children: React.ReactNode
+}
+
+function TableProvider({ children }: TableProviderProps) {
+  const [columnWidths, setColumnWidths] = React.useState<number[]>([])
+  const [isHeaderWidthsSet, setIsHeaderWidthsSet] = React.useState(false)
+  const [cellWidths, setCellWidths] = React.useState<Map<number, number>>(new Map())
+
+  const registerCellWidth = React.useCallback((columnIndex: number, width: number) => {
+    setCellWidths(prev => {
+      const newMap = new Map(prev)
+      newMap.set(columnIndex, width)
+      return newMap
+    })
+  }, [])
+
+  // Update header widths when first row cells are measured
+  React.useEffect(() => {
+    if (cellWidths.size > 0 && !isHeaderWidthsSet) {
+      const maxColumns = Math.max(...Array.from(cellWidths.keys())) + 1
+      const widths = Array.from({ length: maxColumns }, (_, index) => cellWidths.get(index) || 120)
+      setColumnWidths(widths)
+      setIsHeaderWidthsSet(true)
+    }
+  }, [cellWidths, isHeaderWidthsSet])
+
+  const contextValue: TableContextValue = {
+    columnWidths,
+    setColumnWidths,
+    isHeaderWidthsSet,
+    setIsHeaderWidthsSet,
+    registerCellWidth,
+  }
+
+  return (
+    <TableContext.Provider value={contextValue}>
+      {children}
+    </TableContext.Provider>
+  )
+}
+
+/* --------------------------
 Table primitives
 -------------------------- */
 function Table({ className, style, ...props }: React.ComponentProps<"table">) {
   return (
-    <div
-      data-slot="table-container"
-      className="w-full overflow-x-auto h-full"
-    >
-      <table
-        data-slot="table"
-        className={cn(
-          "w-full text-sm border-collapse table-auto",
-          className
-        )}
-        style={{ ...style }}
-        {...props}
-      />
-    </div>
+    <TableProvider>
+      <div
+        data-slot="table-container"
+        className="max-w-full overflow-x-auto overflow-y-auto"
+      >
+        <table
+          data-slot="table"
+          className={cn(
+            "table-auto border-collapse min-w-full",
+            className
+          )}
+          style={{ ...style }}
+          {...props}
+        />
+      </div>
+    </TableProvider>
   )
 }
 
@@ -261,7 +322,7 @@ function TableRow({ className, style, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors table",
+        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors table table-auto w-full",
         className
       )}
       style={style}
@@ -276,15 +337,42 @@ function TableHead({
   children,
   ...props
 }: React.ComponentProps<"th"> & { icon?: React.ReactNode }) {
+  const context = React.useContext(TableContext)
+  const thRef = React.useRef<HTMLTableCellElement>(null)
+  const [columnIndex, setColumnIndex] = React.useState<number>(-1)
+
+  // Get column index from DOM position
+  React.useEffect(() => {
+    if (thRef.current && context) {
+      const row = thRef.current.parentElement
+      if (row) {
+        const cells = Array.from(row.children)
+        const index = cells.indexOf(thRef.current)
+        setColumnIndex(index)
+      }
+    }
+  }, [context]);
+
+  // Apply width from context if available
+  const width = context && columnIndex >= 0 && context.isHeaderWidthsSet 
+    ? context.columnWidths[columnIndex] 
+    : undefined
+
   return (
     <th
+      ref={thRef}
       data-slot="table-head"
       className={cn(
-        "text-foreground h-12 px-4 py-2 text-left align-middle font-medium border-b",
-        "min-w-[120px]",
+        "text-foreground h-12 p-2 first:pl-4 last:pr-4 text-left align-middle font-medium border-b",
+        "min-w-[120px] max-w-[500px]",
         className
       )}
-      style={{ maxWidth: "500px", ...props.style }}
+      style={{ 
+        width: width ? `${width}px` : undefined,
+        minWidth: width ? `${width}px` : "120px",
+        maxWidth: width ? `${width}px` : "500px",
+        ...props.style 
+      }}
       {...props}
     >
       <div className="flex items-center gap-2 w-full min-w-0">
@@ -296,15 +384,77 @@ function TableHead({
 }
 
 function TableCell({ className, children, ...props }: React.ComponentProps<"td">) {
+  const context = React.useContext(TableContext)
+  const tdRef = React.useRef<HTMLTableCellElement>(null)
+  const [columnIndex, setColumnIndex] = React.useState<number>(-1)
+  const [isFirstRow, setIsFirstRow] = React.useState(false)
+
+  // Get column index and check if this is the first row
+  React.useEffect(() => {
+    if (tdRef.current && context) {
+      const row = tdRef.current.parentElement
+      if (row) {
+        const cells = Array.from(row.children)
+        const index = cells.indexOf(tdRef.current)
+        setColumnIndex(index)
+        
+        // Check if this is the first row in the tbody
+        const tbody = row.parentElement
+        if (tbody && tbody.tagName === 'TBODY') {
+          const rows = Array.from(tbody.children)
+          const rowIndex = rows.indexOf(row)
+          setIsFirstRow(rowIndex === 0)
+        }
+      }
+    }
+  }, [context])
+
+  // Measure and register width for first row cells
+  React.useEffect(() => {
+    if (tdRef.current && context && isFirstRow && columnIndex >= 0 && !context.isHeaderWidthsSet) {
+      const measureWidth = () => {
+        const width = tdRef.current?.offsetWidth
+        if (width && width > 0) {
+          context.registerCellWidth(columnIndex, width)
+        }
+      }
+
+      // Use ResizeObserver to get accurate width after content is rendered
+      const resizeObserver = new ResizeObserver(() => {
+        measureWidth()
+      })
+
+      resizeObserver.observe(tdRef.current)
+
+      // Also measure immediately in case content is already rendered
+      measureWidth()
+
+      return () => {
+        resizeObserver.disconnect()
+      }
+    }
+  }, [context, isFirstRow, columnIndex])
+
+  // Apply width from context if available
+  const width = context && columnIndex >= 0 && context.isHeaderWidthsSet 
+    ? context.columnWidths[columnIndex] 
+    : undefined
+
   return (
     <td
+      ref={tdRef}
       data-slot="table-cell"
       className={cn(
-        "px-4 py-2 align-middle border-b",
+        "p-2 align-middle border-b first:pl-4 last:pr-4",
         "min-w-[120px] overflow-hidden whitespace-nowrap text-ellipsis",
         className
       )}
-      style={{ maxWidth: "500px", ...props.style }}
+      style={{ 
+        maxWidth: width ? `${width}px` : "500px",
+        width: width ? `${width}px` : undefined,
+        minWidth: width ? `${width}px` : "120px",
+        ...props.style 
+      }}
       {...props}
     >
       <div className="truncate min-w-0">
@@ -331,4 +481,6 @@ export {
   TableHeader,
   TableRow,
   VirtualizedTableBody,
+  TableProvider,
+  useTableContext,
 }
