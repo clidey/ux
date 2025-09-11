@@ -595,7 +595,7 @@ function TableCell({ className, children, ...props }: React.ComponentProps<"td">
       data-slot="table-cell"
       className={cn(
         "p-2 align-middle border-b first:pl-4 last:pr-4 relative group",
-        "min-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis",
+        "min-w-[150px] max-w-[500px] overflow-hidden whitespace-nowrap text-ellipsis",
         className
       )}
       style={{ 
