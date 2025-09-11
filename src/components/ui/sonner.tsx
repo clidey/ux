@@ -15,7 +15,7 @@
  */
 
 import {useTheme} from "@/components/theme/provider"
-import {Toaster as Sonner, type ToasterProps} from "sonner"
+import {toast, Toaster as Sonner, type ToasterProps} from "sonner"
 import {cn} from "@/lib/utils"
 
 const Toaster = ({className, ...props}: ToasterProps) => {
@@ -39,4 +39,4 @@ const Toaster = ({className, ...props}: ToasterProps) => {
   )
 }
 
-export {Toaster}
+export {Toaster, toast}
