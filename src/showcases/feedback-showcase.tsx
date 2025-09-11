@@ -183,7 +183,7 @@ export function FeedbackShowcase() {
                     <EmptyState
                         icon={<FileX className="h-12 w-12"/>}
                         title="No documents found"
-                        description="Get started by creating your first document."
+                        description="Get started by creating your first document.">
                     </EmptyState>
 
                     <Separator/>
@@ -191,7 +191,7 @@ export function FeedbackShowcase() {
                     <EmptyState
                         icon={<Search className="h-12 w-12"/>}
                         title="No results found"
-                        description="Try adjusting your search or filter to find what you're looking for."
+                        description="Try adjusting your search or filter to find what you're looking for.">
                     </EmptyState>
 
                     <Separator/>
@@ -207,7 +207,7 @@ export function FeedbackShowcase() {
                     <EmptyState
                         icon={<Users className="h-12 w-12"/>}
                         title="No team members"
-                        description="Invite team members to collaborate on your projects."
+                        description="Invite team members to collaborate on your projects.">
                     </EmptyState>
                 </CardContent>
             </Card>
