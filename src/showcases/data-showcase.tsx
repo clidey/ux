@@ -45,6 +45,7 @@ import {
     TableFooter,
     TableHead,
     TableHeader,
+    TableHeadRow,
     TableRow,
     VirtualizedTableBody,
     type TableColumn,
@@ -638,13 +639,13 @@ function VirtualizedTableExample() {
                 <Table className="w-full">
                     {!disableHeader && (
                         <TableHeader>
-                            <TableRow style={{ height: headerHeight }}>
+                            <TableHeadRow style={{ height: headerHeight }}>
                                 {columns.map((col) => (
                                     <TableHead key={col.dataKey}>
                                         {col.label}
                                     </TableHead>
                                 ))}
-                            </TableRow>
+                            </TableHeadRow>
                         </TableHeader>
                     )}
                     <VirtualizedTableBody
