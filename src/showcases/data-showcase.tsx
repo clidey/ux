@@ -495,6 +495,16 @@ function VirtualizedTableExample() {
                     created: new Date(Date.now() - Math.random() * 1e9).toISOString(),
                     updated: new Date().toISOString()
                 }
+            }, null, 2),
+            random2: JSON.stringify({
+                id: Math.floor(Math.random() * 10000),
+                active: Math.random() > 0.5,
+                tags: ["alpha", "beta", "gamma"].filter(() => Math.random() > 0.5),
+                score: +(Math.random() * 100).toFixed(2),
+                meta: {
+                    created: new Date(Date.now() - Math.random() * 1e9).toISOString(),
+                    updated: new Date().toISOString()
+                }
             }, null, 2)
         }))
     }
@@ -530,9 +540,12 @@ function VirtualizedTableExample() {
         {
             dataKey: 'random',
             label: 'Description',
-        }
+        },
+        {
+            dataKey: 'random2',
+            label: 'Description 2',
+        },
     ]
-
 
     const handleScrollToRowChange = (value: string) => {
         const index = parseInt(value, 10)

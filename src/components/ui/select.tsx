@@ -271,7 +271,7 @@ function SearchSelect({
               setSearch(""); // Clear search when closing
           }
       }} modal={true}>
-          <PopoverTrigger asChild>
+          <PopoverTrigger>
         <Button
           variant="outline"
           role="combobox"

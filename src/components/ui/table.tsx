@@ -89,9 +89,9 @@ function VirtualizedTableBody({
 
   // ensure container height responds to prop changes
   React.useEffect(() => setInnerHeight(height), [height])
-
+  
   // scroll handler (raf throttled)
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const el = containerRef.current
     if (!el) return
     let ticking = false
@@ -401,6 +401,8 @@ function TableDrawer() {
 
 function Table({ className, style, ...props }: React.ComponentProps<"table">) {
   const tableRef = React.useRef<HTMLTableElement | null>(null)
+  const isVirtualizedRef = React.useRef(false)
+  const widthSyncedRef = React.useRef(false)
 
   React.useEffect(() => {
     const table = tableRef.current
@@ -419,7 +421,12 @@ function Table({ className, style, ...props }: React.ComponentProps<"table">) {
     }
 
     const syncWidths = () => {
-      const { headCells, bodyCells } = getCells()
+      // Skip width sync for virtualized tables after initial setup
+      if (isVirtualizedRef.current && widthSyncedRef.current) {
+        return
+      }
+
+      const { headCells, bodyCells } = getCells();
       const count = Math.min(headCells.length, bodyCells.length)
       for (let i = 0; i < count; i++) {
         const width = bodyCells[i].getBoundingClientRect().width
@@ -429,12 +436,31 @@ function Table({ className, style, ...props }: React.ComponentProps<"table">) {
           headCells[i].style.maxWidth = `${width}px`
         }
       }
+
+      // Mark as synced for virtualized tables
+      if (isVirtualizedRef.current) {
+        widthSyncedRef.current = true
+      }
     }
 
-    const rafId = requestAnimationFrame(syncWidths)
+    // Check if this is a virtualized table by looking for VirtualizedTableBody
+    const checkIfVirtualized = () => {
+      const tbody = table.querySelector("tbody")
+      const isVirtualized = Boolean(tbody?.hasAttribute("data-slot") && tbody.getAttribute("data-slot") === "table-body")
+      isVirtualizedRef.current = isVirtualized
+      return isVirtualized
+    }
+
+    const rafId = requestAnimationFrame(() => {
+      checkIfVirtualized()
+      syncWidths()
+    })
 
     const resizeObserver = new ResizeObserver(() => {
-      syncWidths()
+      // Only sync widths for non-virtualized tables or before initial sync for virtualized tables
+      if (!isVirtualizedRef.current || !widthSyncedRef.current) {
+        syncWidths()
+      }
     })
 
     const tbody = table.querySelector("tbody")
@@ -444,7 +470,11 @@ function Table({ className, style, ...props }: React.ComponentProps<"table">) {
     const { bodyCells } = getCells()
     bodyCells.forEach((cell) => resizeObserver.observe(cell))
 
-    const onResize = () => syncWidths()
+    const onResize = () => {
+      // Reset sync flag on window resize to allow re-sync
+      widthSyncedRef.current = false
+      syncWidths()
+    }
     window.addEventListener("resize", onResize)
 
     return () => {
@@ -482,11 +512,19 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   )
 }
 
-function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
-  return (
-    <tbody data-slot="table-body" className={cn("[&_tr:last-child]:border-0", className)} {...props} />
-  )
-}
+const TableBody = React.forwardRef<HTMLTableSectionElement, React.ComponentProps<"tbody">>(
+  ({ className, ...props }, ref) => {
+    return (
+      <tbody 
+        ref={ref}
+        data-slot="table-body" 
+        className={cn("[&_tr:last-child]:border-0", className)} 
+        {...props} 
+      />
+    )
+  }
+)
+TableBody.displayName = "TableBody"
 
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   return (
