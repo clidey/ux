@@ -25,6 +25,7 @@ import {toast} from "sonner"
 import {AlertCircle, AlertTriangle, CheckCircle2, FileX, Info, Package, Search, Users} from "lucide-react"
 
 export function FeedbackShowcase() {
+    // @ts-ignore
     return (
         <>
             <Card>
@@ -182,9 +183,7 @@ export function FeedbackShowcase() {
                     <EmptyState
                         icon={<FileX className="h-12 w-12"/>}
                         title="No documents found"
-                        description="Get started by creating your first document."
-                    >
-                        <Button>Create Document</Button>
+                        description="Get started by creating your first document.">
                     </EmptyState>
 
                     <Separator/>
@@ -192,9 +191,7 @@ export function FeedbackShowcase() {
                     <EmptyState
                         icon={<Search className="h-12 w-12"/>}
                         title="No results found"
-                        description="Try adjusting your search or filter to find what you're looking for."
-                    >
-                        <Button variant="outline">Clear filters</Button>
+                        description="Try adjusting your search or filter to find what you're looking for.">
                     </EmptyState>
 
                     <Separator/>
@@ -210,12 +207,7 @@ export function FeedbackShowcase() {
                     <EmptyState
                         icon={<Users className="h-12 w-12"/>}
                         title="No team members"
-                        description="Invite team members to collaborate on your projects."
-                    >
-                        <div className="flex gap-2">
-                            <Button>Invite Members</Button>
-                            <Button variant="outline">Learn More</Button>
-                        </div>
+                        description="Invite team members to collaborate on your projects.">
                     </EmptyState>
                 </CardContent>
             </Card>

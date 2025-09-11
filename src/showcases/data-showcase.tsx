@@ -45,7 +45,10 @@ import {
     TableFooter,
     TableHead,
     TableHeader,
-    TableRow
+    TableHeadRow,
+    TableRow,
+    VirtualizedTableBody,
+    type TableColumn,
 } from "@/components/ui/table"
 import {Tree, type TreeDataItem} from "@/components/ui/tree"
 import {Button} from "@/components/ui/button"
@@ -173,14 +176,14 @@ export function DataShowcase() {
                     <CardDescription>Data tables with headers, footers, and captions</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Table>
+                    <Table className="caption-bottom">
                         <TableCaption>A list of your recent invoices.</TableCaption>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-[100px]">Invoice</TableHead>
+                                <TableHead>Invoice</TableHead>
                                 <TableHead>Status</TableHead>
                                 <TableHead>Method</TableHead>
-                                <TableHead className="text-right">Amount</TableHead>
+                                <TableHead>Amount</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -201,20 +204,19 @@ export function DataShowcase() {
                                         </Badge>
                                     </TableCell>
                                     <TableCell>{invoice.paymentMethod}</TableCell>
-                                    <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+                                    <TableCell>{invoice.totalAmount}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                         <TableFooter>
                             <TableRow>
                                 <TableCell colSpan={3}>Total</TableCell>
-                                <TableCell className="text-right">$1,750.00</TableCell>
+                                <TableCell>$1,750.00</TableCell>
                             </TableRow>
                         </TableFooter>
                     </Table>
                 </CardContent>
             </Card>
-
             <Card>
                 <CardHeader>
                     <CardTitle>Pagination</CardTitle>
@@ -447,6 +449,232 @@ export function DataShowcase() {
                     </div>
                 </CardContent>
             </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Virtualized Table</CardTitle>
+                    <CardDescription>High-performance table with virtualization for large datasets</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <VirtualizedTableExample />
+                </CardContent>
+            </Card>
         </>
+    )
+}
+
+// Virtualized Table Example Component
+
+function VirtualizedTableExample() {
+    const [useDynamicRowHeight, setUseDynamicRowHeight] = useState(false)
+    const [hideIndexRow, setHideIndexRow] = useState(false)
+    const [disableHeader, setDisableHeader] = useState(false)
+    const [rowCount, setRowCount] = useState(1000)
+    const [height, setHeight] = useState(400)
+    const [rowHeight, setRowHeight] = useState(40)
+    const [headerHeight, setHeaderHeight] = useState(30)
+    const [overscanRowCount, setOverscanRowCount] = useState(10)
+    const [scrollToIndex, setScrollToIndex] = useState<number | undefined>(undefined)
+
+    // Generate sample data
+    const generateData = (count: number) => {
+        return Array.from({ length: count }, (_, index) => ({
+            index: index + 1,
+            name: `User ${index + 1}`,
+            email: `user${index + 1}@example.com`,
+            role: ['Admin', 'User', 'Moderator', 'Guest'][index % 4],
+            status: ['Active', 'Inactive', 'Pending'][index % 3],
+            lastLogin: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+            // random: `This is a long description for row ${index + 1} that demonstrates text truncation and wrapping behavior in the virtualized table component.`
+            random: JSON.stringify({
+                id: Math.floor(Math.random() * 10000),
+                active: Math.random() > 0.5,
+                tags: ["alpha", "beta", "gamma"].filter(() => Math.random() > 0.5),
+                score: +(Math.random() * 100).toFixed(2),
+                meta: {
+                    created: new Date(Date.now() - Math.random() * 1e9).toISOString(),
+                    updated: new Date().toISOString()
+                }
+            }, null, 2)
+        }))
+    }
+
+    const data = generateData(rowCount)
+
+    // Column definitions
+    const columns: TableColumn[] = [
+        ...(hideIndexRow ? [] : [{
+            dataKey: 'index',
+            label: 'Index',
+        }]),
+        {
+            dataKey: 'name',
+            label: 'Full Name',
+        },
+        {
+            dataKey: 'email',
+            label: 'Email',
+        },
+        {
+            dataKey: 'role',
+            label: 'Role',
+        },
+        {
+            dataKey: 'status',
+            label: 'Status',
+        },
+        {
+            dataKey: 'lastLogin',
+            label: 'Last Login',
+        },
+        {
+            dataKey: 'random',
+            label: 'Description',
+        }
+    ]
+
+
+    const handleScrollToRowChange = (value: string) => {
+        const index = parseInt(value, 10)
+        if (isNaN(index)) {
+            setScrollToIndex(undefined)
+        } else {
+            setScrollToIndex(Math.min(rowCount - 1, index))
+        }
+    }
+
+    // Table rendering using primitives from @/components/ui/table
+    return (
+        <div className="space-y-6">
+            {/* Controls */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="space-x-2">
+                    <label className="text-sm font-medium">Use dynamic row heights?</label>
+                    <input
+                        type="checkbox"
+                        checked={useDynamicRowHeight}
+                        onChange={(e) => setUseDynamicRowHeight(e.target.checked)}
+                        className="rounded"
+                    />
+                </div>
+                <div className="space-x-2">
+                    <label className="text-sm font-medium">Hide index?</label>
+                    <input
+                        type="checkbox"
+                        checked={hideIndexRow}
+                        onChange={(e) => setHideIndexRow(e.target.checked)}
+                        className="rounded"
+                    />
+                </div>
+                <div className="space-x-2">
+                    <label className="text-sm font-medium">Hide header?</label>
+                    <input
+                        type="checkbox"
+                        checked={disableHeader}
+                        onChange={(e) => setDisableHeader(e.target.checked)}
+                        className="rounded"
+                    />
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Num rows</label>
+                    <input
+                        type="number"
+                        value={rowCount}
+                        onChange={(e) => setRowCount(parseInt(e.target.value, 10) || 0)}
+                        className="w-full px-3 py-2 border rounded-md"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Scroll to</label>
+                    <input
+                        type="number"
+                        placeholder="Index..."
+                        value={scrollToIndex ?? ''}
+                        onChange={(e) => handleScrollToRowChange(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-md"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">List height</label>
+                    <input
+                        type="number"
+                        value={height}
+                        onChange={(e) => setHeight(parseInt(e.target.value, 10) || 1)}
+                        className="w-full px-3 py-2 border rounded-md"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Row height</label>
+                    <input
+                        type="number"
+                        disabled={useDynamicRowHeight}
+                        value={rowHeight}
+                        onChange={(e) => setRowHeight(parseInt(e.target.value, 10) || 1)}
+                        className="w-full px-3 py-2 border rounded-md disabled:opacity-50"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Header height</label>
+                    <input
+                        type="number"
+                        value={headerHeight}
+                        onChange={(e) => setHeaderHeight(parseInt(e.target.value, 10) || 1)}
+                        className="w-full px-3 py-2 border rounded-md"
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Overscan</label>
+                    <input
+                        type="number"
+                        value={overscanRowCount}
+                        onChange={(e) => setOverscanRowCount(parseInt(e.target.value, 10) || 0)}
+                        className="w-full px-3 py-2 border rounded-md"
+                    />
+                </div>
+            </div>
+            <div className="border rounded-lg">
+                <Table className="w-full">
+                    {!disableHeader && (
+                        <TableHeader>
+                            <TableHeadRow style={{ height: headerHeight }}>
+                                {columns.map((col) => (
+                                    <TableHead key={col.dataKey}>
+                                        {col.label}
+                                    </TableHead>
+                                ))}
+                            </TableHeadRow>
+                        </TableHeader>
+                    )}
+                    <VirtualizedTableBody
+                        rowCount={data.length}
+                        rowHeight={
+                            useDynamicRowHeight
+                                ? (args: { index: number }) => 30 + (args.index % 3) * 10
+                                : rowHeight
+                        }
+                        height={height}
+                        overscan={overscanRowCount}
+                    >
+                        {(rowIdx: number, rowStyle: React.CSSProperties) => {
+                            const rowData = data[rowIdx]
+                            return (
+                                <TableRow key={rowIdx} style={rowStyle}>
+                                    {columns.map((col) => {
+                                        return (
+                                            <TableCell key={col.dataKey}>
+                                                {rowData[col.dataKey as keyof typeof rowData]}
+                                            </TableCell>
+                                        )
+                                    })}
+                                </TableRow>
+                            )
+                        }}
+                    </VirtualizedTableBody>
+                </Table>
+            </div>
+        </div>
     )
 }

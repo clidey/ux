@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tailwindcss/utilities";
 @import "tw-animate-css";
+@import 'react-virtualized/styles.css';
 
 @custom-variant dark (&:is(.dark *));
 
