@@ -430,7 +430,7 @@ function Table({ className, style, ...props }: React.ComponentProps<"table">) {
       const count = Math.min(headCells.length, bodyCells.length)
       for (let i = 0; i < count; i++) {
         const width = bodyCells[i].getBoundingClientRect().width
-        if (width > 0) {
+        if (width > 0 && i !== count - 1) {
           headCells[i].style.width = `${width}px`
           headCells[i].style.minWidth = `${width}px`
           headCells[i].style.maxWidth = `${width}px`
@@ -541,7 +541,7 @@ function TableHeadRow({ className, style, ...props }: React.ComponentProps<"tr">
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors w-full table table-auto",
+        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors table table-auto",
         className
       )}
       style={style}
@@ -575,7 +575,7 @@ function TableHead({
       data-slot="table-head"
       className={cn(
         "text-foreground h-12 p-2 first:pl-4 last:pr-4 text-left align-middle font-medium border-b",
-        "min-w-[150px] max-w-[500px]",
+        "not-last:min-w-[150px] not-last:max-w-[500px] last:w-full",
         className
       )}
       {...props}
@@ -632,7 +632,7 @@ function TableCell({ className, children, ...props }: React.ComponentProps<"td">
       ref={tdRef}
       data-slot="table-cell"
       className={cn(
-        "p-2 align-middle border-b first:pl-4 last:pr-4 relative group",
+        "p-2 align-middle border-b first:pl-4 last:pr-4 relative group last:w-full",
         "min-w-[150px] max-w-[500px] overflow-hidden whitespace-nowrap text-ellipsis",
         className
       )}
