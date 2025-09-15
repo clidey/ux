@@ -621,7 +621,7 @@ function TableCell({ className, children, ...props }: React.ComponentProps<"td">
         resizeObserver.disconnect()
       }
     }
-  }, [children])
+  }, [children]);
 
   const handleEyeClick = () => {
     context.openDrawer(children)

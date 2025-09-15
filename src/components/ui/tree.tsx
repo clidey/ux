@@ -159,7 +159,7 @@ const TreeItem = React.forwardRef<
                         aria-hidden="true"
                       />
                     }
-                    <p className="text-sm truncate">{item.name}</p>
+                    <p className={cn("text-sm truncate", selectedItemId === item.id && "font-bold underline underline-offset-4")}>{item.name}</p>
                   </AccordionTrigger>
                   <AccordionContent className="pl-6">
                     <TreeItem
@@ -221,7 +221,7 @@ const Leaf = React.forwardRef<
     >
       {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
       {!item.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-      <p className="flex-grow text-sm truncate">{item.name}</p>
+      <p className={cn("flex-grow text-sm truncate", isSelected && "font-bold underline underline-offset-4")}>{item.name}</p>
       </button>
   );
 })
