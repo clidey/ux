@@ -59,6 +59,7 @@ export { Icon } from "./components/ui/icon";
 export { Switch } from "./components/ui/switch";
 export { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "./components/ui/alert-dialog";
 export { Spinner } from "./components/ui/spinner";
+export { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, ChartStyle, } from "./components/ui/chart";
 
 // Theme Components
 export { ThemeProvider, useTheme } from './components/theme/provider'

@@ -28,6 +28,7 @@ const NavigationShowcase = lazy(() => import("./showcases/navigation-showcase").
 const OverlaysShowcase = lazy(() => import("./showcases/overlays-showcase").then(m => ({default: m.OverlaysShowcase})))
 const FeedbackShowcase = lazy(() => import("./showcases/feedback-showcase").then(m => ({default: m.FeedbackShowcase})))
 const DataShowcase = lazy(() => import("./showcases/data-showcase").then(m => ({default: m.DataShowcase})))
+const ChartsShowcase = lazy(() => import("./showcases/charts-showcase").then(m => ({default: m.ChartsShowcase})))
 const LayoutShowcase = lazy(() => import("./showcases/layout-showcase").then(m => ({default: m.LayoutShowcase})))
 
 // Loading component
@@ -53,13 +54,14 @@ function App() {
           {/* Main Content */}
           <div className="container py-8">
             <Tabs defaultValue="buttons" className="w-full">
-              <TabsList className="grid w-full grid-cols-7 mb-8">
+              <TabsList className="grid w-full grid-cols-8 mb-8">
                 <TabsTrigger value="buttons">Buttons</TabsTrigger>
                 <TabsTrigger value="forms">Forms</TabsTrigger>
                 <TabsTrigger value="navigation">Navigation</TabsTrigger>
                 <TabsTrigger value="overlays">Overlays</TabsTrigger>
                 <TabsTrigger value="feedback">Feedback</TabsTrigger>
                 <TabsTrigger value="data">Data</TabsTrigger>
+                <TabsTrigger value="charts">Charts</TabsTrigger>
                 <TabsTrigger value="layout">Layout</TabsTrigger>
               </TabsList>
 
@@ -102,6 +104,13 @@ function App() {
               <TabsContent value="data" className="space-y-6">
                 <Suspense fallback={<LoadingSection/>}>
                   <DataShowcase/>
+                </Suspense>
+              </TabsContent>
+
+              {/* Charts Showcase */}
+              <TabsContent value="charts" className="space-y-6">
+                <Suspense fallback={<LoadingSection/>}>
+                  <ChartsShowcase/>
                 </Suspense>
               </TabsContent>
 
