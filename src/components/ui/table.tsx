@@ -434,6 +434,12 @@ function Table({ className, style, ...props }: React.ComponentProps<"table">) {
           headCells[i].style.width = `${width}px`
           headCells[i].style.minWidth = `${width}px`
           headCells[i].style.maxWidth = `${width}px`
+          // For virtualized tables, also fix body cell widths
+          if (isVirtualizedRef.current) {
+            bodyCells[i].style.width = `${width}px`
+            bodyCells[i].style.minWidth = `${width}px`
+            bodyCells[i].style.maxWidth = `${width}px`
+          }
         }
       }
 
@@ -460,6 +466,11 @@ function Table({ className, style, ...props }: React.ComponentProps<"table">) {
       // Only sync widths for non-virtualized tables or before initial sync for virtualized tables
       if (!isVirtualizedRef.current || !widthSyncedRef.current) {
         syncWidths()
+        // After syncing widths for virtualized tables, disconnect observer from body cells
+        if (isVirtualizedRef.current && widthSyncedRef.current) {
+          const { bodyCells } = getCells()
+          bodyCells.forEach((cell) => resizeObserver.unobserve(cell))
+        }
       }
     })
 
