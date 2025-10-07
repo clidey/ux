@@ -2,33 +2,64 @@ name: Claude Code Review
 
 on:
   pull_request:
-    types: [opened, synchronize]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
+    types: [opened]
+  issue_comment:
+    types: [created]
 
 jobs:
+  post-instructions:
+    # Only run on new PR creation
+    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Post instruction comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: 'Hey, leave a @claude-review comment below and I\'ll review this UI component library PR!'
+            });
+
   claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
-    
+    # Only run when someone comments "@claude-review" on a PR
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '@claude-review')
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
       issues: read
       id-token: write
-    
+
     steps:
+      # Get PR details to checkout the correct commit
+      - name: Get PR details
+        uses: actions/github-script@v7
+        id: pr
+        with:
+          script: |
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            return {
+              ref: pullRequest.head.ref,
+              sha: pullRequest.head.sha
+            };
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ fromJSON(steps.pr.outputs.result).sha }}
           fetch-depth: 1
 
       - name: Run Claude Code Review
@@ -38,20 +69,103 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
             REPO: ${{ github.repository }}
-            PR NUMBER: ${{ github.event.pull_request.number }}
+            PR NUMBER: ${{ github.event.issue.number }}
 
-            Please review this pull request and provide feedback on:
-            - Code quality and best practices
-            - Potential bugs or issues
-            - Performance considerations
-            - Security concerns
-            - Test coverage
-            
-            Use the repository's CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
+            Review this @clidey/ux React component library pull request. Use CLAUDE.md for additional context.
 
-            Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.
-          
+            PROJECT CONTEXT:
+            - React 18/19 component library built with TypeScript
+            - Radix UI primitives for accessibility
+            - Tailwind CSS v4 with @tailwindcss/vite
+            - Vite for both development and library building
+            - Vitest for testing with jsdom
+            - Published to npm as @clidey/ux
+
+            COMPONENT STANDARDS:
+            1. Component Structure:
+               - Must use forwardRef for ref forwarding when appropriate
+               - Accept className prop and merge using cn() utility from src/lib/utils
+               - Build on Radix UI primitives (40+ existing components)
+               - Use class-variance-authority (cva) for variant management
+               - Components in src/components/ui/, theme in src/components/theme/
+
+            2. TypeScript Requirements:
+               - Strict mode compliance
+               - Proper type exports in index.d.ts
+               - Consistent prop interfaces
+               - No use of 'any' without justification
+
+            3. Styling Guidelines:
+               - Tailwind CSS v4 utilities only
+               - No inline styles unless absolutely necessary
+               - Dark mode support via next-themes
+               - Use tailwind-merge via cn() for class conflicts
+               - Consistent with existing component patterns
+
+            4. Accessibility:
+               - Leverage Radix UI for ARIA compliance
+               - Keyboard navigation support
+               - Focus management
+               - Screen reader compatibility
+
+            BUILD & PACKAGE CHECKS:
+            - Verify exports in package.json if adding new entry points
+            - Check vite.lib.config.ts for proper externalization
+            - Ensure styles.css export remains intact
+            - Peer dependencies (React 18/19) not bundled
+            - Dependencies like lucide-react, cmdk, recharts properly used
+
+            TESTING:
+            - Tests in tests/ directory using Vitest
+            - @testing-library/react for component testing
+            - Test coverage for new components
+            - Setup file at tests/setup.ts
+
+            CODE QUALITY:
+            1. React Best Practices:
+               - Functional components only
+               - Proper hook usage and dependency arrays
+               - Avoid unnecessary re-renders
+               - Consistent with existing 40+ components
+
+            2. Performance:
+               - Consider React.memo for expensive components
+               - Efficient event handlers
+               - Proper use of use-resize-observer when needed
+               - Bundle size impact (library is published)
+
+            3. Package Scripts:
+               - pnpm dev for development
+               - pnpm build:lib for library build
+               - pnpm test for running tests
+               - pnpm lint for ESLint checks
+
+            REVIEW FOCUS:
+            - Breaking changes to component APIs
+            - TypeScript type safety and exports
+            - Tailwind CSS v4 compatibility
+            - Accessibility regressions
+            - Bundle size increases
+            - Test coverage for new/modified components
+            - Consistency with existing component patterns
+            - Proper use of Radix UI primitives
+            - Dark mode compatibility
+
+            COMMON ISSUES TO CHECK:
+            - Missing forwardRef where needed
+            - className prop not properly merged with cn()
+            - Variants not using cva properly
+            - Missing TypeScript exports
+            - Tailwind classes not working in v4
+            - Components not exported from index files
+
+            Be specific and actionable. Reference file:line_number for issues.
+            Focus on actual bugs, type safety, accessibility, and API consistency.
+            Check that changes follow patterns in CLAUDE.md.
+
+            Use `gh pr comment` to post your review as a single, well-formatted comment.
+
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://docs.claude.com/en/docs/claude-code/sdk#command-line for available options
-          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
+          claude_args: '--allowed-tools "Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(pnpm test:*),Bash(pnpm lint:*)"'
 
