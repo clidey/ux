@@ -17,6 +17,7 @@
 // UI Components
 export { Badge } from './components/ui/badge'
 export { Button } from './components/ui/button'
+export { ButtonGroup, ButtonGroupText, ButtonGroupSeparator } from "./components/ui/button-group";
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './components/ui/card'
 export { ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuRadioGroup, ContextMenuRadioItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger } from './components/ui/context-menu'
 export { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from './components/ui/drawer'
