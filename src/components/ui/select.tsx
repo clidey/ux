@@ -213,6 +213,7 @@ type SearchSelectProps = {
   label?: string
   inputProps?: React.ComponentProps<typeof CommandInput>
   buttonProps?: React.ComponentProps<typeof Button>
+  rightIcon?: React.ReactNode
 }
 
 function SearchSelect({
@@ -234,6 +235,7 @@ function SearchSelect({
   label,
   inputProps,
   buttonProps,
+  rightIcon,
 }: SearchSelectProps) {
   const [open, setOpen] = React.useState(false);
     const [internalValue, setInternalValue] = React.useState<string>(defaultValue || "");
@@ -309,7 +311,12 @@ function SearchSelect({
               <span className="truncate">{placeholder}</span>
             )}
           </span>
-          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {
+            rightIcon ?
+            <>{rightIcon}</>
+            :
+            <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          }
         </Button>
       </PopoverTrigger>
       <PopoverContent className={cn("p-0", contentClassName)} side={side} align={align}>
