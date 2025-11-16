@@ -30,7 +30,7 @@ export const EmptyState = ({
   children?: React.ReactNode
 }) => {
   return (
-    <div className={cn("flex justify-center items-center w-full h-full grow", className)}>
+    <div className={cn("flex justify-center items-center w-full h-full grow", className)} data-testid="empty-state">
       <div
         className={cn(
           "flex flex-col gap-4 items-center w-[400px] p-8"
