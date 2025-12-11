@@ -45,12 +45,13 @@ export interface SpinnerProps
     Omit<VariantProps<typeof spinnerVariants>, 'size'> {
   className?: string;
   size?: VariantProps<typeof spinnerVariants>['size'] | number;
+  'aria-label'?: string;
 }
 
-const Spinner = ({ className, variant, size = 'default' }: SpinnerProps) => (
+const Spinner = ({ className, variant, size = 'default', 'aria-label': ariaLabel = 'Loading' }: SpinnerProps) => (
   <div
     role="status"
-    aria-label="Loading"
+    aria-label={ariaLabel}
     className={cn(
       typeof size === 'string'
         ? spinnerVariants({ variant, size })
@@ -71,7 +72,7 @@ const Spinner = ({ className, variant, size = 'default' }: SpinnerProps) => (
         aria-hidden="true"
       />
     ))}
-    <span className="sr-only">Loading...</span>
+    <span className="sr-only">{ariaLabel}</span>
   </div>
 );
 

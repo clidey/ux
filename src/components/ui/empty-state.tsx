@@ -22,21 +22,28 @@ export const EmptyState = ({
   description,
   icon,
   children,
+  "aria-label": ariaLabel,
 }: {
   className?: string
   title: string
   description: string
   icon: React.ReactNode
   children?: React.ReactNode
+  "aria-label"?: string
 }) => {
   return (
-    <div className={cn("flex justify-center items-center w-full h-full grow", className)} data-testid="empty-state">
+    <div
+      role="status"
+      aria-label={ariaLabel ?? title}
+      className={cn("flex justify-center items-center w-full h-full grow", className)}
+      data-testid="empty-state"
+    >
       <div
         className={cn(
           "flex flex-col gap-4 items-center w-[400px] p-8"
         )}>
-        {icon}
-        <h1 className="text-2xl font-bold">{title}</h1>
+        <span aria-hidden="true">{icon}</span>
+        <h2 className="text-2xl font-bold">{title}</h2>
         <p className="text-sm text-muted-foreground text-center">{description}</p>
         {children}
       </div>

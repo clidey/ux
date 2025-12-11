@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-import { cn } from "@/lib/utils"
-import { EyeIcon } from "lucide-react"
+import {cn} from "@/lib/utils"
+import {EyeIcon} from "lucide-react"
 import * as React from "react"
-import { Button } from "./button"
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "./drawer"
+import {Button} from "./button"
+import {Drawer, DrawerContent, DrawerHeader, DrawerTitle,} from "./drawer"
 
 // Table Context Types
 interface TableContextValue {
@@ -568,11 +563,13 @@ function TableHead({
   className,
   icon,
   children,
+  scope = "col",
   ...props
 }: React.ComponentProps<"th"> & { icon?: React.ReactNode }) {
   return (
     <th
       data-slot="table-head"
+      scope={scope}
       className={cn(
         "text-foreground h-12 p-2 first:pl-4 last:pr-4 text-left align-middle font-medium border-b",
         "not-last:min-w-[150px] not-last:max-w-[500px] last:w-full",
@@ -581,7 +578,7 @@ function TableHead({
       {...props}
     >
       <div className="flex items-center gap-2 w-full min-w-0">
-        {icon}
+        {icon && <span aria-hidden="true">{icon}</span>}
         <span className="truncate min-w-0">{children}</span>
       </div>
     </th>
@@ -648,12 +645,12 @@ function TableCell({ className, children, ...props }: React.ComponentProps<"td">
       {isOverflowing && (
         <Button
           onClick={handleEyeClick}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-muted/50 rounded-sm"
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-1 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 hover:bg-muted/50 rounded-sm"
           aria-label="View full content"
           variant="ghost"
           size="icon"
         >
-          <EyeIcon className="w-4 h-4" />
+          <EyeIcon className="w-4 h-4" aria-hidden="true" />
         </Button>
       )}
     </td>
