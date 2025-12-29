@@ -51,6 +51,10 @@ export function FormsShowcase() {
                             <Input id="password" type="password" placeholder="Enter your password"/>
                         </div>
                         <div className="space-y-2">
+                            <Label htmlFor="password-toggle">Password with Toggle</Label>
+                            <Input id="password-toggle" type="password" placeholder="Enter your password" showPasswordToggle/>
+                        </div>
+                        <div className="space-y-2">
                             <Label htmlFor="search">Search with Icon</Label>
                             <div className="relative">
                                 <Search
