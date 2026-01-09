@@ -16,10 +16,19 @@
 
 import {cn} from "@/lib/utils"
 
-function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
+function Skeleton({
+  className,
+  "aria-label": ariaLabel = "Loading",
+  ...props
+}: React.ComponentProps<"div"> & {
+  "aria-label"?: string
+}) {
   return (
     <div
       data-slot="skeleton"
+      role="status"
+      aria-busy="true"
+      aria-label={ariaLabel}
       className={cn("bg-accent animate-pulse rounded-md", className)}
       {...props}
     />

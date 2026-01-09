@@ -132,10 +132,11 @@ const TreeItem = React.forwardRef<
   TreeItemProps
 >(({ className, data, selectedItemId, handleSelectChange, expandedItemIds, FolderIcon, ItemIcon, ...props }, ref) => {
   return (
-    <div ref={ref} role="tree" className={className} {...props}><ul>
+    <div ref={ref} role="tree" className={className} {...props}>
+      <ul role="group">
       {data instanceof Array ? (
         data.map((item) => (
-          <li key={item.id}>
+          <li key={item.id} role="treeitem" aria-selected={selectedItemId === item.id} aria-expanded={item.children ? expandedItemIds.includes(item.id) : undefined}>
             {item.children ? (
               <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
                 <AccordionPrimitive.Item value={item.id}>
@@ -159,7 +160,7 @@ const TreeItem = React.forwardRef<
                         aria-hidden="true"
                       />
                     }
-                    <p className={cn("text-sm truncate", selectedItemId === item.id && "font-bold underline underline-offset-4")}>{item.name}</p>
+                    <span className={cn("text-sm truncate", selectedItemId === item.id && "font-bold underline underline-offset-4")}>{item.name}</span>
                   </AccordionTrigger>
                   <AccordionContent className="pl-6">
                     <TreeItem
@@ -184,7 +185,7 @@ const TreeItem = React.forwardRef<
           </li>
         ))
       ) : (
-        <li>
+        <li role="treeitem" aria-selected={selectedItemId === data.id}>
           <Leaf
             item={data}
             isSelected={selectedItemId === data.id}
@@ -208,7 +209,6 @@ const Leaf = React.forwardRef<
       <button
       ref={ref}
       type="button"
-      role="button"
       aria-label={item.name}
       data-state={isSelected ? "selected" : undefined}
       className={cn(
@@ -221,7 +221,7 @@ const Leaf = React.forwardRef<
     >
       {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
       {!item.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-      <p className={cn("flex-grow text-sm truncate", isSelected && "font-bold underline underline-offset-4")}>{item.name}</p>
+      <span className={cn("flex-grow text-sm truncate", isSelected && "font-bold underline underline-offset-4")}>{item.name}</span>
       </button>
   );
 })
@@ -240,7 +240,7 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
-      <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 text-accent-foreground/50 ml-auto" />
+      <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 text-accent-foreground/50 ml-auto" aria-hidden="true" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ));
