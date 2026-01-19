@@ -1,4 +1,4 @@
-FROM node:24.11.1-alpine3.22 AS builder
+FROM node:25.3.0-alpine3.22 AS builder
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY package.json pnpm-lock.yaml ./
