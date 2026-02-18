@@ -94,7 +94,7 @@ export const Tree = React.forwardRef<
     return ids;
   }, [data, initialSelectedItemId, expandAll])
 
-  const { ref: refRoot, width, height } = useResizeObserver();
+  const { ref: refRoot, width, height } = useResizeObserver<HTMLDivElement>();
 
   return (
     <div ref={refRoot} className={cn("overflow-hidden", className)}>
