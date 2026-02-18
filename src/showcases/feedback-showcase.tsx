@@ -19,6 +19,7 @@ import {Badge} from "@/components/ui/badge"
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {EmptyState} from "@/components/ui/empty-state"
+import {Progress} from "@/components/ui/progress"
 import {Separator} from "@/components/ui/separator"
 import {Skeleton} from "@/components/ui/skeleton"
 import {toast} from "sonner"
@@ -272,6 +273,79 @@ export function FeedbackShowcase() {
                         >
                             Toast with Action
                         </Button>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Progress Indicators</CardTitle>
+                    <CardDescription>Show progress or completion status</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Progress Levels</h3>
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span>0%</span>
+                                </div>
+                                <Progress value={0} />
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span>25%</span>
+                                </div>
+                                <Progress value={25} />
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span>50%</span>
+                                </div>
+                                <Progress value={50} />
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span>75%</span>
+                                </div>
+                                <Progress value={75} />
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span>100%</span>
+                                </div>
+                                <Progress value={100} />
+                            </div>
+                        </div>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Use Cases</h3>
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">File Upload</span>
+                                    <span className="font-medium">67%</span>
+                                </div>
+                                <Progress value={67} />
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">Profile Completion</span>
+                                    <span className="font-medium">33%</span>
+                                </div>
+                                <Progress value={33} />
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">Course Progress</span>
+                                    <span className="font-medium">89%</span>
+                                </div>
+                                <Progress value={89} />
+                            </div>
+                        </div>
                     </div>
                 </CardContent>
             </Card>

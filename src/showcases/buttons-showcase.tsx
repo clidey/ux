@@ -15,11 +15,12 @@
  */
 
 import {Button} from "@/components/ui/button"
+import {ButtonGroup, ButtonGroupSeparator, ButtonGroupText} from "@/components/ui/button-group"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Icon} from "@/components/ui/icon"
 import {Separator} from "@/components/ui/separator"
 import {Spinner} from "@/components/ui/spinner"
-import {Bell, Calendar, Download, Home, Mail, Settings, Trash2, Upload, User} from "lucide-react"
+import {AlignCenter, AlignLeft, AlignRight, Bell, Bold, Calendar, Copy, Download, Home, Italic, Mail, Scissors, Settings, Trash2, Underline, Upload, User} from "lucide-react"
 
 export function ButtonsShowcase() {
     return (
@@ -81,6 +82,99 @@ export function ButtonsShowcase() {
                         <Icon icon={<Bell/>} size={32}/>
                         <Icon icon={<Mail/>} className="text-blue-500"/>
                         <Icon icon={<Calendar/>} className="text-green-500"/>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Button Groups</CardTitle>
+                    <CardDescription>Group multiple buttons together</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Horizontal Groups</h3>
+                        <div className="space-y-4">
+                            <ButtonGroup>
+                                <Button variant="outline">Left</Button>
+                                <Button variant="outline">Center</Button>
+                                <Button variant="outline">Right</Button>
+                            </ButtonGroup>
+
+                            <ButtonGroup>
+                                <Button variant="outline" size="sm">
+                                    <Copy className="h-4 w-4" />
+                                </Button>
+                                <Button variant="outline" size="sm">
+                                    <Scissors className="h-4 w-4" />
+                                </Button>
+                                <Button variant="outline" size="sm">
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                            </ButtonGroup>
+
+                            <ButtonGroup>
+                                <Button variant="outline">
+                                    <Bold className="mr-2 h-4 w-4" />
+                                    Bold
+                                </Button>
+                                <Button variant="outline">
+                                    <Italic className="mr-2 h-4 w-4" />
+                                    Italic
+                                </Button>
+                                <Button variant="outline">
+                                    <Underline className="mr-2 h-4 w-4" />
+                                    Underline
+                                </Button>
+                            </ButtonGroup>
+                        </div>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">With Separators</h3>
+                        <ButtonGroup>
+                            <Button variant="outline">
+                                <AlignLeft className="h-4 w-4" />
+                            </Button>
+                            <ButtonGroupSeparator />
+                            <Button variant="outline">
+                                <AlignCenter className="h-4 w-4" />
+                            </Button>
+                            <ButtonGroupSeparator />
+                            <Button variant="outline">
+                                <AlignRight className="h-4 w-4" />
+                            </Button>
+                        </ButtonGroup>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">With Text Labels</h3>
+                        <ButtonGroup>
+                            <ButtonGroupText>Actions:</ButtonGroupText>
+                            <Button variant="outline" size="sm">
+                                <Download className="mr-2 h-4 w-4" />
+                                Download
+                            </Button>
+                            <Button variant="outline" size="sm">
+                                <Upload className="mr-2 h-4 w-4" />
+                                Upload
+                            </Button>
+                        </ButtonGroup>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Vertical Groups</h3>
+                        <ButtonGroup orientation="vertical">
+                            <Button variant="outline">First</Button>
+                            <Button variant="outline">Second</Button>
+                            <Button variant="outline">Third</Button>
+                        </ButtonGroup>
                     </div>
                 </CardContent>
             </Card>
