@@ -16,8 +16,8 @@ pnpm preview               # Preview production build locally
 ### Testing & Quality
 
 ```bash
-pnpm test                  # Run Vitest tests
-pnpm test path/to/test.tsx # Run a specific test file
+pnpm test                  # Run Vitest tests with coverage
+pnpm test:coverage         # Run tests with coverage report
 pnpm lint                  # Run ESLint checks (uses typescript-eslint)
 ```
 
@@ -25,6 +25,12 @@ pnpm lint                  # Run ESLint checks (uses typescript-eslint)
 
 ```bash
 pnpm prepublishOnly        # Automatically runs build:lib before npm publish
+```
+
+### Docker
+
+```bash
+pnpm docker:push           # Build and push multi-arch Docker image
 ```
 
 ## Architecture
@@ -42,9 +48,22 @@ individual components and utility functions.
 - **TypeScript**: Full type safety with strict mode
 - **Vite**: For both development and library building
 
+### Key Dependencies
+
+Additional libraries integrated into the component system:
+
+- **cmdk**: Command menu component
+- **sonner**: Toast notifications
+- **vaul**: Drawer component
+- **recharts**: Charts and data visualization
+- **react-resizable-panels**: Resizable layout panels
+- **next-themes**: Theme management with system preference detection
+- **lucide-react**: Icon library
+- **class-variance-authority**: Type-safe variant management
+
 ### Key Directories
 
-- `src/components/ui/`: All UI components (40+ components)
+- `src/components/ui/`: All UI components (35+ components)
 - `src/components/theme/`: Theme provider and toggle components
 - `src/lib/`: Shared utilities (cn function for class merging)
 - `tests/`: Vitest tests for components and utilities
@@ -60,15 +79,16 @@ Components follow consistent patterns:
 
 ### Build Configuration
 
-Two separate Vite configs:
+Three separate configs:
 
-- `vite.config.ts`: Development and demo app
+- `vite.config.ts`: Development and demo app (uses @vitejs/plugin-react-swc)
 - `vite.lib.config.ts`: Library build with proper externalization
+- `vitest.config.ts`: Test configuration with coverage settings
 
 The library build:
 
 - Outputs ES modules only
-- Externalizes all dependencies
+- Externalizes all dependencies (React, Radix UI, utilities)
 - Includes TypeScript definitions via vite-plugin-dts
 - Bundles CSS with components
 
@@ -77,6 +97,8 @@ The library build:
 - Uses Vitest with jsdom environment
 - Tests located in `tests/` directory
 - Setup file at `tests/setup.ts` for global configuration
+- Coverage reporting with v8 provider (text, JSON, and HTML formats)
+- Excludes `src/showcases/`, demo files, and config files from coverage
 - Focus on component rendering and basic interactions
 
 ### Path Aliases
