@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import React from "react";
 import {describe, expect, it, vi} from "vitest";
 import {render, screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -219,6 +220,102 @@ describe("Tree", () => {
         await user.click(rootButton);
 
         expect(screen.getByText("Selected: Root 2")).toBeInTheDocument();
+    });
+
+    it("forwards ref to inner tree element", () => {
+        const ref = React.createRef<HTMLDivElement>();
+        render(<Tree data={mockData} ref={ref}/>);
+
+        expect(ref.current).toBeInstanceOf(HTMLDivElement);
+        expect(ref.current?.getAttribute("role")).toBe("tree");
+    });
+
+    it("auto-expands parents when initialSelectedItemId is nested", () => {
+        render(<Tree data={mockData} initialSelectedItemId="1.1.1"/>);
+
+        // Parent nodes should be expanded to reveal the selected grandchild
+        expect(screen.getByText("Child 1")).toBeInTheDocument();
+        expect(screen.getByText("Grandchild 1")).toBeInTheDocument();
+    });
+
+    it("updates selection when clicking different items sequentially", async () => {
+        const user = userEvent.setup();
+        const handleSelect = vi.fn();
+
+        render(<Tree data={mockData} onSelectChange={handleSelect} expandAll/>);
+
+        await user.click(screen.getByRole("button", {name: /root 2/i}));
+        expect(handleSelect).toHaveBeenLastCalledWith(expect.objectContaining({id: "2"}));
+
+        await user.click(screen.getByRole("button", {name: /^Child 2$/i}));
+        expect(handleSelect).toHaveBeenLastCalledWith(expect.objectContaining({id: "1.2"}));
+
+        expect(handleSelect).toHaveBeenCalledTimes(2);
+    });
+
+    it("calls onSelectChange when clicking a folder node", async () => {
+        const user = userEvent.setup();
+        const handleSelect = vi.fn();
+
+        render(<Tree data={mockData} onSelectChange={handleSelect}/>);
+
+        const rootButton = screen.getByRole("button", {name: /^Root$/i});
+        await user.click(rootButton);
+
+        expect(handleSelect).toHaveBeenCalledWith(expect.objectContaining({
+            id: "1",
+            name: "Root",
+            children: expect.any(Array),
+        }));
+    });
+
+    it("renders single item with children as a leaf", () => {
+        const singleParent: TreeDataItem = {
+            id: "parent",
+            name: "Parent",
+            children: [
+                {id: "child-a", name: "Child A"},
+                {id: "child-b", name: "Child B"},
+            ],
+        };
+
+        render(<Tree data={singleParent} expandAll/>);
+
+        // Single (non-array) data renders as a Leaf regardless of children
+        expect(screen.getByText("Parent")).toBeInTheDocument();
+        expect(screen.queryByText("Child A")).not.toBeInTheDocument();
+        expect(screen.queryByText("Child B")).not.toBeInTheDocument();
+    });
+
+    it("renders item-level icon on a leaf node", () => {
+        const LeafWithIcon: TreeDataItem[] = [
+            {
+                id: "1",
+                name: "File",
+                icon: () => <span data-testid="leaf-icon"/>,
+            },
+        ];
+
+        render(<Tree data={LeafWithIcon as any}/>);
+
+        expect(screen.getByTestId("leaf-icon")).toBeInTheDocument();
+    });
+
+    it("renders item-level icon on a folder node", () => {
+        const FolderWithIcon: TreeDataItem[] = [
+            {
+                id: "1",
+                name: "Folder",
+                icon: () => <span data-testid="custom-icon"/>,
+                children: [
+                    {id: "1.1", name: "File"},
+                ],
+            },
+        ];
+
+        render(<Tree data={FolderWithIcon as any} expandAll/>);
+
+        expect(screen.getByTestId("custom-icon")).toBeInTheDocument();
     });
 
     it("handles deep nesting", () => {

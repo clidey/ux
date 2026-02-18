@@ -20,7 +20,7 @@ import React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {ChevronRight, type LucideIcon} from "lucide-react";
-import useResizeObserver from "use-resize-observer";
+import useResizeObserver from "@/lib/use-resize-observer";
 import {cn} from "@/lib/utils";
 
 export interface TreeDataItem {
@@ -64,19 +64,18 @@ export const Tree = React.forwardRef<
 
       function walkTreeItems(items: TreeDataItem[] | TreeDataItem, targetId?: string) {
       if (items instanceof Array) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-        for (let i = 0; i < items.length; i++) {
-            if (expandAll && items[i]!.children) {
-                ids.push(items[i]!.id);
+        for (const item of items) {
+            if (expandAll && item.children) {
+                ids.push(item.id);
             } else if (targetId) {
-                ids.push(items[i]!.id);
-                if (walkTreeItems(items[i]!, targetId)) {
+                ids.push(item.id);
+                if (walkTreeItems(item, targetId)) {
                     return true;
                 }
                 if (!expandAll) ids.pop();
             }
-            if (items[i]!.children) {
-                walkTreeItems(items[i]!.children!, targetId);
+            if (item.children) {
+                walkTreeItems(item.children, targetId);
             }
         }
       } else if (targetId && items.id === targetId) {
@@ -163,7 +162,7 @@ const TreeItem = React.forwardRef<
                   </AccordionTrigger>
                   <AccordionContent className="pl-6">
                     <TreeItem
-                      data={item.children ? item.children : item}
+                      data={item.children}
                       selectedItemId={selectedItemId}
                       handleSelectChange={handleSelectChange}
                       expandedItemIds={expandedItemIds}

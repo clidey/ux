@@ -71,7 +71,6 @@ export default defineConfig({
         'sonner',
         'tailwind-merge',
         'tw-animate-css',
-        'use-resize-observer',
         'vaul',
       ],
       output: {
