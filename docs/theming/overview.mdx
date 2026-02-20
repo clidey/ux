@@ -1,0 +1,126 @@
+---
+title: 'Theming Overview'
+description: 'Customize colors and branding for your Clidey UX integration.'
+---
+
+# Theming Overview
+
+Clidey UX uses **CSS custom properties** (variables) for all colors and design tokens. The `ThemeProvider` manages which set of variables is applied based on the active theme (light, dark, or system).
+
+## ThemeProvider
+
+Wrap your application root with `ThemeProvider` to enable theme management:
+
+```tsx
+import { ThemeProvider } from '@clidey/ux';
+
+function Root() {
+  return (
+    <ThemeProvider defaultTheme="system" storageKey="my-app-theme">
+      <App />
+    </ThemeProvider>
+  );
+}
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultTheme` | `"light" \| "dark" \| "system"` | `"system"` | Theme applied on first load before any user preference is stored. |
+| `storageKey` | `string` | `"@clidey/ux/theme"` | `localStorage` key used to persist the user's choice. |
+| `children` | `ReactNode` | — | Your application tree. |
+
+### useTheme hook
+
+Any component inside `ThemeProvider` can read and change the active theme:
+
+```tsx
+import { useTheme } from '@clidey/ux';
+
+function MyComponent() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+      <button onClick={() => setTheme('dark')}>Switch to Dark</button>
+      <button onClick={() => setTheme('light')}>Switch to Light</button>
+      <button onClick={() => setTheme('system')}>Use System</button>
+    </div>
+  );
+}
+```
+
+### Hook return values
+
+| Value | Type | Description |
+| --- | --- | --- |
+| `theme` | `"light" \| "dark" \| "system"` | The currently selected theme. |
+| `setTheme` | `(theme: Theme) => void` | Updates the theme and persists it. |
+
+## ModeToggle
+
+The library ships a ready-made `ModeToggle` dropdown that lets users switch themes:
+
+```tsx
+import { ModeToggle } from '@clidey/ux';
+
+function Header() {
+  return (
+    <header className="flex items-center justify-between p-4">
+      <h1>My App</h1>
+      <ModeToggle />
+    </header>
+  );
+}
+```
+
+`ModeToggle` renders a button with a sun/moon icon. Clicking it opens a dropdown with Light, Dark, and System options.
+
+## How it works
+
+`ThemeProvider` applies a CSS class to the `<html>` element:
+
+- **Light mode** → no class (or `light` class)
+- **Dark mode** → `dark` class added to `<html>`
+- **System** → reads `prefers-color-scheme` media query and applies accordingly
+
+All Clidey UX components use Tailwind's `dark:` modifier, so they respond automatically to the `dark` class on `<html>`.
+
+## Customizing CSS variables
+
+The stylesheet exposes CSS custom properties you can override in your own CSS:
+
+```css
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  /* ... dark mode overrides ... */
+}
+```
+
+Override any of these variables after importing `@clidey/ux/styles.css` in your global stylesheet.
+
+<Tip>
+  Use HSL values (space-separated, no `hsl()` wrapper) to stay compatible with Tailwind's opacity modifier syntax.
+</Tip>

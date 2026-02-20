@@ -1,0 +1,178 @@
+---
+title: 'Table'
+description: 'Full-featured data table with virtualization for large datasets.'
+---
+
+# Table
+
+The `table.tsx` module provides a composable table with two rendering modes: a standard `<table>` element for smaller datasets, and `VirtualizedTableBody` for efficiently rendering thousands of rows without DOM overflow.
+
+## Import
+
+```tsx
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+  TableProvider,
+  TableHeadRow,
+  VirtualizedTableBody,
+} from '@clidey/ux';
+```
+
+## Basic table
+
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Email</TableHead>
+      <TableHead>Role</TableHead>
+      <TableHead className="text-right">Joined</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell className="font-medium">Jane Doe</TableCell>
+      <TableCell>jane@example.com</TableCell>
+      <TableCell><Badge>Admin</Badge></TableCell>
+      <TableCell className="text-right">Jan 15, 2024</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell className="font-medium">John Smith</TableCell>
+      <TableCell>john@example.com</TableCell>
+      <TableCell><Badge variant="secondary">Member</Badge></TableCell>
+      <TableCell className="text-right">Mar 2, 2024</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+## With caption
+
+```tsx
+<Table>
+  <TableCaption>A list of recent invoices.</TableCaption>
+  <TableHeader>
+    {/* ... */}
+  </TableHeader>
+  <TableBody>
+    {/* ... */}
+  </TableBody>
+</Table>
+```
+
+## With footer (totals row)
+
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Item</TableHead>
+      <TableHead className="text-right">Amount</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Subscription</TableCell>
+      <TableCell className="text-right">$49.00</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Add-on: Extra storage</TableCell>
+      <TableCell className="text-right">$5.00</TableCell>
+    </TableRow>
+  </TableBody>
+  <TableFooter>
+    <TableRow>
+      <TableCell>Total</TableCell>
+      <TableCell className="text-right font-bold">$54.00</TableCell>
+    </TableRow>
+  </TableFooter>
+</Table>
+```
+
+## Virtualized table (large datasets)
+
+Use `VirtualizedTableBody` when rendering more than a few hundred rows. It only renders the visible rows using `react-window`:
+
+```tsx
+const COLUMNS = ['ID', 'Name', 'Email', 'Status'];
+const rows = generateLargeDataset(10000); // e.g. 10,000 rows
+
+<TableProvider columnCount={COLUMNS.length}>
+  <Table>
+    <TableHeader>
+      <TableHeadRow>
+        {COLUMNS.map((col) => (
+          <TableHead key={col}>{col}</TableHead>
+        ))}
+      </TableHeadRow>
+    </TableHeader>
+    <VirtualizedTableBody
+      rowCount={rows.length}
+      rowHeight={48}
+      height={400}
+      overscan={5}
+    >
+      {({ index, style }) => (
+        <TableRow style={style}>
+          <TableCell>{rows[index].id}</TableCell>
+          <TableCell>{rows[index].name}</TableCell>
+          <TableCell>{rows[index].email}</TableCell>
+          <TableCell><Badge>{rows[index].status}</Badge></TableCell>
+        </TableRow>
+      )}
+    </VirtualizedTableBody>
+  </Table>
+</TableProvider>
+```
+
+## Cell with JSON preview
+
+When a cell contains a large JSON object, `TableCell` renders an eye icon that opens a formatted JSON preview in a `Drawer`:
+
+```tsx
+<TableCell>
+  {JSON.stringify(largeObject)}
+</TableCell>
+```
+
+Overflow detection is automatic — if the content exceeds the cell width, a preview icon appears.
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `Table` | Root `<table>` element. |
+| `TableHeader` | `<thead>` section. |
+| `TableBody` | `<tbody>` section. |
+| `TableFooter` | `<tfoot>` section. |
+| `TableRow` | `<tr>` row element. |
+| `TableHead` | `<th>` header cell. |
+| `TableCell` | `<td>` data cell. Has overflow detection. |
+| `TableCaption` | `<caption>` for the table. |
+| `TableProvider` | Context provider required for virtualized table. |
+| `TableHeadRow` | Header row for virtualized layout. |
+| `VirtualizedTableBody` | Virtualized body using react-window. |
+
+### VirtualizedTableBody Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `rowCount` | `number` | — | Total number of data rows. |
+| `rowHeight` | `number \| ((args: { index: number }) => number)` | `48` | Height of each row in pixels. Pass a function for variable heights. |
+| `height` | `number` | `400` | Visible area height in pixels. |
+| `overscan` | `number` | `3` | Number of rows to render above and below the visible area. |
+| `children` | `(args: { index: number; style: CSSProperties }) => ReactNode` | — | Render function called for each visible row. |
+
+### TableProvider Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `columnCount` | `number` | Number of columns — used to set `colspan` on the virtualized body. |

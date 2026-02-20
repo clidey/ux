@@ -1,0 +1,112 @@
+---
+title: 'Skeleton'
+description: 'Pulsing placeholder for loading states.'
+---
+
+# Skeleton
+
+`Skeleton` renders a gray pulsing rectangle as a placeholder while content loads. Use it to mimic the shape of the actual content for a better loading experience.
+
+## Import
+
+```tsx
+import { Skeleton } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+<Skeleton className="h-4 w-48" />
+```
+
+## Card skeleton
+
+```tsx
+<div className="space-y-3">
+  <Skeleton className="h-5 w-2/3" />
+  <Skeleton className="h-4 w-full" />
+  <Skeleton className="h-4 w-full" />
+  <Skeleton className="h-4 w-4/5" />
+</div>
+```
+
+## User profile skeleton
+
+```tsx
+<div className="flex items-center gap-3">
+  <Skeleton className="size-10 rounded-full" />
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-32" />
+    <Skeleton className="h-3 w-24" />
+  </div>
+</div>
+```
+
+## Table row skeleton
+
+```tsx
+function TableSkeleton({ rows = 5 }: { rows?: number }) {
+  return (
+    <div className="space-y-2">
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className="flex gap-4">
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 flex-1" />
+          <Skeleton className="h-8 w-24" />
+          <Skeleton className="h-8 w-16" />
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+## Card grid skeleton
+
+```tsx
+<div className="grid grid-cols-3 gap-4">
+  {Array.from({ length: 6 }).map((_, i) => (
+    <div key={i} className="space-y-3 rounded-xl border p-4">
+      <Skeleton className="h-32 rounded-lg" />
+      <Skeleton className="h-4 w-3/4" />
+      <Skeleton className="h-3 w-1/2" />
+    </div>
+  ))}
+</div>
+```
+
+## Swapping with real content
+
+```tsx
+function UserCard({ loading, user }: Props) {
+  if (loading) {
+    return (
+      <div className="flex items-center gap-3 p-4">
+        <Skeleton className="size-12 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-28" />
+          <Skeleton className="h-3 w-20" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-3 p-4">
+      <img src={user.avatar} className="size-12 rounded-full" />
+      <div>
+        <p className="font-medium">{user.name}</p>
+        <p className="text-sm text-muted-foreground">{user.email}</p>
+      </div>
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | — | Sets the size and shape via Tailwind classes (e.g. `h-4 w-48 rounded-full`). |
+
+`Skeleton` renders a `<div>` so all standard HTML div attributes are also accepted.

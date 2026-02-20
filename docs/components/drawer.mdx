@@ -1,0 +1,135 @@
+---
+title: 'Drawer'
+description: 'Slide-out panel from any screen edge, powered by Vaul.'
+---
+
+# Drawer
+
+`Drawer` slides in from any screen edge (top, bottom, left, right). It's powered by the [Vaul](https://github.com/emilkowalski/vaul) library and supports drag-to-dismiss on mobile.
+
+## Import
+
+```tsx
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from '@clidey/ux';
+```
+
+## Basic drawer (bottom, default)
+
+```tsx
+<Drawer>
+  <DrawerTrigger asChild>
+    <Button variant="outline">Open drawer</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Move Goal</DrawerTitle>
+      <DrawerDescription>
+        Set your daily activity goal.
+      </DrawerDescription>
+    </DrawerHeader>
+    <div className="p-4">
+      {/* content */}
+    </div>
+    <DrawerFooter>
+      <Button>Submit</Button>
+      <DrawerClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+## Directional variants
+
+Change the `direction` prop on the `Drawer` component to slide in from a different edge:
+
+```tsx
+{/* From the right — good for detail panels */}
+<Drawer direction="right">
+  <DrawerTrigger asChild>
+    <Button>Open right panel</Button>
+  </DrawerTrigger>
+  <DrawerContent className="h-full w-80">
+    <DrawerHeader>
+      <DrawerTitle>Details</DrawerTitle>
+    </DrawerHeader>
+    <div className="p-4">{/* content */}</div>
+  </DrawerContent>
+</Drawer>
+
+{/* From the top */}
+<Drawer direction="top">
+  <DrawerTrigger asChild>
+    <Button>Open top panel</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Notification center</DrawerTitle>
+    </DrawerHeader>
+  </DrawerContent>
+</Drawer>
+```
+
+## Mobile bottom sheet
+
+The default bottom-positioned drawer works great as a mobile action sheet:
+
+```tsx
+<Drawer>
+  <DrawerTrigger asChild>
+    <Button size="icon" variant="ghost">
+      <MoreVertical className="size-4" />
+    </Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Actions</DrawerTitle>
+    </DrawerHeader>
+    <div className="p-4 space-y-2">
+      <Button variant="ghost" className="w-full justify-start">
+        <Edit className="size-4 mr-2" /> Edit
+      </Button>
+      <Button variant="ghost" className="w-full justify-start">
+        <Share className="size-4 mr-2" /> Share
+      </Button>
+      <Button variant="ghost" className="w-full justify-start text-destructive">
+        <Trash className="size-4 mr-2" /> Delete
+      </Button>
+    </div>
+  </DrawerContent>
+</Drawer>
+```
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `Drawer` | Root. Accepts `direction`, `open`, `onOpenChange`. |
+| `DrawerTrigger` | Opens the drawer. Use `asChild`. |
+| `DrawerPortal` | Renders drawer outside the DOM tree. Used internally. |
+| `DrawerOverlay` | Backdrop layer. Used internally. |
+| `DrawerContent` | The sliding panel. |
+| `DrawerHeader` | Top section with title/description. |
+| `DrawerTitle` | Accessible heading. |
+| `DrawerDescription` | Supporting text. |
+| `DrawerFooter` | Bottom section for actions. |
+| `DrawerClose` | Closes the drawer. Use `asChild`. |
+
+### Drawer Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `direction` | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Side the drawer slides in from. |
+| `open` | `boolean` | — | Controlled open state. |
+| `onOpenChange` | `(open: boolean) => void` | — | Called when open state changes. |
+| `shouldScaleBackground` | `boolean` | `false` | Scales down the page background when open. |

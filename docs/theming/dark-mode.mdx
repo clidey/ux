@@ -1,0 +1,144 @@
+---
+title: 'Dark Mode'
+description: 'Automatic and manual dark mode support for all components.'
+---
+
+# Dark Mode
+
+Every component in Clidey UX supports dark mode out of the box. No configuration is required beyond wrapping your app with `ThemeProvider`.
+
+## Automatic system detection
+
+When `defaultTheme` is set to `"system"`, Clidey UX reads the user's OS preference using the `prefers-color-scheme` CSS media query and applies the matching theme automatically:
+
+```tsx
+<ThemeProvider defaultTheme="system">
+  <App />
+</ThemeProvider>
+```
+
+The theme updates in real time if the user changes their OS setting while the app is open.
+
+## Forcing a specific theme
+
+To lock your app to a specific theme regardless of the user's OS preference:
+
+```tsx
+// Always light
+<ThemeProvider defaultTheme="light">
+  <App />
+</ThemeProvider>
+
+// Always dark
+<ThemeProvider defaultTheme="dark">
+  <App />
+</ThemeProvider>
+```
+
+## Persisting user choice
+
+The selected theme is saved to `localStorage` under the key defined by `storageKey` (default: `"@clidey/ux/theme"`). On subsequent visits the saved preference is restored automatically.
+
+To use a custom key (useful if you have multiple apps on the same domain):
+
+```tsx
+<ThemeProvider storageKey="dashboard-theme" defaultTheme="system">
+  <App />
+</ThemeProvider>
+```
+
+## Building a custom theme toggle
+
+Use `useTheme` to build your own theme switcher:
+
+```tsx
+import { useTheme, Button } from '@clidey/ux';
+import { Sun, Moon, Monitor } from 'lucide-react';
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <div className="flex gap-1 rounded-lg border p-1">
+      <Button
+        variant={theme === 'light' ? 'default' : 'ghost'}
+        size="icon"
+        onClick={() => setTheme('light')}
+        aria-label="Light mode"
+      >
+        <Sun className="size-4" />
+      </Button>
+      <Button
+        variant={theme === 'system' ? 'default' : 'ghost'}
+        size="icon"
+        onClick={() => setTheme('system')}
+        aria-label="System mode"
+      >
+        <Monitor className="size-4" />
+      </Button>
+      <Button
+        variant={theme === 'dark' ? 'default' : 'ghost'}
+        size="icon"
+        onClick={() => setTheme('dark')}
+        aria-label="Dark mode"
+      >
+        <Moon className="size-4" />
+      </Button>
+    </div>
+  );
+}
+```
+
+## Dark mode in custom components
+
+When building your own components, use Tailwind's `dark:` modifier to respond to the active theme:
+
+```tsx
+function CustomCard() {
+  return (
+    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg p-4">
+      This card adapts to the active theme.
+    </div>
+  );
+}
+```
+
+The `dark` class is applied to `<html>` by `ThemeProvider`, so any `dark:` utility in your own components works seamlessly.
+
+## Next.js Server Components
+
+When using Next.js with server components, use the `"use client"` directive for any component that calls `useTheme` or renders `ThemeProvider`:
+
+```tsx
+// app/providers.tsx
+'use client';
+
+import { ThemeProvider } from '@clidey/ux';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider defaultTheme="system" storageKey="app-theme">
+      {children}
+    </ThemeProvider>
+  );
+}
+```
+
+```tsx
+// app/layout.tsx
+import { Providers } from './providers';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+}
+```
+
+<Note>
+  Add `suppressHydrationWarning` to `<html>` to prevent React hydration warnings when the theme class is applied server-side.
+</Note>

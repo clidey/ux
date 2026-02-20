@@ -1,0 +1,145 @@
+---
+title: 'Installation'
+description: 'Install @clidey/ux and configure it in your React project.'
+---
+
+# Installation
+
+## Install the package
+
+<CodeGroup title="Install @clidey/ux">
+  ```bash npm
+  npm install @clidey/ux
+  ```
+  ```bash pnpm
+  pnpm add @clidey/ux
+  ```
+  ```bash yarn
+  yarn add @clidey/ux
+  ```
+</CodeGroup>
+
+<Note>
+  Clidey UX requires **React 18.3 or later** as a peer dependency. Make sure your project already has React installed.
+</Note>
+
+## Import the stylesheet
+
+Clidey UX ships a compiled CSS file that must be imported once — typically in your app's entry point:
+
+<CodeGroup title="Import styles">
+  ```tsx main.tsx
+  import React from 'react';
+  import ReactDOM from 'react-dom/client';
+  import '@clidey/ux/styles.css';
+  import App from './App';
+
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+  ```
+  ```tsx _app.tsx (Next.js)
+  import '@clidey/ux/styles.css';
+  import type { AppProps } from 'next/app';
+
+  export default function App({ Component, pageProps }: AppProps) {
+    return <Component {...pageProps} />;
+  }
+  ```
+</CodeGroup>
+
+<Warning>
+  The stylesheet import is required. Without it, components will render without styling.
+</Warning>
+
+## Wrap with ThemeProvider
+
+Wrap your app with `ThemeProvider` to enable dark mode support across all components:
+
+```tsx
+import { ThemeProvider } from '@clidey/ux';
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="system" storageKey="my-app-theme">
+      {/* your app */}
+    </ThemeProvider>
+  );
+}
+```
+
+<Note>
+  `ThemeProvider` automatically reads the user's OS preference when `defaultTheme` is set to `"system"`. The chosen theme is persisted to `localStorage` using the provided `storageKey`.
+</Note>
+
+## Configure Tailwind CSS
+
+If you use Tailwind CSS in your own project, import Clidey UX's stylesheet before your Tailwind directives so class utilities don't conflict:
+
+```css
+/* your global CSS */
+@import '@clidey/ux/styles.css';
+@import 'tailwindcss';
+```
+
+## Add toast notifications
+
+If you use `toast()` from the `sonner` integration, add the `<Toaster />` component once near the root of your app:
+
+```tsx
+import { Toaster } from '@clidey/ux';
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="system">
+      <Toaster />
+      {/* rest of your app */}
+    </ThemeProvider>
+  );
+}
+```
+
+## Verify the setup
+
+Import and render a component to confirm everything is working:
+
+```tsx
+import { Button } from '@clidey/ux';
+
+export default function Home() {
+  return <Button>Hello, Clidey UX!</Button>;
+}
+```
+
+<Check>
+  If you see a styled button, your setup is complete.
+</Check>
+
+## TypeScript
+
+Clidey UX ships TypeScript definitions at `dist/index.d.ts`. No additional `@types` packages are needed. Your `tsconfig.json` only needs standard React settings:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "strict": true
+  }
+}
+```
+
+## Peer dependencies
+
+The package externalizes these dependencies — they must be present in your project:
+
+| Package | Required version |
+| --- | --- |
+| `react` | `>=18.3.0` |
+| `react-dom` | `>=18.3.0` |
+
+All other dependencies (Radix UI, Lucide, Recharts, etc.) are bundled and do not need to be installed separately.

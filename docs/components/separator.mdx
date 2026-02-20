@@ -1,0 +1,76 @@
+---
+title: 'Separator'
+description: 'Visual divider line for horizontal or vertical layouts.'
+---
+
+# Separator
+
+`Separator` renders a thin line to visually divide content sections. It can be horizontal or vertical and is purely decorative by default.
+
+## Import
+
+```tsx
+import { Separator } from '@clidey/ux';
+```
+
+## Horizontal (default)
+
+```tsx
+<div>
+  <p>Section A</p>
+  <Separator />
+  <p>Section B</p>
+</div>
+```
+
+## Vertical
+
+Use `orientation="vertical"` inside a flex container:
+
+```tsx
+<div className="flex items-center gap-4 h-6">
+  <span>Files</span>
+  <Separator orientation="vertical" />
+  <span>Shared</span>
+  <Separator orientation="vertical" />
+  <span>Trash</span>
+</div>
+```
+
+## Between card sections
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Account</CardTitle>
+  </CardHeader>
+  <Separator />
+  <CardContent className="pt-4">
+    <p>Manage your account settings.</p>
+  </CardContent>
+  <Separator />
+  <CardFooter>
+    <Button variant="outline">Cancel</Button>
+    <Button>Save</Button>
+  </CardFooter>
+</Card>
+```
+
+## In a menu-like list
+
+```tsx
+<div className="w-48 rounded-lg border p-1">
+  <button className="w-full px-2 py-1.5 text-left rounded hover:bg-accent">Edit</button>
+  <button className="w-full px-2 py-1.5 text-left rounded hover:bg-accent">Duplicate</button>
+  <Separator className="my-1" />
+  <button className="w-full px-2 py-1.5 text-left rounded hover:bg-accent text-destructive">Delete</button>
+</div>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction of the separator line. |
+| `decorative` | `boolean` | `true` | When `true`, hidden from the accessibility tree. Set to `false` if the separator is meaningful. |
+| `className` | `string` | — | Additional CSS classes. |

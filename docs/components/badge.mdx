@@ -1,0 +1,106 @@
+---
+title: 'Badge'
+description: 'Small label for status, category, or version indicators.'
+---
+
+# Badge
+
+`Badge` is a compact inline label used for status indicators, categories, version tags, and counts.
+
+## Import
+
+```tsx
+import { Badge } from '@clidey/ux';
+```
+
+## Variants
+
+```tsx
+<Badge>Default</Badge>
+<Badge variant="secondary">Secondary</Badge>
+<Badge variant="destructive">Destructive</Badge>
+<Badge variant="outline">Outline</Badge>
+```
+
+| Variant | Use case |
+| --- | --- |
+| `default` | Primary category, active status |
+| `secondary` | Neutral category, draft status |
+| `destructive` | Error, blocked, or danger status |
+| `outline` | Low-emphasis label, version tag |
+
+## With icons
+
+```tsx
+import { CheckCircle2, Clock, XCircle } from 'lucide-react';
+
+<Badge>
+  <CheckCircle2 className="size-3" />
+  Active
+</Badge>
+
+<Badge variant="secondary">
+  <Clock className="size-3" />
+  Pending
+</Badge>
+
+<Badge variant="destructive">
+  <XCircle className="size-3" />
+  Failed
+</Badge>
+```
+
+## Common use cases
+
+### Status labels
+
+```tsx
+function StatusBadge({ status }: { status: string }) {
+  const variants = {
+    active: 'default',
+    pending: 'secondary',
+    failed: 'destructive',
+    draft: 'outline',
+  } as const;
+
+  return (
+    <Badge variant={variants[status as keyof typeof variants] ?? 'outline'}>
+      {status}
+    </Badge>
+  );
+}
+```
+
+### Version tag
+
+```tsx
+<span className="font-medium">
+  Authentication API <Badge variant="outline">v2.1</Badge>
+</span>
+```
+
+### Count indicator
+
+```tsx
+<div className="flex items-center gap-2">
+  <span>Notifications</span>
+  <Badge>12</Badge>
+</div>
+```
+
+## Render as link (asChild)
+
+```tsx
+<Badge asChild>
+  <a href="/changelog">v1.5.0</a>
+</Badge>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "secondary" \| "destructive" \| "outline"` | `"default"` | Visual style. |
+| `asChild` | `boolean` | `false` | Render as the child element. |
+| `className` | `string` | — | Additional CSS classes. |
+| `children` | `ReactNode` | — | Badge content. |

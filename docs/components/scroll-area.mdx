@@ -1,0 +1,95 @@
+---
+title: 'ScrollArea'
+description: 'Custom scrollable container with styled scrollbar.'
+---
+
+# ScrollArea
+
+`ScrollArea` replaces the browser's default scrollbar with a custom-styled one that matches your design system. Built on Radix UI's scroll area primitive.
+
+## Import
+
+```tsx
+import { ScrollArea, ScrollBar } from '@clidey/ux';
+```
+
+## Vertical scroll
+
+```tsx
+<ScrollArea className="h-72 rounded-md border p-4">
+  {Array.from({ length: 50 }, (_, i) => (
+    <div key={i} className="py-1 text-sm">
+      Item {i + 1}
+    </div>
+  ))}
+</ScrollArea>
+```
+
+## Horizontal scroll
+
+```tsx
+<ScrollArea className="w-96 whitespace-nowrap rounded-md border">
+  <div className="flex p-4">
+    {Array.from({ length: 20 }, (_, i) => (
+      <div
+        key={i}
+        className="mx-2 shrink-0 rounded-lg bg-muted p-4 text-sm"
+        style={{ width: '120px' }}
+      >
+        Item {i + 1}
+      </div>
+    ))}
+  </div>
+  <ScrollBar orientation="horizontal" />
+</ScrollArea>
+```
+
+## Tag list
+
+```tsx
+<ScrollArea className="h-48">
+  <div className="space-y-1 p-4">
+    {tags.map((tag) => (
+      <div key={tag} className="flex items-center justify-between py-1">
+        <span className="text-sm">{tag}</span>
+        <Button variant="ghost" size="sm">×</Button>
+      </div>
+    ))}
+  </div>
+</ScrollArea>
+```
+
+## In a dialog
+
+```tsx
+<DialogContent className="max-w-xl">
+  <DialogHeader>
+    <DialogTitle>Terms of Service</DialogTitle>
+  </DialogHeader>
+  <ScrollArea className="h-64">
+    <div className="space-y-4 text-sm leading-relaxed">
+      <p>Long terms of service content...</p>
+    </div>
+  </ScrollArea>
+  <DialogFooter>
+    <Button>I Accept</Button>
+  </DialogFooter>
+</DialogContent>
+```
+
+## Props
+
+### ScrollArea
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `"auto" \| "always" \| "scroll" \| "hover"` | `"hover"` | When the scrollbar is visible. |
+| `scrollHideDelay` | `number` | `600` | Milliseconds before hiding the scrollbar after scrolling stops. |
+| `className` | `string` | — | Use to set height and width constraints. |
+
+### ScrollBar
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Scrollbar direction. Add `<ScrollBar orientation="horizontal" />` for horizontal scrolling. |
+| `className` | `string` | — | Additional CSS classes. |

@@ -1,0 +1,86 @@
+---
+title: 'EmptyState'
+description: 'Placeholder UI for empty lists, results, and data sets.'
+---
+
+# EmptyState
+
+`EmptyState` provides a consistent, centered layout for empty data scenarios. It shows an icon, title, description, and optional call-to-action.
+
+## Import
+
+```tsx
+import { EmptyState } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+import { Inbox } from 'lucide-react';
+
+<EmptyState
+  icon={<Inbox className="size-10 text-muted-foreground" />}
+  title="No messages"
+  description="When you receive a message, it will appear here."
+/>
+```
+
+## With action
+
+```tsx
+import { FolderOpen } from 'lucide-react';
+
+<EmptyState
+  icon={<FolderOpen className="size-10 text-muted-foreground" />}
+  title="No projects yet"
+  description="Create your first project to get started."
+>
+  <Button>
+    <Plus className="size-4" />
+    Create project
+  </Button>
+</EmptyState>
+```
+
+## Search empty state
+
+```tsx
+import { SearchX } from 'lucide-react';
+
+function NoResults({ query }: { query: string }) {
+  return (
+    <EmptyState
+      icon={<SearchX className="size-10 text-muted-foreground" />}
+      title={`No results for "${query}"`}
+      description="Try different keywords or check your spelling."
+    />
+  );
+}
+```
+
+## Full page empty state
+
+```tsx
+<div className="flex items-center justify-center min-h-[400px]">
+  <EmptyState
+    icon={<Database className="size-12 text-muted-foreground" />}
+    title="No data available"
+    description="Connect a data source to start exploring your metrics."
+  >
+    <div className="flex gap-2">
+      <Button>Connect source</Button>
+      <Button variant="outline">Learn more</Button>
+    </div>
+  </EmptyState>
+</div>
+```
+
+## Props
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | Yes | Primary heading text. |
+| `description` | `string` | Yes | Supporting descriptive text below the title. |
+| `icon` | `ReactNode` | Yes | Icon or illustration shown above the title. |
+| `children` | `ReactNode` | No | Optional call-to-action content (buttons, links). |
+| `className` | `string` | No | Additional CSS classes on the container. |

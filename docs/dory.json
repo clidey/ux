@@ -1,0 +1,133 @@
+{
+  "name": "Clidey UX",
+  "title": "Clidey UX — React Component Library",
+  "description": "A beautiful, accessible React component library built on Radix UI and Tailwind CSS v4.",
+  "favicon": "./logo/logo.png",
+  "colors": {
+    "primary": "#6366f1",
+    "light": "#818cf8",
+    "dark": "#4f46e5"
+  },
+  "logo": {
+    "light": "./logo/logo.png",
+    "dark": "./logo/logo.png"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Getting Started",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": ["introduction"]
+          },
+          {
+            "group": "Setup",
+            "pages": [
+              "getting-started/installation",
+              "getting-started/quick-start"
+            ]
+          },
+          {
+            "group": "Theming",
+            "pages": [
+              "theming/overview",
+              "theming/dark-mode"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Components",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["components/overview"]
+          },
+          {
+            "group": "Actions",
+            "pages": [
+              "components/button",
+              "components/button-group"
+            ]
+          },
+          {
+            "group": "Inputs",
+            "pages": [
+              "components/input",
+              "components/checkbox",
+              "components/switch",
+              "components/select",
+              "components/label"
+            ]
+          },
+          {
+            "group": "Display",
+            "pages": [
+              "components/badge",
+              "components/card",
+              "components/alert",
+              "components/spinner",
+              "components/skeleton",
+              "components/progress",
+              "components/empty-state",
+              "components/separator"
+            ]
+          },
+          {
+            "group": "Navigation",
+            "pages": [
+              "components/tabs",
+              "components/breadcrumb",
+              "components/pagination",
+              "components/sidebar"
+            ]
+          },
+          {
+            "group": "Overlays",
+            "pages": [
+              "components/dialog",
+              "components/alert-dialog",
+              "components/drawer",
+              "components/sheet",
+              "components/tooltip",
+              "components/popover"
+            ]
+          },
+          {
+            "group": "Menus",
+            "pages": [
+              "components/dropdown-menu",
+              "components/context-menu",
+              "components/command"
+            ]
+          },
+          {
+            "group": "Layout",
+            "pages": [
+              "components/accordion",
+              "components/resizable",
+              "components/scroll-area",
+              "components/stack-list"
+            ]
+          },
+          {
+            "group": "Data & Visualization",
+            "pages": [
+              "components/table",
+              "components/chart",
+              "components/tree"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "components/icon",
+              "components/sonner"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

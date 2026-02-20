@@ -1,0 +1,124 @@
+---
+title: 'Alert'
+description: 'Contextual feedback messages with default and destructive variants.'
+---
+
+# Alert
+
+`Alert` displays contextual messages such as informational notices, warnings, or error states inline on the page — without blocking interaction.
+
+## Import
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@clidey/ux';
+```
+
+## Variants
+
+```tsx
+<Alert>
+  <AlertTitle>Heads up</AlertTitle>
+  <AlertDescription>
+    Your trial ends in 3 days. Upgrade to keep access.
+  </AlertDescription>
+</Alert>
+
+<Alert variant="destructive">
+  <AlertTitle>Payment failed</AlertTitle>
+  <AlertDescription>
+    We couldn't process your payment. Please update your billing details.
+  </AlertDescription>
+</Alert>
+```
+
+| Variant | Use case |
+| --- | --- |
+| `default` | Informational notices, system messages |
+| `destructive` | Errors, failures, or critical warnings |
+
+## With an icon
+
+```tsx
+import { AlertTriangle, Info } from 'lucide-react';
+
+<Alert>
+  <Info className="size-4" />
+  <AlertTitle>New feature available</AlertTitle>
+  <AlertDescription>
+    You can now export reports as CSV. Check it out in the Reports section.
+  </AlertDescription>
+</Alert>
+
+<Alert variant="destructive">
+  <AlertTriangle className="size-4" />
+  <AlertTitle>Error</AlertTitle>
+  <AlertDescription>
+    The server returned a 500 error. Please try again later.
+  </AlertDescription>
+</Alert>
+```
+
+## Dynamic alerts
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from '@clidey/ux';
+
+type AlertProps = {
+  type: 'success' | 'error' | 'info';
+  message: string;
+};
+
+function StatusAlert({ type, message }: AlertProps) {
+  return (
+    <Alert variant={type === 'error' ? 'destructive' : 'default'}>
+      <AlertTitle className="capitalize">{type}</AlertTitle>
+      <AlertDescription>{message}</AlertDescription>
+    </Alert>
+  );
+}
+```
+
+## Form error example
+
+```tsx
+function RegisterForm() {
+  const [error, setError] = useState('');
+
+  return (
+    <form className="space-y-4">
+      {error && (
+        <Alert variant="destructive">
+          <AlertTitle>Registration failed</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      {/* form fields */}
+    </form>
+  );
+}
+```
+
+## Props
+
+### Alert
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "destructive"` | `"default"` | Visual style. |
+| `className` | `string` | — | Additional CSS classes. |
+| `children` | `ReactNode` | — | `AlertTitle` and/or `AlertDescription`. |
+| `role` | `string` | `"alert"` | ARIA role. Announces to screen readers. |
+
+### AlertTitle
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `className` | `string` | Additional CSS classes. |
+| `children` | `ReactNode` | Title text. |
+
+### AlertDescription
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `className` | `string` | Additional CSS classes. |
+| `children` | `ReactNode` | Description text or elements. |

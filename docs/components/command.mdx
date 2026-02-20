@@ -1,0 +1,157 @@
+---
+title: 'Command'
+description: 'Fast command palette with search, groups, and keyboard navigation.'
+---
+
+# Command
+
+`Command` is a keyboard-first command palette built on the [cmdk](https://cmdk.paco.me) library. Use it for global search, quick navigation, or any fuzzy-search interface.
+
+## Import
+
+```tsx
+import {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+} from '@clidey/ux';
+```
+
+## Inline command menu
+
+```tsx
+<Command className="rounded-lg border shadow-md w-80">
+  <CommandInput placeholder="Type a command..." />
+  <CommandList>
+    <CommandEmpty>No results found.</CommandEmpty>
+    <CommandGroup heading="Suggestions">
+      <CommandItem>Calendar</CommandItem>
+      <CommandItem>Search emoji</CommandItem>
+      <CommandItem>Launch calculator</CommandItem>
+    </CommandGroup>
+    <CommandSeparator />
+    <CommandGroup heading="Settings">
+      <CommandItem>
+        Profile
+        <CommandShortcut>⌘P</CommandShortcut>
+      </CommandItem>
+      <CommandItem>
+        Billing
+        <CommandShortcut>⌘B</CommandShortcut>
+      </CommandItem>
+    </CommandGroup>
+  </CommandList>
+</Command>
+```
+
+## Dialog (modal) command palette
+
+`CommandDialog` wraps the command inside a full-screen modal. The standard pattern is to open it with `⌘K`:
+
+```tsx
+import { useEffect, useState } from 'react';
+
+function CommandPalette() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setOpen((prev) => !prev);
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  return (
+    <CommandDialog open={open} onOpenChange={setOpen} title="Command Palette">
+      <CommandInput placeholder="Search commands, pages, settings..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Pages">
+          <CommandItem onSelect={() => { navigate('/dashboard'); setOpen(false); }}>
+            Dashboard
+          </CommandItem>
+          <CommandItem onSelect={() => { navigate('/projects'); setOpen(false); }}>
+            Projects
+          </CommandItem>
+          <CommandItem onSelect={() => { navigate('/settings'); setOpen(false); }}>
+            Settings
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Actions">
+          <CommandItem onSelect={() => { openNewProjectDialog(); setOpen(false); }}>
+            <Plus className="size-4" />
+            New project
+            <CommandShortcut>⌘N</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </CommandDialog>
+  );
+}
+```
+
+## With icons
+
+```tsx
+<CommandGroup heading="Navigation">
+  <CommandItem>
+    <LayoutDashboard className="size-4" />
+    Dashboard
+  </CommandItem>
+  <CommandItem>
+    <FolderOpen className="size-4" />
+    Projects
+  </CommandItem>
+  <CommandItem>
+    <Users className="size-4" />
+    Team
+  </CommandItem>
+</CommandGroup>
+```
+
+## Input clears on Escape
+
+The `CommandInput` automatically clears its value when Escape is pressed (before the dialog closes).
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `Command` | Root container. |
+| `CommandDialog` | Modal wrapper with accessible title/description. |
+| `CommandInput` | Search field. Clears on Escape. |
+| `CommandList` | Scrollable container for results. |
+| `CommandEmpty` | Shown when no results match. |
+| `CommandGroup` | Labeled section with a heading. |
+| `CommandItem` | Selectable result item. |
+| `CommandShortcut` | Keyboard shortcut hint displayed on the right. |
+| `CommandSeparator` | Visual divider between groups. |
+
+### CommandDialog Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | `"Command Palette"` | Accessible dialog title (screen readers). |
+| `description` | `string` | `"Search for a command to run..."` | Accessible description. |
+| `open` | `boolean` | — | Controlled open state. |
+| `onOpenChange` | `(open: boolean) => void` | — | Called when open state changes. |
+| `showCloseButton` | `boolean` | `true` | Shows the close button in the top corner. |
+
+### CommandItem Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `onSelect` | `(value: string) => void` | — | Called when the item is selected. |
+| `disabled` | `boolean` | `false` | Disables the item. |
+| `value` | `string` | — | Custom search value (defaults to text content). |

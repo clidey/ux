@@ -1,0 +1,146 @@
+---
+title: 'Input'
+description: 'Text input, textarea, and search input components.'
+---
+
+# Input
+
+The `input.tsx` module exports three components: `Input` for single-line text, `TextArea` for multi-line text, and `SearchInput` for search fields with a built-in icon.
+
+## Import
+
+```tsx
+import { Input, TextArea, SearchInput } from '@clidey/ux';
+```
+
+## Input
+
+A styled single-line text field.
+
+```tsx
+<Input placeholder="Enter your name" />
+```
+
+### With label
+
+```tsx
+import { Label, Input } from '@clidey/ux';
+
+<div className="space-y-1">
+  <Label htmlFor="email">Email address</Label>
+  <Input id="email" type="email" placeholder="you@example.com" />
+</div>
+```
+
+### Password field with toggle
+
+Set `type="password"` and `showPasswordToggle` to add an eye icon that reveals the password:
+
+```tsx
+<Input
+  type="password"
+  showPasswordToggle
+  placeholder="Enter your password"
+/>
+```
+
+### Disabled state
+
+```tsx
+<Input disabled placeholder="Not editable" />
+```
+
+### Input Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `showPasswordToggle` | `boolean` | `false` | Shows an eye icon button to toggle password visibility. Only useful when `type="password"`. |
+| `type` | `string` | `"text"` | HTML input type (`"text"`, `"email"`, `"password"`, `"number"`, etc.). |
+| `placeholder` | `string` | — | Placeholder text shown when the field is empty. |
+| `disabled` | `boolean` | `false` | Disables interaction. |
+| `className` | `string` | — | Additional CSS classes. |
+
+All standard `<input>` HTML attributes are accepted.
+
+---
+
+## TextArea
+
+A styled multi-line text field.
+
+```tsx
+<TextArea placeholder="Write your message..." rows={4} />
+```
+
+### With label
+
+```tsx
+<div className="space-y-1">
+  <Label htmlFor="bio">Bio</Label>
+  <TextArea id="bio" placeholder="Tell us about yourself..." rows={3} />
+</div>
+```
+
+### TextArea Props
+
+All standard `<textarea>` HTML attributes are accepted, including `rows`, `cols`, `disabled`, `placeholder`, and `onChange`.
+
+---
+
+## SearchInput
+
+A text field with a search icon on the left side. Useful for filter fields, command inputs, and search bars.
+
+```tsx
+<SearchInput placeholder="Search users..." />
+```
+
+### Controlled search
+
+```tsx
+import { useState } from 'react';
+
+function SearchBar() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <SearchInput
+      placeholder="Search..."
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+    />
+  );
+}
+```
+
+### SearchInput Props
+
+Accepts all standard `<input>` HTML attributes. The search icon is rendered automatically.
+
+---
+
+## Full form example
+
+```tsx
+import { Input, TextArea, Label, Button } from '@clidey/ux';
+
+function ContactForm() {
+  return (
+    <form className="space-y-4 max-w-md">
+      <div className="space-y-1">
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" placeholder="Jane Doe" />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" type="email" placeholder="jane@example.com" />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="message">Message</Label>
+        <TextArea id="message" placeholder="Your message..." rows={4} />
+      </div>
+      <Button type="submit" className="w-full">Send</Button>
+    </form>
+  );
+}
+```

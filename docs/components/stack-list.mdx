@@ -1,0 +1,108 @@
+---
+title: 'StackList'
+description: 'Key-value pair list with separators for metadata and detail views.'
+---
+
+# StackList
+
+`StackList` renders a vertical list of key-value pairs separated by dividers. It's ideal for displaying entity details, metadata, or configuration summaries.
+
+## Import
+
+```tsx
+import { StackList, StackListItem } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+<StackList>
+  <StackListItem item="Name">Jane Doe</StackListItem>
+  <StackListItem item="Email">jane@example.com</StackListItem>
+  <StackListItem item="Role">Administrator</StackListItem>
+  <StackListItem item="Joined">January 15, 2024</StackListItem>
+</StackList>
+```
+
+## With rich values
+
+```tsx
+<StackList>
+  <StackListItem item="Status">
+    <Badge>Active</Badge>
+  </StackListItem>
+  <StackListItem item="Plan">
+    <div className="flex items-center gap-2">
+      <span>Pro</span>
+      <Badge variant="outline">Annual</Badge>
+    </div>
+  </StackListItem>
+  <StackListItem item="Storage">
+    <div className="flex items-center gap-2">
+      <Progress value={73} className="w-24" />
+      <span className="text-sm text-muted-foreground">7.3 / 10 GB</span>
+    </div>
+  </StackListItem>
+</StackList>
+```
+
+## In a card
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>User Details</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <StackList>
+      <StackListItem item="ID">usr_01HXYZ1234</StackListItem>
+      <StackListItem item="Name">Jane Doe</StackListItem>
+      <StackListItem item="Email">jane@example.com</StackListItem>
+      <StackListItem item="Created">2024-01-15</StackListItem>
+    </StackList>
+  </CardContent>
+</Card>
+```
+
+## Custom separator
+
+```tsx
+<StackList separatorClassName="w-3/4">
+  {/* items */}
+</StackList>
+```
+
+## Custom key/value styling
+
+```tsx
+<StackList>
+  <StackListItem
+    item="API Key"
+    keyClassName="font-mono text-xs"
+    valueClassName="font-mono text-xs text-muted-foreground"
+  >
+    sk_live_xxxxxxxxxxxxxxxxxxxx
+  </StackListItem>
+</StackList>
+```
+
+## Props
+
+### StackList
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `separatorClassName` | `string` | `"w-full"` | CSS classes applied to the `Separator` between items. |
+| `className` | `string` | — | Additional CSS classes on the list container. |
+| `children` | `ReactNode` | — | `StackListItem` elements. |
+
+### StackListItem
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `item` | `ReactNode` | The key label displayed on the left. |
+| `children` | `ReactNode` | The value displayed on the right. |
+| `keyClassName` | `string` | Additional CSS classes on the key cell. |
+| `valueClassName` | `string` | Additional CSS classes on the value cell. |
+| `rowClassName` | `string` | Additional CSS classes on the row container. |
+| `itemClassName` | `string` | Additional CSS classes on each cell. |

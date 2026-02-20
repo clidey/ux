@@ -1,0 +1,80 @@
+---
+title: 'Icon'
+description: 'Wrapper for SVG icons with consistent sizing and styling.'
+---
+
+# Icon
+
+`Icon` is a lightweight wrapper around an SVG element that enforces consistent sizing. Pass any SVG React element (e.g., from Lucide) and use the `size` prop to control its dimensions.
+
+<Note>
+  In most cases you won't need `Icon` at all — Lucide icons can be used directly in components. Use `Icon` when you need to normalize sizing across different SVG sources or when wrapping custom SVGs.
+</Note>
+
+## Import
+
+```tsx
+import { Icon } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+import { Settings } from 'lucide-react';
+
+<Icon icon={<Settings />} />
+```
+
+## Custom size
+
+```tsx
+import { Star } from 'lucide-react';
+
+<Icon icon={<Star />} size={32} />
+```
+
+## With className
+
+```tsx
+import { Bell } from 'lucide-react';
+
+<Icon icon={<Bell />} className="text-primary" />
+```
+
+## In a button
+
+```tsx
+import { Download } from 'lucide-react';
+
+<Button variant="ghost" size="icon">
+  <Icon icon={<Download />} size={16} />
+</Button>
+```
+
+## Custom SVG
+
+```tsx
+const CustomLogo = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+  </svg>
+);
+
+<Icon icon={<CustomLogo />} size={24} className="text-primary" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icon` | `React.ReactElement<React.SVGProps<SVGSVGElement>>` | — | SVG element to render. |
+| `size` | `number` | `24` | Width and height of the icon in pixels. |
+| `className` | `string` | — | Additional CSS classes (e.g., color utilities). |
+
+<Tip>
+  When using Lucide icons directly without `Icon` wrapper, set size with the `size` prop on the Lucide component:
+  ```tsx
+  import { Settings } from 'lucide-react';
+  <Settings size={20} className="text-muted-foreground" />
+  ```
+</Tip>

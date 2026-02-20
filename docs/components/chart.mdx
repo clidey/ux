@@ -1,0 +1,179 @@
+---
+title: 'Chart'
+description: 'Recharts wrapper with consistent theming, tooltips, and legend.'
+---
+
+# Chart
+
+The `chart.tsx` module wraps [Recharts](https://recharts.org) components with a theme-aware `ChartContainer` and accessory components for tooltips and legends. All charts automatically adapt to light and dark mode.
+
+## Import
+
+```tsx
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from '@clidey/ux';
+```
+
+You still import chart primitives from Recharts directly:
+
+```tsx
+import {
+  BarChart, Bar, LineChart, Line, AreaChart, Area,
+  PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, ResponsiveContainer,
+} from 'recharts';
+```
+
+## ChartConfig
+
+Define a `ChartConfig` to map data keys to labels and colors:
+
+```tsx
+import type { ChartConfig } from '@clidey/ux';
+
+const chartConfig: ChartConfig = {
+  revenue: {
+    label: 'Revenue',
+    color: 'hsl(var(--chart-1))',
+  },
+  expenses: {
+    label: 'Expenses',
+    color: 'hsl(var(--chart-2))',
+  },
+};
+```
+
+## Bar chart
+
+```tsx
+const data = [
+  { month: 'Jan', revenue: 4200, expenses: 2400 },
+  { month: 'Feb', revenue: 3800, expenses: 1398 },
+  { month: 'Mar', revenue: 5200, expenses: 3200 },
+  { month: 'Apr', revenue: 4700, expenses: 2800 },
+  { month: 'May', revenue: 6100, expenses: 2100 },
+  { month: 'Jun', revenue: 5800, expenses: 2600 },
+];
+
+<ChartContainer config={chartConfig} className="h-64">
+  <BarChart data={data}>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="month" />
+    <YAxis />
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <ChartLegend content={<ChartLegendContent />} />
+    <Bar dataKey="revenue" fill="var(--color-revenue)" radius={4} />
+    <Bar dataKey="expenses" fill="var(--color-expenses)" radius={4} />
+  </BarChart>
+</ChartContainer>
+```
+
+## Line chart
+
+```tsx
+const lineData = [
+  { week: 'W1', users: 100 },
+  { week: 'W2', users: 145 },
+  { week: 'W3', users: 132 },
+  { week: 'W4', users: 210 },
+  { week: 'W5', users: 198 },
+];
+
+const lineConfig: ChartConfig = {
+  users: { label: 'Active Users', color: 'hsl(var(--chart-1))' },
+};
+
+<ChartContainer config={lineConfig} className="h-48">
+  <LineChart data={lineData}>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="week" />
+    <YAxis />
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <Line
+      type="monotone"
+      dataKey="users"
+      stroke="var(--color-users)"
+      strokeWidth={2}
+      dot={false}
+    />
+  </LineChart>
+</ChartContainer>
+```
+
+## Pie chart
+
+```tsx
+const pieData = [
+  { name: 'Frontend', value: 42, color: 'hsl(var(--chart-1))' },
+  { name: 'Backend', value: 31, color: 'hsl(var(--chart-2))' },
+  { name: 'Mobile', value: 15, color: 'hsl(var(--chart-3))' },
+  { name: 'DevOps', value: 12, color: 'hsl(var(--chart-4))' },
+];
+
+const pieConfig: ChartConfig = {
+  Frontend: { label: 'Frontend', color: 'hsl(var(--chart-1))' },
+  Backend: { label: 'Backend', color: 'hsl(var(--chart-2))' },
+  Mobile: { label: 'Mobile', color: 'hsl(var(--chart-3))' },
+  DevOps: { label: 'DevOps', color: 'hsl(var(--chart-4))' },
+};
+
+<ChartContainer config={pieConfig} className="h-48">
+  <PieChart>
+    <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} dataKey="value">
+      {pieData.map((entry) => (
+        <Cell key={entry.name} fill={entry.color} />
+      ))}
+    </Pie>
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <ChartLegend content={<ChartLegendContent />} />
+  </PieChart>
+</ChartContainer>
+```
+
+## ChartTooltipContent Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `hideLabel` | `boolean` | `false` | Hides the series label in the tooltip. |
+| `hideIndicator` | `boolean` | `false` | Hides the color dot/line indicator. |
+| `indicator` | `"line" \| "dot" \| "dashed"` | `"dot"` | Style of the color indicator. |
+| `nameKey` | `string` | — | Key used to look up the series name from config. |
+| `labelKey` | `string` | — | Key used for the tooltip's X-axis label. |
+
+## ChartContainer Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `config` | `ChartConfig` | Maps data keys to labels and colors. |
+| `className` | `string` | Sets container size (use `h-*` utilities). |
+| `children` | `ReactNode` | Recharts chart component. |
+
+## ChartConfig type
+
+```tsx
+type ChartConfig = {
+  [key: string]: {
+    label?: string;
+    icon?: React.ComponentType;
+    color?: string;
+  };
+};
+```
+
+## useChart hook
+
+Inside a `ChartContainer`, use `useChart()` to access the active config:
+
+```tsx
+import { useChart } from '@clidey/ux';
+
+function CustomTooltip() {
+  const { config } = useChart();
+  // config is the ChartConfig passed to ChartContainer
+}
+```

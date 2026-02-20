@@ -1,0 +1,125 @@
+---
+title: 'Tooltip'
+description: 'Small popup label shown on hover for supplementary information.'
+---
+
+# Tooltip
+
+`Tooltip` shows a small label when hovering over an element. Built on Radix UI's tooltip primitive with configurable delay and positioning.
+
+## Import
+
+```tsx
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@clidey/ux';
+```
+
+## Setup
+
+Wrap your app (or a section of it) with `TooltipProvider`. It configures a shared delay for all tooltips in its subtree:
+
+```tsx
+import { TooltipProvider } from '@clidey/ux';
+
+<TooltipProvider>
+  <App />
+</TooltipProvider>
+```
+
+## Basic tooltip
+
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button variant="ghost" size="icon">
+      <Settings className="size-4" />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>Settings</TooltipContent>
+</Tooltip>
+```
+
+## Custom delay
+
+```tsx
+<TooltipProvider delayDuration={0}>
+  {/* tooltips show instantly */}
+</TooltipProvider>
+```
+
+## Positioned tooltip
+
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <Button size="sm">Hover me</Button>
+  </TooltipTrigger>
+  <TooltipContent side="right" sideOffset={8}>
+    This tooltip appears to the right
+  </TooltipContent>
+</Tooltip>
+```
+
+## Toolbar with tooltips
+
+```tsx
+<div className="flex gap-1">
+  {[
+    { icon: <Bold />, label: 'Bold', shortcut: '⌘B' },
+    { icon: <Italic />, label: 'Italic', shortcut: '⌘I' },
+    { icon: <Underline />, label: 'Underline', shortcut: '⌘U' },
+  ].map((item) => (
+    <Tooltip key={item.label}>
+      <TooltipTrigger asChild>
+        <Button variant="ghost" size="icon">
+          {item.icon}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <span>{item.label}</span>
+        <span className="ml-2 text-muted-foreground">{item.shortcut}</span>
+      </TooltipContent>
+    </Tooltip>
+  ))}
+</div>
+```
+
+## Disabled element tooltip
+
+Radix UI requires the trigger to forward events. Wrap disabled elements in a `<span>`:
+
+```tsx
+<Tooltip>
+  <TooltipTrigger asChild>
+    <span>
+      <Button disabled>Submit</Button>
+    </span>
+  </TooltipTrigger>
+  <TooltipContent>Complete all required fields first</TooltipContent>
+</Tooltip>
+```
+
+## Props
+
+### TooltipProvider
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `delayDuration` | `number` | `700` | Milliseconds before the tooltip shows on hover. |
+| `skipDelayDuration` | `number` | `300` | Delay before a tooltip shows when moving between multiple triggers quickly. |
+
+### Tooltip
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | — | Controlled open state. |
+| `defaultOpen` | `boolean` | `false` | Uncontrolled default open state. |
+| `onOpenChange` | `(open: boolean) => void` | — | Called when open state changes. |
+
+### TooltipContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"top"` | Preferred side to display the tooltip. |
+| `sideOffset` | `number` | `0` | Distance in pixels between trigger and tooltip. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger. |
+| `className` | `string` | — | Additional CSS classes. |

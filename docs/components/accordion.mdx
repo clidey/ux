@@ -1,0 +1,134 @@
+---
+title: 'Accordion'
+description: 'Collapsible content sections with animated expand/collapse.'
+---
+
+# Accordion
+
+`Accordion` provides collapsible sections. Each section has a trigger that shows or hides content with a smooth animation. The chevron icon rotates 180° when open.
+
+## Import
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@clidey/ux';
+```
+
+## Single open (default)
+
+Only one item can be open at a time:
+
+```tsx
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>What is Clidey UX?</AccordionTrigger>
+    <AccordionContent>
+      Clidey UX is a React component library built on Radix UI and Tailwind CSS v4.
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Does it support dark mode?</AccordionTrigger>
+    <AccordionContent>
+      Yes. All components support dark mode through the ThemeProvider.
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-3">
+    <AccordionTrigger>What are the peer dependencies?</AccordionTrigger>
+    <AccordionContent>
+      Only React 18.3 or later. All other libraries are bundled.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+## Multiple open
+
+Allow multiple items to be open simultaneously:
+
+```tsx
+<Accordion type="multiple">
+  <AccordionItem value="step-1">
+    <AccordionTrigger>Step 1: Install</AccordionTrigger>
+    <AccordionContent>
+      Run `npm install @clidey/ux` in your project.
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="step-2">
+    <AccordionTrigger>Step 2: Import styles</AccordionTrigger>
+    <AccordionContent>
+      Add `import '@clidey/ux/styles.css'` to your entry file.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+## With default open item
+
+```tsx
+<Accordion type="single" defaultValue="item-1" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Open by default</AccordionTrigger>
+    <AccordionContent>
+      This item is expanded when the component first renders.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+## FAQ pattern
+
+```tsx
+const faqs = [
+  {
+    q: 'Is Clidey UX free to use?',
+    a: 'Yes. It is open source and MIT licensed.',
+  },
+  {
+    q: 'Can I use it with Next.js?',
+    a: 'Yes. Import the stylesheet in your _app.tsx or layout.tsx file.',
+  },
+  {
+    q: 'Does it work with React 19?',
+    a: 'Yes. The peer dependency supports React ≥ 18.3.0, which includes React 19.',
+  },
+];
+
+<Accordion type="single" collapsible className="max-w-xl">
+  {faqs.map((faq, i) => (
+    <AccordionItem key={i} value={`faq-${i}`}>
+      <AccordionTrigger>{faq.q}</AccordionTrigger>
+      <AccordionContent>{faq.a}</AccordionContent>
+    </AccordionItem>
+  ))}
+</Accordion>
+```
+
+## Controlled
+
+```tsx
+const [value, setValue] = useState('');
+
+<Accordion type="single" value={value} onValueChange={setValue} collapsible>
+  {/* items */}
+</Accordion>
+```
+
+## Props
+
+### Accordion
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `"single" \| "multiple"` | `"single"` | Whether one or multiple items can be open simultaneously. |
+| `collapsible` | `boolean` | `false` | When `type="single"`, allows closing the open item by clicking its trigger again. |
+| `defaultValue` | `string \| string[]` | — | Item(s) open on initial render. |
+| `value` | `string \| string[]` | — | Controlled open item(s). |
+| `onValueChange` | `(value: string \| string[]) => void` | — | Called when open state changes. |
+| `className` | `string` | — | Additional CSS classes. |
+
+### AccordionItem
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `string` | Unique identifier for this item. |
+| `disabled` | `boolean` | Disables interaction with this item. |
+| `className` | `string` | Additional CSS classes. |

@@ -1,0 +1,229 @@
+---
+title: 'Quick Start'
+description: 'Build your first UI with Clidey UX components in under 5 minutes.'
+---
+
+# Quick Start
+
+This guide walks you from a fresh React project to a working UI with Clidey UX.
+
+<Steps>
+  <Step title="Create a React project">
+    Use Vite to scaffold a new project (or skip if you already have one):
+
+    ```bash
+    npm create vite@latest my-app -- --template react-ts
+    cd my-app
+    npm install
+    ```
+  </Step>
+  <Step title="Install Clidey UX">
+    ```bash
+    npm install @clidey/ux
+    ```
+  </Step>
+  <Step title="Import the stylesheet">
+    Open `src/main.tsx` and add the CSS import at the top:
+
+    ```tsx
+    import '@clidey/ux/styles.css';
+    ```
+  </Step>
+  <Step title="Add ThemeProvider">
+    Wrap your app with `ThemeProvider` in `src/main.tsx`:
+
+    ```tsx
+    import React from 'react';
+    import ReactDOM from 'react-dom/client';
+    import { ThemeProvider } from '@clidey/ux';
+    import '@clidey/ux/styles.css';
+    import App from './App';
+
+    ReactDOM.createRoot(document.getElementById('root')!).render(
+      <React.StrictMode>
+        <ThemeProvider defaultTheme="system">
+          <App />
+        </ThemeProvider>
+      </React.StrictMode>
+    );
+    ```
+  </Step>
+  <Step title="Use your first components">
+    Replace `src/App.tsx` with:
+
+    ```tsx
+    import {
+      Button,
+      Card,
+      CardHeader,
+      CardTitle,
+      CardDescription,
+      CardContent,
+      Badge,
+      Input,
+    } from '@clidey/ux';
+
+    export default function App() {
+      return (
+        <div className="min-h-screen p-8">
+          <Card className="max-w-md mx-auto">
+            <CardHeader>
+              <CardTitle>Welcome to Clidey UX</CardTitle>
+              <CardDescription>
+                A beautiful component library built on Radix UI.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-2">
+                <Badge>Default</Badge>
+                <Badge variant="secondary">Secondary</Badge>
+                <Badge variant="destructive">Destructive</Badge>
+              </div>
+              <Input placeholder="Type something..." />
+              <div className="flex gap-2">
+                <Button>Get Started</Button>
+                <Button variant="outline">Learn More</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      );
+    }
+    ```
+  </Step>
+  <Step title="Run the dev server">
+    ```bash
+    npm run dev
+    ```
+
+    Open `http://localhost:5173` in your browser.
+
+    <Check>
+      You should see a styled card with badges, an input field, and buttons — all in your system's preferred theme.
+    </Check>
+  </Step>
+</Steps>
+
+## Adding dark mode toggle
+
+Add a theme toggle button to let users switch between light and dark mode:
+
+```tsx
+import { ModeToggle, Toaster, toast } from '@clidey/ux';
+
+export default function App() {
+  return (
+    <div className="min-h-screen p-8">
+      <div className="flex justify-end mb-4">
+        <ModeToggle />
+      </div>
+
+      {/* your content */}
+
+      <Toaster />
+    </div>
+  );
+}
+```
+
+## Common patterns
+
+### Form with validation feedback
+
+```tsx
+import { Input, Label, Button, Alert, AlertTitle, AlertDescription } from '@clidey/ux';
+import { useState } from 'react';
+
+function LoginForm() {
+  const [error, setError] = useState('');
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError('Invalid credentials. Please try again.');
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-sm">
+      {error && (
+        <Alert variant="destructive">
+          <AlertTitle>Authentication failed</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <div className="space-y-1">
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" type="email" placeholder="you@example.com" />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="password">Password</Label>
+        <Input id="password" type="password" showPasswordToggle />
+      </div>
+      <Button type="submit" className="w-full">Sign in</Button>
+    </form>
+  );
+}
+```
+
+### Toast notifications
+
+```tsx
+import { Button, Toaster, toast } from '@clidey/ux';
+
+function Demo() {
+  return (
+    <>
+      <Button onClick={() => toast.success('Saved successfully!')}>
+        Save changes
+      </Button>
+      <Toaster />
+    </>
+  );
+}
+```
+
+### Confirmation dialog
+
+```tsx
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+  Button,
+} from '@clidey/ux';
+
+function DeleteConfirm() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">Delete account</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. Your account and all associated data
+            will be permanently deleted.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Delete account</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Browse components" icon="box" href="/components/overview" description="Explore the full component library with usage examples and prop references." />
+  <Card title="Theming" icon="palette" href="/theming/overview" description="Customize colors and dark mode behavior for your brand." />
+</CardGroup>

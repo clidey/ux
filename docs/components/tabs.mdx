@@ -1,0 +1,144 @@
+---
+title: 'Tabs'
+description: 'Tab navigation for switching between content panels.'
+---
+
+# Tabs
+
+`Tabs` provides a tabbed navigation pattern. The active tab highlights and shows its associated content panel. Built on Radix UI's tabs primitive.
+
+## Import
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@clidey/ux';
+```
+
+## Basic tabs
+
+```tsx
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">
+    <p>Overview content goes here.</p>
+  </TabsContent>
+  <TabsContent value="analytics">
+    <p>Analytics content goes here.</p>
+  </TabsContent>
+  <TabsContent value="settings">
+    <p>Settings content goes here.</p>
+  </TabsContent>
+</Tabs>
+```
+
+## Controlled tabs
+
+```tsx
+import { useState } from 'react';
+
+function ControlledTabs() {
+  const [tab, setTab] = useState('account');
+
+  return (
+    <Tabs value={tab} onValueChange={setTab}>
+      <TabsList>
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">
+        {/* account settings form */}
+      </TabsContent>
+      <TabsContent value="password">
+        {/* password change form */}
+      </TabsContent>
+    </Tabs>
+  );
+}
+```
+
+## Tabs with icons
+
+```tsx
+import { User, Lock, Bell } from 'lucide-react';
+
+<Tabs defaultValue="profile">
+  <TabsList>
+    <TabsTrigger value="profile">
+      <User className="size-4" />
+      Profile
+    </TabsTrigger>
+    <TabsTrigger value="security">
+      <Lock className="size-4" />
+      Security
+    </TabsTrigger>
+    <TabsTrigger value="notifications">
+      <Bell className="size-4" />
+      Notifications
+    </TabsTrigger>
+  </TabsList>
+  {/* content panels */}
+</Tabs>
+```
+
+## Tabs with card panels
+
+```tsx
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <Card>
+      <CardContent className="pt-6">
+        {/* live preview */}
+      </CardContent>
+    </Card>
+  </TabsContent>
+  <TabsContent value="code">
+    <Card>
+      <CardContent className="pt-6">
+        <pre className="text-sm">{/* code */}</pre>
+      </CardContent>
+    </Card>
+  </TabsContent>
+</Tabs>
+```
+
+## Disabled tab
+
+```tsx
+<TabsTrigger value="billing" disabled>
+  Billing
+</TabsTrigger>
+```
+
+## Props
+
+### Tabs
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultValue` | `string` | — | The value of the tab open by default (uncontrolled). |
+| `value` | `string` | — | Controlled active tab value. |
+| `onValueChange` | `(value: string) => void` | — | Called when the active tab changes. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Layout direction. |
+| `className` | `string` | — | Additional CSS classes. |
+
+### TabsTrigger
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Unique identifier for this tab. |
+| `disabled` | `boolean` | `false` | Disables the tab trigger. |
+| `className` | `string` | — | Additional CSS classes. |
+
+### TabsContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Must match the corresponding `TabsTrigger` value. |
+| `className` | `string` | — | Additional CSS classes. |

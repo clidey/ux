@@ -1,0 +1,119 @@
+---
+title: 'ContextMenu'
+description: 'Right-click context menu with rich item types and variants.'
+---
+
+# ContextMenu
+
+`ContextMenu` opens a menu when the user right-clicks (or long-presses on touch devices) on the trigger area. It supports the same rich item types as `DropdownMenu`.
+
+## Import
+
+```tsx
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuGroup,
+  ContextMenuShortcut,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSub,
+  ContextMenuSubTrigger,
+  ContextMenuSubContent,
+} from '@clidey/ux';
+```
+
+## Basic context menu
+
+```tsx
+<ContextMenu>
+  <ContextMenuTrigger className="flex h-32 w-64 items-center justify-center rounded-md border border-dashed">
+    Right-click here
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Cut</ContextMenuItem>
+    <ContextMenuItem>Copy</ContextMenuItem>
+    <ContextMenuItem>Paste</ContextMenuItem>
+    <ContextMenuSeparator />
+    <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+## File explorer context menu
+
+```tsx
+<ContextMenu>
+  <ContextMenuTrigger asChild>
+    <div className="flex items-center gap-2 p-2 rounded hover:bg-accent">
+      <FileIcon className="size-4" />
+      <span>document.pdf</span>
+    </div>
+  </ContextMenuTrigger>
+  <ContextMenuContent className="w-48">
+    <ContextMenuItem>
+      <Eye className="size-4" /> Open
+    </ContextMenuItem>
+    <ContextMenuItem>
+      <Download className="size-4" /> Download
+    </ContextMenuItem>
+    <ContextMenuSub>
+      <ContextMenuSubTrigger>
+        <Share className="size-4" /> Share
+      </ContextMenuSubTrigger>
+      <ContextMenuSubContent>
+        <ContextMenuItem>Copy link</ContextMenuItem>
+        <ContextMenuItem>Send via email</ContextMenuItem>
+      </ContextMenuSubContent>
+    </ContextMenuSub>
+    <ContextMenuSeparator />
+    <ContextMenuItem>
+      <Edit className="size-4" /> Rename
+    </ContextMenuItem>
+    <ContextMenuItem variant="destructive">
+      <Trash className="size-4" /> Delete
+    </ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+## With checkboxes
+
+```tsx
+function TextEditor() {
+  const [wordWrap, setWordWrap] = useState(true);
+  const [lineNumbers, setLineNumbers] = useState(true);
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <textarea className="w-full h-32 p-2 border rounded font-mono text-sm" />
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuLabel>View Options</ContextMenuLabel>
+        <ContextMenuSeparator />
+        <ContextMenuCheckboxItem checked={wordWrap} onCheckedChange={setWordWrap}>
+          Word wrap
+        </ContextMenuCheckboxItem>
+        <ContextMenuCheckboxItem checked={lineNumbers} onCheckedChange={setLineNumbers}>
+          Line numbers
+        </ContextMenuCheckboxItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+```
+
+## ContextMenuItem Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "destructive"` | `"default"` | `"destructive"` styles the item in red. |
+| `inset` | `boolean` | `false` | Adds left padding for alignment with icon items. |
+| `disabled` | `boolean` | `false` | Disables the item. |
+| `onSelect` | `(event: Event) => void` | — | Called when the item is selected. |

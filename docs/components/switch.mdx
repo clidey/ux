@@ -1,0 +1,110 @@
+---
+title: 'Switch'
+description: 'Toggle switch for boolean settings with smooth animation.'
+---
+
+# Switch
+
+`Switch` is an accessible toggle switch built on Radix UI's primitive. It slides between checked and unchecked states with a smooth CSS transition.
+
+## Import
+
+```tsx
+import { Switch } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+<Switch />
+```
+
+## With label
+
+```tsx
+import { Switch, Label } from '@clidey/ux';
+
+<div className="flex items-center gap-2">
+  <Switch id="darkmode" />
+  <Label htmlFor="darkmode">Enable dark mode</Label>
+</div>
+```
+
+## Controlled
+
+```tsx
+import { useState } from 'react';
+
+function SettingsToggle() {
+  const [enabled, setEnabled] = useState(false);
+
+  return (
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="font-medium">Email digest</p>
+        <p className="text-sm text-muted-foreground">
+          Receive a weekly summary of your activity.
+        </p>
+      </div>
+      <Switch checked={enabled} onCheckedChange={setEnabled} />
+    </div>
+  );
+}
+```
+
+## Disabled
+
+```tsx
+<Switch disabled />
+<Switch disabled checked />
+```
+
+## Settings list
+
+```tsx
+const settings = [
+  { id: 'marketing', label: 'Marketing emails', description: 'Receive offers and updates.' },
+  { id: 'social', label: 'Social notifications', description: 'Mentions and replies.' },
+  { id: 'security', label: 'Security alerts', description: 'Unusual sign-in activity.' },
+];
+
+function SettingsList() {
+  const [prefs, setPrefs] = useState<Record<string, boolean>>({});
+
+  function toggle(id: string) {
+    setPrefs((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  return (
+    <div className="space-y-4">
+      {settings.map((s) => (
+        <div key={s.id} className="flex items-center justify-between">
+          <div>
+            <Label htmlFor={s.id}>{s.label}</Label>
+            <p className="text-sm text-muted-foreground">{s.description}</p>
+          </div>
+          <Switch
+            id={s.id}
+            checked={!!prefs[s.id]}
+            onCheckedChange={() => toggle(s.id)}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | `boolean` | — | Controlled checked state. |
+| `defaultChecked` | `boolean` | `false` | Uncontrolled default state. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Called when the state changes. |
+| `disabled` | `boolean` | `false` | Disables interaction. |
+| `required` | `boolean` | `false` | Marks the field as required in a form. |
+| `name` | `string` | — | Form field name for native form submission. |
+| `value` | `string` | `"on"` | Value submitted with form data when checked. |
+| `id` | `string` | — | Links to a `<Label htmlFor>`. |
+| `className` | `string` | — | Additional CSS classes. |
