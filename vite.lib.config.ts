@@ -26,7 +26,6 @@ export default defineConfig({
     tailwindcss(),
     dts({
       tsconfigPath: resolve(__dirname, "tsconfig.lib.json"),
-      rollupTypes: true,
     }),
   ],
   css: {
