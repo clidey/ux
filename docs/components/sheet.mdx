@@ -1,0 +1,148 @@
+---
+title: 'Sheet'
+description: 'Side panel overlay with directional slide-in animation.'
+---
+
+# Sheet
+
+`Sheet` is a panel that slides in from the edge of the screen. Unlike `Drawer` (which uses Vaul and supports drag gestures), `Sheet` is built on Radix UI's dialog primitive and is better suited for desktop navigation panels and detail views.
+
+## Import
+
+```tsx
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose,
+} from '@clidey/ux';
+```
+
+## Basic sheet (right, default)
+
+```tsx
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Open panel</Button>
+  </SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Edit profile</SheetTitle>
+      <SheetDescription>
+        Update your profile information and save.
+      </SheetDescription>
+    </SheetHeader>
+    <div className="py-4 space-y-4">
+      <div className="space-y-1">
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="bio">Bio</Label>
+        <TextArea id="bio" />
+      </div>
+    </div>
+    <SheetFooter>
+      <SheetClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </SheetClose>
+      <Button>Save</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
+```
+
+## Side variants
+
+```tsx
+{/* From the left */}
+<SheetContent side="left">
+  {/* navigation sidebar content */}
+</SheetContent>
+
+{/* From the bottom */}
+<SheetContent side="bottom">
+  {/* mobile action menu */}
+</SheetContent>
+
+{/* From the top */}
+<SheetContent side="top">
+  {/* notification center */}
+</SheetContent>
+```
+
+## Mobile navigation menu
+
+```tsx
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="ghost" size="icon" className="md:hidden">
+      <Menu className="size-5" />
+    </Button>
+  </SheetTrigger>
+  <SheetContent side="left" className="w-64">
+    <SheetHeader>
+      <SheetTitle>Navigation</SheetTitle>
+    </SheetHeader>
+    <nav className="mt-4 space-y-1">
+      <SheetClose asChild>
+        <a href="/dashboard" className="block px-3 py-2 rounded hover:bg-accent">
+          Dashboard
+        </a>
+      </SheetClose>
+      <SheetClose asChild>
+        <a href="/projects" className="block px-3 py-2 rounded hover:bg-accent">
+          Projects
+        </a>
+      </SheetClose>
+      <SheetClose asChild>
+        <a href="/settings" className="block px-3 py-2 rounded hover:bg-accent">
+          Settings
+        </a>
+      </SheetClose>
+    </nav>
+  </SheetContent>
+</Sheet>
+```
+
+## With onClose callback
+
+```tsx
+<SheetContent onClose={() => console.log('sheet closed')}>
+  {/* ... */}
+</SheetContent>
+```
+
+## Sheet vs Drawer
+
+| | Sheet | Drawer |
+| --- | --- | --- |
+| Library | Radix UI | Vaul |
+| Drag to dismiss | No | Yes (mobile) |
+| Best for | Desktop panels, forms | Mobile sheets, action menus |
+| Default side | Right | Bottom |
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `Sheet` | Root. Manages open state. |
+| `SheetTrigger` | Opens the sheet. Use `asChild`. |
+| `SheetContent` | The sliding panel. |
+| `SheetHeader` | Top section. |
+| `SheetTitle` | Accessible heading (required). |
+| `SheetDescription` | Supporting text. |
+| `SheetFooter` | Bottom action area. |
+| `SheetClose` | Closes the sheet. Use `asChild`. |
+
+### SheetContent Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Which edge the sheet slides from. |
+| `onClose` | `() => void` | — | Called when the sheet closes. |
+| `className` | `string` | — | Additional CSS classes (e.g., custom width). |

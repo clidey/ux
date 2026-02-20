@@ -1,0 +1,156 @@
+---
+title: 'Toaster (Sonner)'
+description: 'Toast notification system with automatic theme support.'
+---
+
+# Toaster
+
+The `sonner.tsx` module re-exports `toast` from [Sonner](https://sonner.emilkowal.ski) and provides a theme-aware `Toaster` component. Toast notifications appear in the corner of the screen and auto-dismiss.
+
+## Import
+
+```tsx
+import { Toaster, toast } from '@clidey/ux';
+```
+
+## Setup
+
+Add `<Toaster />` once at the root of your app (inside `ThemeProvider`):
+
+```tsx
+import { ThemeProvider, Toaster } from '@clidey/ux';
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="system">
+      {/* your app */}
+      <Toaster />
+    </ThemeProvider>
+  );
+}
+```
+
+<Note>
+  `Toaster` automatically reads the active theme from `ThemeProvider` so toasts always match your site's color scheme.
+</Note>
+
+## Triggering toasts
+
+Call `toast()` from anywhere in your app — no context or prop drilling needed:
+
+```tsx
+import { toast } from '@clidey/ux';
+
+// Default
+toast('File saved.');
+
+// Success
+toast.success('Changes saved successfully!');
+
+// Error
+toast.error('Failed to save. Please try again.');
+
+// Warning
+toast.warning('Your session will expire in 5 minutes.');
+
+// Info
+toast.info('A new version is available.');
+
+// Loading → then resolve
+const id = toast.loading('Uploading file...');
+await uploadFile();
+toast.success('Upload complete!', { id });
+```
+
+## With description
+
+```tsx
+toast.success('Profile updated', {
+  description: 'Your name and avatar have been saved.',
+});
+
+toast.error('Sync failed', {
+  description: 'Could not connect to the server. Check your network.',
+});
+```
+
+## With action button
+
+```tsx
+toast('File deleted', {
+  action: {
+    label: 'Undo',
+    onClick: () => restoreFile(),
+  },
+});
+```
+
+## With cancel button
+
+```tsx
+toast('Are you sure?', {
+  cancel: {
+    label: 'Cancel',
+    onClick: () => console.log('Cancelled'),
+  },
+  action: {
+    label: 'Confirm',
+    onClick: () => deleteItem(),
+  },
+});
+```
+
+## Custom duration
+
+```tsx
+// Show for 10 seconds
+toast.success('Deployed to production!', { duration: 10000 });
+
+// Persist until manually dismissed
+toast.info('Background task running...', { duration: Infinity });
+```
+
+## Dismiss programmatically
+
+```tsx
+const id = toast.loading('Processing...');
+
+// Later...
+toast.dismiss(id);
+```
+
+## Promise toast
+
+Automatically shows loading → success/error states:
+
+```tsx
+toast.promise(saveData(), {
+  loading: 'Saving...',
+  success: 'Saved successfully!',
+  error: 'Failed to save.',
+});
+```
+
+## Toaster configuration
+
+Customize the global `<Toaster />` defaults:
+
+```tsx
+<Toaster
+  position="top-right"
+  expand={false}
+  richColors
+  closeButton
+/>
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `position` | `"top-left" \| "top-center" \| "top-right" \| "bottom-left" \| "bottom-center" \| "bottom-right"` | `"bottom-right"` | Screen position. |
+| `expand` | `boolean` | `false` | Shows all toasts expanded at once. |
+| `richColors` | `boolean` | `false` | Uses richer color schemes for success/error variants. |
+| `closeButton` | `boolean` | `false` | Adds an explicit close button to each toast. |
+| `duration` | `number` | `4000` | Default auto-dismiss duration in milliseconds. |
+| `visibleToasts` | `number` | `3` | Max number of toasts visible at once. |
+
+`Toaster` also accepts a `theme` prop, but it's set automatically from `ThemeProvider` when using Clidey UX.

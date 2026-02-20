@@ -1,0 +1,110 @@
+---
+title: 'Popover'
+description: 'Floating panel anchored to a trigger element.'
+---
+
+# Popover
+
+`Popover` shows a floating panel when a trigger is clicked. Unlike a tooltip (hover-only), a popover responds to clicks and can contain interactive content like forms, pickers, or menus.
+
+## Import
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from '@clidey/ux';
+```
+
+## Basic popover
+
+```tsx
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open popover</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <p className="text-sm">This is the popover content.</p>
+  </PopoverContent>
+</Popover>
+```
+
+## Date picker popover
+
+```tsx
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">
+      <CalendarIcon className="size-4 mr-2" />
+      Pick a date
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-auto p-0">
+    <Calendar />
+  </PopoverContent>
+</Popover>
+```
+
+## Color picker popover
+
+```tsx
+const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'];
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline" size="icon">
+      <div className="size-4 rounded-full bg-blue-500" />
+    </Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-40">
+    <div className="grid grid-cols-3 gap-1">
+      {colors.map((color) => (
+        <button
+          key={color}
+          className="size-8 rounded-full border-2 border-transparent hover:border-ring"
+          style={{ backgroundColor: color }}
+          onClick={() => setColor(color)}
+        />
+      ))}
+    </div>
+  </PopoverContent>
+</Popover>
+```
+
+## Positioning
+
+```tsx
+<PopoverContent side="right" align="start" sideOffset={8}>
+  Content here
+</PopoverContent>
+```
+
+## Controlled
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Popover open={open} onOpenChange={setOpen}>
+  <PopoverTrigger asChild>
+    <Button onClick={() => setOpen(true)}>Open</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <button onClick={() => setOpen(false)}>Close</button>
+  </PopoverContent>
+</Popover>
+```
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `Popover` | Root component. Manages open state. |
+| `PopoverTrigger` | Toggles the popover on click. Use `asChild`. |
+| `PopoverContent` | Floating panel content. |
+| `PopoverAnchor` | Custom positioning anchor (advanced). |
+
+### PopoverContent Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side to display. |
+| `sideOffset` | `number` | `4` | Gap between trigger and popover in pixels. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment relative to the trigger. |
+| `className` | `string` | — | Additional CSS classes. |

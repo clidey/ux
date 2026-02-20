@@ -1,0 +1,221 @@
+---
+title: 'Sidebar'
+description: 'Full-featured sidebar with collapsible navigation, submenus, and mobile support.'
+---
+
+# Sidebar
+
+`Sidebar` is a comprehensive navigation sidebar component with collapsible menus, submenus, mobile responsiveness, and multiple layout variants. It's built on a context provider and exposes a `useSidebar` hook for programmatic control.
+
+## Import
+
+```tsx
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuBadge,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarTrigger,
+  SidebarInset,
+  SidebarSeparator,
+  useSidebar,
+} from '@clidey/ux';
+```
+
+## Setup
+
+Wrap your layout with `SidebarProvider`:
+
+```tsx
+<SidebarProvider>
+  <AppSidebar />
+  <SidebarInset>
+    <main>{/* page content */}</main>
+  </SidebarInset>
+</SidebarProvider>
+```
+
+## Basic sidebar
+
+```tsx
+function AppSidebar() {
+  const navItems = [
+    { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
+    { title: 'Projects', icon: FolderOpen, href: '/projects' },
+    { title: 'Team', icon: Users, href: '/team' },
+    { title: 'Settings', icon: Settings, href: '/settings' },
+  ];
+
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <div className="px-2 py-1.5 font-semibold">My App</div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.href}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <a href="/logout">
+                <LogOut />
+                <span>Log out</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
+```
+
+## With sub-menus
+
+```tsx
+<SidebarMenuItem>
+  <SidebarMenuButton>
+    <FileText />
+    <span>Documents</span>
+  </SidebarMenuButton>
+  <SidebarMenuSub>
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton asChild>
+        <a href="/docs/reports">Reports</a>
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton asChild>
+        <a href="/docs/invoices">Invoices</a>
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
+  </SidebarMenuSub>
+</SidebarMenuItem>
+```
+
+## With badge
+
+```tsx
+<SidebarMenuButton>
+  <Bell />
+  <span>Notifications</span>
+  <SidebarMenuBadge>12</SidebarMenuBadge>
+</SidebarMenuButton>
+```
+
+## Sidebar variants
+
+```tsx
+{/* Default: full-width sidebar */}
+<Sidebar variant="sidebar">
+
+{/* Floating: detached with shadow */}
+<Sidebar variant="floating">
+
+{/* Inset: content is inset from edges */}
+<Sidebar variant="inset">
+```
+
+## Collapsible behavior
+
+```tsx
+{/* Slides off-canvas when collapsed (default) */}
+<Sidebar collapsible="offcanvas">
+
+{/* Collapses to icon-only mode */}
+<Sidebar collapsible="icon">
+
+{/* Never collapses */}
+<Sidebar collapsible="none">
+```
+
+## Toggle button
+
+Add `SidebarTrigger` to the page header to give users a collapse/expand button:
+
+```tsx
+<header className="flex items-center gap-2 p-4 border-b">
+  <SidebarTrigger />
+  <h1>Page Title</h1>
+</header>
+```
+
+## useSidebar hook
+
+```tsx
+function SidebarControl() {
+  const { open, setOpen, toggleSidebar, isMobile, state } = useSidebar();
+
+  return (
+    <button onClick={toggleSidebar}>
+      {state === 'expanded' ? 'Collapse' : 'Expand'}
+    </button>
+  );
+}
+```
+
+### Hook return values
+
+| Value | Type | Description |
+| --- | --- | --- |
+| `state` | `"expanded" \| "collapsed"` | Current sidebar state. |
+| `open` | `boolean` | Whether the sidebar is open. |
+| `setOpen` | `(open: boolean) => void` | Programmatically open or close. |
+| `isMobile` | `boolean` | Whether the viewport is mobile-sized. |
+| `openMobile` | `boolean` | Mobile sheet open state. |
+| `setOpenMobile` | `(open: boolean) => void` | Control mobile sheet. |
+| `toggleSidebar` | `() => void` | Toggle between expanded and collapsed. |
+
+## SidebarProvider Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultOpen` | `boolean` | `true` | Initial open state. |
+| `open` | `boolean` | — | Controlled open state. |
+| `onOpenChange` | `(open: boolean) => void` | — | Called when open state changes. |
+
+## Sidebar Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `side` | `"left" \| "right"` | `"left"` | Which side the sidebar appears on. |
+| `variant` | `"sidebar" \| "floating" \| "inset" \| "embed"` | `"sidebar"` | Visual style variant. |
+| `collapsible` | `"offcanvas" \| "icon" \| "none"` | `"offcanvas"` | Collapse behavior. |
+
+## SidebarMenuButton Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "outline"` | `"default"` | Visual style. |
+| `size` | `"default" \| "sm" \| "lg"` | `"default"` | Button size. |
+| `isActive` | `boolean` | `false` | Highlights the button as the current page. |
+| `asChild` | `boolean` | `false` | Render as the child element (e.g., `<a>`). |
+| `tooltip` | `string \| TooltipContent` | — | Tooltip shown in icon-only collapsed mode. |

@@ -1,0 +1,141 @@
+---
+title: 'AlertDialog'
+description: 'Blocking confirmation dialog for destructive or critical actions.'
+---
+
+# AlertDialog
+
+`AlertDialog` is a modal that requires an explicit user decision before proceeding. Unlike `Dialog`, it cannot be closed by clicking outside or pressing Escape — the user must click one of the action buttons. Use it for irreversible or high-consequence actions.
+
+## Import
+
+```tsx
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@clidey/ux';
+```
+
+## Basic confirmation
+
+```tsx
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete account</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone. Your account and all associated data will
+        be permanently deleted from our servers.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete account</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+## Async action
+
+```tsx
+function DeleteDialog({ onDelete }: { onDelete: () => Promise<void> }) {
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDelete() {
+    setDeleting(true);
+    await onDelete();
+    setDeleting(false);
+  }
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive" size="sm">Delete</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete this item?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This will permanently delete the item and all related data.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete} disabled={deleting}>
+            {deleting ? (
+              <>
+                <Spinner size="sm" />
+                Deleting...
+              </>
+            ) : (
+              'Delete'
+            )}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+```
+
+## Controlled
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogTrigger asChild>
+    <Button>Publish changes</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Publish to production?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This will immediately affect all users. Make sure you've reviewed all
+        changes.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Go back</AlertDialogCancel>
+      <AlertDialogAction onClick={() => { publish(); setOpen(false); }}>
+        Publish
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+## Difference from Dialog
+
+| Feature | Dialog | AlertDialog |
+| --- | --- | --- |
+| Close on overlay click | Yes | No |
+| Close on Escape key | Yes | No |
+| Use case | Forms, info | Confirmations, destructive actions |
+| `AlertDialogAction` | — | Styled as primary action |
+| `AlertDialogCancel` | — | Styled as outline/cancel |
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `AlertDialog` | Root component. Manages open state. |
+| `AlertDialogTrigger` | Opens the dialog. Use `asChild`. |
+| `AlertDialogContent` | Dialog panel. |
+| `AlertDialogHeader` | Container for title and description. |
+| `AlertDialogTitle` | Accessible heading (required). |
+| `AlertDialogDescription` | Explanatory text. |
+| `AlertDialogFooter` | Action button area. |
+| `AlertDialogCancel` | Dismisses the dialog without acting. |
+| `AlertDialogAction` | Proceeds with the action. |

@@ -1,0 +1,150 @@
+---
+title: 'Tree'
+description: 'Hierarchical tree component for file explorers and nested navigation.'
+---
+
+# Tree
+
+`Tree` renders a hierarchical data structure with expand/collapse functionality and item selection. Common use cases include file explorers, category trees, and nested menu structures.
+
+## Import
+
+```tsx
+import { Tree } from '@clidey/ux';
+import type { TreeDataItem } from '@clidey/ux';
+```
+
+## Basic tree
+
+```tsx
+const treeData: TreeDataItem[] = [
+  {
+    id: '1',
+    name: 'src',
+    children: [
+      {
+        id: '1-1',
+        name: 'components',
+        children: [
+          { id: '1-1-1', name: 'Button.tsx' },
+          { id: '1-1-2', name: 'Card.tsx' },
+          { id: '1-1-3', name: 'Input.tsx' },
+        ],
+      },
+      {
+        id: '1-2',
+        name: 'lib',
+        children: [
+          { id: '1-2-1', name: 'utils.ts' },
+          { id: '1-2-2', name: 'api.ts' },
+        ],
+      },
+    ],
+  },
+  { id: '2', name: 'package.json' },
+  { id: '3', name: 'tsconfig.json' },
+];
+
+<Tree data={treeData} />
+```
+
+## With selection
+
+```tsx
+function FileExplorer() {
+  const [selected, setSelected] = useState<TreeDataItem | undefined>();
+
+  return (
+    <div className="flex gap-4">
+      <div className="w-56 border rounded-lg p-2">
+        <Tree
+          data={treeData}
+          onSelectChange={setSelected}
+        />
+      </div>
+      <div className="flex-1 p-4">
+        {selected ? (
+          <p>Selected: <code>{selected.name}</code></p>
+        ) : (
+          <p className="text-muted-foreground">Select a file</p>
+        )}
+      </div>
+    </div>
+  );
+}
+```
+
+## With default selection
+
+```tsx
+<Tree
+  data={treeData}
+  initialSelectedItemId="1-1-1"
+  onSelectChange={(item) => console.log(item)}
+/>
+```
+
+## Expand all by default
+
+```tsx
+<Tree data={treeData} expandAll />
+```
+
+## Custom icons
+
+Override the default folder and item icons:
+
+```tsx
+import { Folder, FileText } from 'lucide-react';
+
+<Tree
+  data={treeData}
+  folderIcon={Folder}
+  itemIcon={FileText}
+/>
+```
+
+## With per-item icons
+
+Set an `icon` on individual `TreeDataItem` entries:
+
+```tsx
+import { FileJson, FileCode, FolderOpen } from 'lucide-react';
+
+const treeData: TreeDataItem[] = [
+  {
+    id: '1',
+    name: 'src',
+    icon: FolderOpen,
+    children: [
+      { id: '1-1', name: 'index.ts', icon: FileCode },
+      { id: '1-2', name: 'config.json', icon: FileJson },
+    ],
+  },
+];
+```
+
+## Props
+
+### Tree
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `TreeDataItem[] \| TreeDataItem` | — | The tree data to render. |
+| `initialSelectedItemId` | `string` | — | ID of the item selected on initial render. |
+| `onSelectChange` | `(item: TreeDataItem \| undefined) => void` | — | Called when the selected item changes. |
+| `expandAll` | `boolean` | `false` | Expands all nodes on initial render. |
+| `folderIcon` | `LucideIcon` | Folder icon | Custom icon for nodes that have children. |
+| `itemIcon` | `LucideIcon` | File icon | Custom icon for leaf nodes. |
+| `className` | `string` | — | Additional CSS classes. |
+
+### TreeDataItem type
+
+```tsx
+type TreeDataItem = {
+  id: string;
+  name: string;
+  icon?: LucideIcon;
+  children?: TreeDataItem[];
+};
+```

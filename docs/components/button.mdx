@@ -1,0 +1,149 @@
+---
+title: 'Button'
+description: 'Interactive button with 6 style variants and 4 sizes.'
+---
+
+# Button
+
+The `Button` component is the primary action element. It supports 6 visual variants, 4 sizes, and can render as any element via the `asChild` prop.
+
+## Import
+
+```tsx
+import { Button } from '@clidey/ux';
+```
+
+## Variants
+
+```tsx
+<Button variant="default">Default</Button>
+<Button variant="destructive">Destructive</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="link">Link</Button>
+```
+
+| Variant | Description |
+| --- | --- |
+| `default` | Solid primary color background. Use for the main action. |
+| `destructive` | Red background. Use for irreversible or dangerous actions. |
+| `outline` | Transparent background with border. Use for secondary actions. |
+| `secondary` | Muted background. Use for less prominent actions. |
+| `ghost` | No background or border, only hover state. Use in toolbars or inline. |
+| `link` | Underlined text, no button shape. Use for inline navigation actions. |
+
+## Sizes
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="default">Default</Button>
+<Button size="lg">Large</Button>
+<Button size="icon"><SearchIcon /></Button>
+```
+
+| Size | Height | Use case |
+| --- | --- | --- |
+| `sm` | 32px (`h-8`) | Compact UIs, table rows |
+| `default` | 36px (`h-9`) | Standard forms and toolbars |
+| `lg` | 40px (`h-10`) | Hero sections, prominent CTAs |
+| `icon` | 36×36px | Icon-only buttons — use with `aria-label` |
+
+## With icons
+
+Place Lucide icons inside the button. They automatically scale to match the button size:
+
+```tsx
+import { Plus, Download, Trash2 } from 'lucide-react';
+
+<Button>
+  <Plus />
+  Add item
+</Button>
+
+<Button variant="outline">
+  <Download />
+  Export
+</Button>
+
+<Button variant="destructive" size="icon" aria-label="Delete">
+  <Trash2 />
+</Button>
+```
+
+## Loading state
+
+Disable the button and show a spinner while an async action is in progress:
+
+```tsx
+import { Button, Spinner } from '@clidey/ux';
+import { useState } from 'react';
+
+function SaveButton() {
+  const [loading, setLoading] = useState(false);
+
+  async function handleSave() {
+    setLoading(true);
+    await saveData();
+    setLoading(false);
+  }
+
+  return (
+    <Button onClick={handleSave} disabled={loading}>
+      {loading && <Spinner size="sm" />}
+      {loading ? 'Saving...' : 'Save changes'}
+    </Button>
+  );
+}
+```
+
+## Render as a link (asChild)
+
+Use `asChild` to render the button as an `<a>` tag or any other element while keeping button styles:
+
+```tsx
+import { Button } from '@clidey/ux';
+
+// Render as native anchor
+<Button asChild>
+  <a href="/dashboard">Go to Dashboard</a>
+</Button>
+
+// With React Router
+import { Link } from 'react-router-dom';
+<Button asChild>
+  <Link to="/settings">Settings</Link>
+</Button>
+```
+
+## Full-width button
+
+```tsx
+<Button className="w-full">Create account</Button>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"` | `"default"` | Visual style variant. |
+| `size` | `"default" \| "sm" \| "lg" \| "icon"` | `"default"` | Button size. |
+| `asChild` | `boolean` | `false` | Merge props onto the immediate child element instead of rendering a `<button>`. |
+| `disabled` | `boolean` | `false` | Disables the button and applies muted styling. |
+| `className` | `string` | — | Additional CSS classes. |
+| `children` | `ReactNode` | — | Button content. |
+
+All standard `<button>` HTML attributes (`onClick`, `type`, `form`, etc.) are also accepted.
+
+## buttonVariants utility
+
+The `buttonVariants` function lets you apply button styles to non-button elements:
+
+```tsx
+import { buttonVariants } from '@clidey/ux';
+import { Link } from 'react-router-dom';
+
+<Link to="/home" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+  Home
+</Link>
+```

@@ -1,0 +1,103 @@
+---
+title: 'ButtonGroup'
+description: 'Group buttons together with connected borders and shared styling.'
+---
+
+# ButtonGroup
+
+`ButtonGroup` connects multiple buttons visually by removing the gap between them and sharing border-radius at the joints. Use it for toolbars, segmented controls, and action sets.
+
+## Import
+
+```tsx
+import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+<ButtonGroup>
+  <Button variant="outline">Cut</Button>
+  <Button variant="outline">Copy</Button>
+  <Button variant="outline">Paste</Button>
+</ButtonGroup>
+```
+
+## Vertical orientation
+
+```tsx
+<ButtonGroup orientation="vertical">
+  <Button variant="outline">Top</Button>
+  <Button variant="outline">Middle</Button>
+  <Button variant="outline">Bottom</Button>
+</ButtonGroup>
+```
+
+## With separator
+
+Use `ButtonGroupSeparator` to add a visual divider inside the group:
+
+```tsx
+<ButtonGroup>
+  <Button variant="outline">Bold</Button>
+  <Button variant="outline">Italic</Button>
+  <ButtonGroupSeparator />
+  <Button variant="outline">Align Left</Button>
+  <Button variant="outline">Align Center</Button>
+  <Button variant="outline">Align Right</Button>
+</ButtonGroup>
+```
+
+## With label text
+
+Use `ButtonGroupText` to insert a non-interactive label or unit inside the group:
+
+```tsx
+<ButtonGroup>
+  <Input className="rounded-r-none border-r-0" placeholder="Amount" />
+  <ButtonGroupText>USD</ButtonGroupText>
+  <Button variant="outline">Convert</Button>
+</ButtonGroup>
+```
+
+## With icons
+
+```tsx
+import { Bold, Italic, Underline } from 'lucide-react';
+
+<ButtonGroup>
+  <Button variant="outline" size="icon" aria-label="Bold">
+    <Bold className="size-4" />
+  </Button>
+  <Button variant="outline" size="icon" aria-label="Italic">
+    <Italic className="size-4" />
+  </Button>
+  <Button variant="outline" size="icon" aria-label="Underline">
+    <Underline className="size-4" />
+  </Button>
+</ButtonGroup>
+```
+
+## Props
+
+### ButtonGroup
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction of the button group. |
+| `className` | `string` | — | Additional CSS classes. |
+| `children` | `ReactNode` | — | `Button`, `ButtonGroupSeparator`, or `ButtonGroupText` elements. |
+
+### ButtonGroupSeparator
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | Inherits from group | Separator direction. |
+| `className` | `string` | — | Additional CSS classes. |
+
+### ButtonGroupText
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | — | Additional CSS classes. |
+| `children` | `ReactNode` | — | Text or element to display. |

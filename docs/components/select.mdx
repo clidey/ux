@@ -1,0 +1,177 @@
+---
+title: 'Select'
+description: 'Dropdown selector with a searchable variant supporting icons.'
+---
+
+# Select
+
+Two components are available: the composable `Select` built on Radix UI, and the ready-to-use `SearchSelect` with built-in search and icon support.
+
+## Import
+
+```tsx
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SearchSelect,
+} from '@clidey/ux';
+```
+
+## Select
+
+### Basic usage
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Pick a fruit" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="apple">Apple</SelectItem>
+    <SelectItem value="banana">Banana</SelectItem>
+    <SelectItem value="cherry">Cherry</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### With groups and labels
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select timezone" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectLabel>Americas</SelectLabel>
+      <SelectItem value="est">Eastern Standard Time (EST)</SelectItem>
+      <SelectItem value="cst">Central Standard Time (CST)</SelectItem>
+      <SelectItem value="pst">Pacific Standard Time (PST)</SelectItem>
+    </SelectGroup>
+    <SelectSeparator />
+    <SelectGroup>
+      <SelectLabel>Europe</SelectLabel>
+      <SelectItem value="gmt">Greenwich Mean Time (GMT)</SelectItem>
+      <SelectItem value="cet">Central European Time (CET)</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>
+```
+
+### Controlled
+
+```tsx
+import { useState } from 'react';
+
+function ControlledSelect() {
+  const [value, setValue] = useState('');
+
+  return (
+    <Select value={value} onValueChange={setValue}>
+      <SelectTrigger>
+        <SelectValue placeholder="Choose an option" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="a">Option A</SelectItem>
+        <SelectItem value="b">Option B</SelectItem>
+        <SelectItem value="c">Option C</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+```
+
+### Small trigger
+
+```tsx
+<SelectTrigger size="sm">
+  <SelectValue placeholder="..." />
+</SelectTrigger>
+```
+
+### SelectTrigger Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `"sm" \| "default"` | `"default"` | Trigger height. `sm` is compact for dense UIs. |
+
+---
+
+## SearchSelect
+
+`SearchSelect` is an all-in-one dropdown with a search input, optional icons, and a single `onChange` callback. It's ideal for long lists like users, countries, or currencies.
+
+### Basic SearchSelect
+
+```tsx
+import { SearchSelect } from '@clidey/ux';
+
+const options = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' },
+  { value: 'svelte', label: 'Svelte' },
+  { value: 'angular', label: 'Angular' },
+];
+
+<SearchSelect
+  options={options}
+  placeholder="Select framework"
+  onChange={(value) => console.log(value)}
+/>
+```
+
+### With icons
+
+```tsx
+import { Code2, Globe, Server } from 'lucide-react';
+
+const options = [
+  { value: 'frontend', label: 'Frontend', icon: <Code2 className="size-4" /> },
+  { value: 'backend', label: 'Backend', icon: <Server className="size-4" /> },
+  { value: 'fullstack', label: 'Full Stack', icon: <Globe className="size-4" /> },
+];
+
+<SearchSelect options={options} placeholder="Select role" />
+```
+
+### Icon-only trigger
+
+When `onlyIcon` is true, the trigger shows only the selected option's icon:
+
+```tsx
+<SearchSelect options={options} onlyIcon onChange={handleChange} />
+```
+
+### SearchSelect Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `options` | `SearchSelectOption[]` | — | List of selectable options. |
+| `placeholder` | `string` | — | Text shown when no option is selected. |
+| `searchPlaceholder` | `string` | `"Search..."` | Placeholder inside the search input. |
+| `value` | `string` | — | Controlled selected value. |
+| `defaultValue` | `string` | — | Uncontrolled default value. |
+| `onChange` | `(value: string) => void` | — | Called when the selection changes. |
+| `onValueChange` | `(value: string) => void` | — | Alias for `onChange`. |
+| `disabled` | `boolean` | `false` | Disables the trigger. |
+| `onlyIcon` | `boolean` | `false` | Shows only the icon in the trigger button. |
+| `side` | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Preferred popover side. |
+| `align` | `"start" \| "center" \| "end"` | `"start"` | Alignment relative to the trigger. |
+| `className` | `string` | — | Additional CSS classes on the trigger. |
+
+### SearchSelectOption type
+
+```tsx
+type SearchSelectOption = {
+  value: string;
+  label: string;
+  icon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+};
+```

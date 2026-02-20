@@ -1,0 +1,66 @@
+---
+title: 'Label'
+description: 'Accessible form label that links to its associated control.'
+---
+
+# Label
+
+`Label` is a styled form label built on Radix UI's `@radix-ui/react-label` primitive. It handles `htmlFor` linking, disabled state (via group data attributes), and renders accessible markup.
+
+## Import
+
+```tsx
+import { Label } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+import { Label, Input } from '@clidey/ux';
+
+<div className="space-y-1">
+  <Label htmlFor="email">Email address</Label>
+  <Input id="email" type="email" placeholder="you@example.com" />
+</div>
+```
+
+## With required indicator
+
+```tsx
+<Label htmlFor="username">
+  Username <span className="text-destructive">*</span>
+</Label>
+```
+
+## Disabled state
+
+When a parent element has the `data-disabled` attribute, the label text appears muted automatically:
+
+```tsx
+<div data-disabled>
+  <Label htmlFor="field">Disabled field</Label>
+  <Input id="field" disabled />
+</div>
+```
+
+## With Checkbox
+
+```tsx
+import { Checkbox, Label } from '@clidey/ux';
+
+<div className="flex items-center gap-2">
+  <Checkbox id="agree" />
+  <Label htmlFor="agree">I agree to the terms of service</Label>
+</div>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `htmlFor` | `string` | — | ID of the form element this label describes. |
+| `className` | `string` | — | Additional CSS classes. |
+| `children` | `ReactNode` | — | Label text or content. |
+| `asChild` | `boolean` | `false` | Merge props onto the immediate child element. |
+
+All standard `<label>` HTML attributes are accepted.

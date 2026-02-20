@@ -1,0 +1,166 @@
+---
+title: 'DropdownMenu'
+description: 'Menu triggered by a button with items, checkboxes, radio groups, and sub-menus.'
+---
+
+# DropdownMenu
+
+`DropdownMenu` opens a floating menu when a trigger element is clicked. It supports standard items, checkbox items, radio groups, separators, shortcuts, and nested sub-menus.
+
+## Import
+
+```tsx
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuShortcut,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from '@clidey/ux';
+```
+
+## Basic menu
+
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Options</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Profile</DropdownMenuItem>
+    <DropdownMenuItem>Settings</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive">Sign out</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+## With labels and shortcuts
+
+```tsx
+<DropdownMenuContent>
+  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+  <DropdownMenuSeparator />
+  <DropdownMenuGroup>
+    <DropdownMenuItem>
+      Profile
+      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+    </DropdownMenuItem>
+    <DropdownMenuItem>
+      Settings
+      <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
+    </DropdownMenuItem>
+  </DropdownMenuGroup>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem variant="destructive">
+    Log out
+    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+  </DropdownMenuItem>
+</DropdownMenuContent>
+```
+
+## With icons
+
+```tsx
+import { User, Settings, LogOut } from 'lucide-react';
+
+<DropdownMenuContent>
+  <DropdownMenuItem>
+    <User className="size-4" />
+    Profile
+  </DropdownMenuItem>
+  <DropdownMenuItem>
+    <Settings className="size-4" />
+    Settings
+  </DropdownMenuItem>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem variant="destructive">
+    <LogOut className="size-4" />
+    Sign out
+  </DropdownMenuItem>
+</DropdownMenuContent>
+```
+
+## Checkbox items
+
+```tsx
+function ViewMenu() {
+  const [showStatusBar, setShowStatusBar] = useState(true);
+  const [showPanel, setShowPanel] = useState(false);
+
+  return (
+    <DropdownMenuContent>
+      <DropdownMenuLabel>View</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuCheckboxItem
+        checked={showStatusBar}
+        onCheckedChange={setShowStatusBar}
+      >
+        Status bar
+      </DropdownMenuCheckboxItem>
+      <DropdownMenuCheckboxItem
+        checked={showPanel}
+        onCheckedChange={setShowPanel}
+      >
+        Side panel
+      </DropdownMenuCheckboxItem>
+    </DropdownMenuContent>
+  );
+}
+```
+
+## Radio group
+
+```tsx
+function ThemeMenu() {
+  const [theme, setTheme] = useState('system');
+
+  return (
+    <DropdownMenuContent>
+      <DropdownMenuLabel>Theme</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+        <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
+      </DropdownMenuRadioGroup>
+    </DropdownMenuContent>
+  );
+}
+```
+
+## Sub-menu
+
+```tsx
+<DropdownMenuContent>
+  <DropdownMenuItem>New file</DropdownMenuItem>
+  <DropdownMenuSub>
+    <DropdownMenuSubTrigger>Share</DropdownMenuSubTrigger>
+    <DropdownMenuSubContent>
+      <DropdownMenuItem>Copy link</DropdownMenuItem>
+      <DropdownMenuItem>Email</DropdownMenuItem>
+      <DropdownMenuItem>Slack</DropdownMenuItem>
+    </DropdownMenuSubContent>
+  </DropdownMenuSub>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+</DropdownMenuContent>
+```
+
+## DropdownMenuItem Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "destructive"` | `"default"` | `"destructive"` shows the item in red. |
+| `inset` | `boolean` | `false` | Adds left padding to align with items that have icons. |
+| `disabled` | `boolean` | `false` | Disables the item. |
+| `onSelect` | `(event: Event) => void` | — | Called when the item is selected. |

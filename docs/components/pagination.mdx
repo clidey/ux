@@ -1,0 +1,145 @@
+---
+title: 'Pagination'
+description: 'Page navigation controls with previous, next, and numbered links.'
+---
+
+# Pagination
+
+`Pagination` provides navigation controls for multi-page content. It includes previous/next buttons, numbered page links, and an ellipsis for large page ranges.
+
+## Import
+
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from '@clidey/ux';
+```
+
+## Basic pagination
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="/page/1" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="/page/1">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="/page/2" isActive>2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="/page/3">3</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="/page/3" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+## With ellipsis (large page counts)
+
+```tsx
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href={`/page/${currentPage - 1}`} />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="/page/1">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="/page/7">7</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="/page/8" isActive>8</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="/page/9">9</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="/page/20">20</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href={`/page/${currentPage + 1}`} />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+## Click-based pagination
+
+```tsx
+function DataTable() {
+  const [page, setPage] = useState(1);
+  const totalPages = 10;
+
+  return (
+    <>
+      {/* table content */}
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className={page === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+            />
+          </PaginationItem>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <PaginationItem key={p}>
+              <PaginationLink
+                isActive={p === page}
+                onClick={() => setPage(p)}
+                className="cursor-pointer"
+              >
+                {p}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              className={page === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </>
+  );
+}
+```
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `Pagination` | Root `<nav>` element. |
+| `PaginationContent` | `<ul>` container for items. |
+| `PaginationItem` | `<li>` wrapper for each element. |
+| `PaginationLink` | Numbered page link. |
+| `PaginationPrevious` | Previous page button with arrow icon. |
+| `PaginationNext` | Next page button with arrow icon. |
+| `PaginationEllipsis` | `...` indicator for skipped pages. |
+
+### PaginationLink Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `isActive` | `boolean` | `false` | Highlights the link as the current page. |
+| `size` | `"icon"` | `"icon"` | Renders as an icon-sized button. |
+| `href` | `string` | — | Navigation URL. |
+| `className` | `string` | — | Additional CSS classes. |

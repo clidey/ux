@@ -1,0 +1,108 @@
+---
+title: 'Progress'
+description: 'Linear progress bar for showing completion percentage.'
+---
+
+# Progress
+
+`Progress` is a horizontal progress bar that visually represents a completion percentage. Built on Radix UI's progress primitive.
+
+## Import
+
+```tsx
+import { Progress } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+<Progress value={60} />
+```
+
+## Controlled progress
+
+```tsx
+import { useState } from 'react';
+
+function UploadProgress() {
+  const [progress, setProgress] = useState(0);
+
+  function startUpload() {
+    // Simulate upload progress
+    let p = 0;
+    const interval = setInterval(() => {
+      p += 10;
+      setProgress(p);
+      if (p >= 100) clearInterval(interval);
+    }, 300);
+  }
+
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between text-sm">
+        <span>Uploading file...</span>
+        <span>{progress}%</span>
+      </div>
+      <Progress value={progress} />
+      <button onClick={startUpload}>Start</button>
+    </div>
+  );
+}
+```
+
+## With label
+
+```tsx
+<div className="space-y-1">
+  <div className="flex justify-between text-sm">
+    <span>Storage used</span>
+    <span>73%</span>
+  </div>
+  <Progress value={73} />
+  <p className="text-xs text-muted-foreground">7.3 GB of 10 GB used</p>
+</div>
+```
+
+## Step completion
+
+```tsx
+const steps = ['Account', 'Profile', 'Billing', 'Done'];
+const currentStep = 2; // 0-indexed
+
+<div className="space-y-2">
+  <div className="flex justify-between text-sm text-muted-foreground">
+    <span>Step {currentStep + 1} of {steps.length}</span>
+    <span>{steps[currentStep]}</span>
+  </div>
+  <Progress value={(currentStep / (steps.length - 1)) * 100} />
+</div>
+```
+
+## Multiple bars
+
+```tsx
+<div className="space-y-3">
+  {[
+    { label: 'JavaScript', value: 85 },
+    { label: 'TypeScript', value: 72 },
+    { label: 'Python', value: 60 },
+    { label: 'Rust', value: 35 },
+  ].map((lang) => (
+    <div key={lang.label} className="space-y-1">
+      <div className="flex justify-between text-sm">
+        <span>{lang.label}</span>
+        <span>{lang.value}%</span>
+      </div>
+      <Progress value={lang.value} />
+    </div>
+  ))}
+</div>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | `0` | Current progress value from `0` to `100`. |
+| `max` | `number` | `100` | Maximum value. Change if your progress scale isn't 0–100. |
+| `className` | `string` | — | Additional CSS classes. |

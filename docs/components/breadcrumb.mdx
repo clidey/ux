@@ -1,0 +1,135 @@
+---
+title: 'Breadcrumb'
+description: 'Hierarchical navigation path showing current location.'
+---
+
+# Breadcrumb
+
+`Breadcrumb` shows a trail of links representing the current page's position in the site hierarchy.
+
+## Import
+
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from '@clidey/ux';
+```
+
+## Basic breadcrumb
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/projects">Projects</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>Project Alpha</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+## With ellipsis (deep paths)
+
+Use `BreadcrumbEllipsis` to collapse intermediate paths:
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbEllipsis />
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/projects/alpha/tasks">Tasks</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>Task #42</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+## With React Router
+
+Use `asChild` on `BreadcrumbLink` to render as a React Router `Link`:
+
+```tsx
+import { Link } from 'react-router-dom';
+
+<BreadcrumbLink asChild>
+  <Link to="/projects">Projects</Link>
+</BreadcrumbLink>
+```
+
+## Custom separator
+
+```tsx
+import { ChevronRight } from 'lucide-react';
+
+<BreadcrumbSeparator>
+  <ChevronRight className="size-3" />
+</BreadcrumbSeparator>
+```
+
+## Dynamic breadcrumbs
+
+```tsx
+function PageBreadcrumb({ segments }: { segments: { label: string; href: string }[] }) {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        {segments.map((seg, i) => (
+          <React.Fragment key={seg.href}>
+            <BreadcrumbItem>
+              {i === segments.length - 1 ? (
+                <BreadcrumbPage>{seg.label}</BreadcrumbPage>
+              ) : (
+                <BreadcrumbLink href={seg.href}>{seg.label}</BreadcrumbLink>
+              )}
+            </BreadcrumbItem>
+            {i < segments.length - 1 && <BreadcrumbSeparator />}
+          </React.Fragment>
+        ))}
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+```
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `Breadcrumb` | Root `<nav>` element with `aria-label="breadcrumb"`. |
+| `BreadcrumbList` | `<ol>` container for breadcrumb items. |
+| `BreadcrumbItem` | `<li>` wrapper for each breadcrumb entry. |
+| `BreadcrumbLink` | Clickable link for navigable ancestors. |
+| `BreadcrumbPage` | Non-linked current page label. |
+| `BreadcrumbSeparator` | Visual separator between items (default: `/`). |
+| `BreadcrumbEllipsis` | `...` button to indicate collapsed segments. |
+
+### BreadcrumbLink Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | `false` | Render as the child element (e.g., React Router `Link`). |
+| `href` | `string` | — | Navigation URL. |
+| `className` | `string` | — | Additional CSS classes. |

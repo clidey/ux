@@ -1,0 +1,114 @@
+---
+title: 'Checkbox'
+description: 'Accessible checkbox input built on Radix UI.'
+---
+
+# Checkbox
+
+`Checkbox` is an accessible checkbox built on Radix UI's `@radix-ui/react-checkbox` primitive. A check icon appears when the box is checked.
+
+## Import
+
+```tsx
+import { Checkbox } from '@clidey/ux';
+```
+
+## Basic usage
+
+```tsx
+<Checkbox id="terms" />
+```
+
+## With label
+
+Always pair a checkbox with a visible `<Label>` for accessibility:
+
+```tsx
+import { Checkbox, Label } from '@clidey/ux';
+
+<div className="flex items-center gap-2">
+  <Checkbox id="terms" />
+  <Label htmlFor="terms">
+    I agree to the terms and conditions
+  </Label>
+</div>
+```
+
+## Controlled
+
+```tsx
+import { useState } from 'react';
+
+function ControlledCheckbox() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <div className="flex items-center gap-2">
+      <Checkbox
+        id="notify"
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+      <Label htmlFor="notify">Email notifications</Label>
+    </div>
+  );
+}
+```
+
+## Disabled
+
+```tsx
+<div className="flex items-center gap-2">
+  <Checkbox id="disabled" disabled />
+  <Label htmlFor="disabled">This option is unavailable</Label>
+</div>
+```
+
+## Checkbox list
+
+```tsx
+const options = [
+  { id: 'email', label: 'Email notifications' },
+  { id: 'sms', label: 'SMS notifications' },
+  { id: 'push', label: 'Push notifications' },
+];
+
+function NotificationPrefs() {
+  const [selected, setSelected] = useState<string[]>([]);
+
+  function toggle(id: string) {
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {options.map((opt) => (
+        <div key={opt.id} className="flex items-center gap-2">
+          <Checkbox
+            id={opt.id}
+            checked={selected.includes(opt.id)}
+            onCheckedChange={() => toggle(opt.id)}
+          />
+          <Label htmlFor={opt.id}>{opt.label}</Label>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | `boolean \| "indeterminate"` | — | Controlled checked state. |
+| `defaultChecked` | `boolean` | `false` | Uncontrolled default state. |
+| `onCheckedChange` | `(checked: boolean \| "indeterminate") => void` | — | Called when the state changes. |
+| `disabled` | `boolean` | `false` | Disables interaction. |
+| `required` | `boolean` | `false` | Marks the checkbox as required in a form. |
+| `name` | `string` | — | Form field name for native form submission. |
+| `value` | `string` | `"on"` | Value submitted with form data when checked. |
+| `id` | `string` | — | Links to a `<Label htmlFor>`. |
+| `className` | `string` | — | Additional CSS classes. |

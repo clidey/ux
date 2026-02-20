@@ -1,0 +1,89 @@
+---
+title: 'Spinner'
+description: 'Animated loading indicator with color variants and sizes.'
+---
+
+# Spinner
+
+`Spinner` is an animated circular loader with 5 color variants and flexible sizing options.
+
+## Import
+
+```tsx
+import { Spinner } from '@clidey/ux';
+```
+
+## Variants
+
+```tsx
+<Spinner variant="default" />
+<Spinner variant="primary" />
+<Spinner variant="secondary" />
+<Spinner variant="destructive" />
+<Spinner variant="muted" />
+```
+
+| Variant | Color |
+| --- | --- |
+| `default` | Foreground color |
+| `primary` | Primary brand color |
+| `secondary` | Secondary background |
+| `destructive` | Red/destructive color |
+| `muted` | Muted foreground |
+
+## Sizes
+
+```tsx
+<Spinner size="sm" />    {/* 16px */}
+<Spinner size="default" /> {/* 20px */}
+<Spinner size="lg" />    {/* 32px */}
+<Spinner size={48} />    {/* custom px */}
+```
+
+## Inside a button
+
+```tsx
+<Button disabled>
+  <Spinner size="sm" variant="default" />
+  Loading...
+</Button>
+```
+
+## Full-page loading
+
+```tsx
+function LoadingScreen() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <Spinner size="lg" variant="primary" />
+    </div>
+  );
+}
+```
+
+## Inline loading in content
+
+```tsx
+function DataSection() {
+  const { data, loading } = useData();
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <Spinner size="sm" variant="muted" />
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
+  return <div>{/* render data */}</div>;
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "primary" \| "secondary" \| "destructive" \| "muted"` | `"default"` | Color variant. |
+| `size` | `"sm" \| "default" \| "lg" \| number` | `"default"` | Spinner size. Pass a number for custom pixel size. |
+| `className` | `string` | — | Additional CSS classes. |

@@ -1,0 +1,143 @@
+---
+title: 'Card'
+description: 'Container component with header, content, and footer sub-components.'
+---
+
+# Card
+
+`Card` is a flexible container for grouping related content. It composes from seven sub-components: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, and `CardFooter`.
+
+## Import
+
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardAction,
+  CardContent,
+  CardFooter,
+} from '@clidey/ux';
+```
+
+## Basic card
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Project Alpha</CardTitle>
+    <CardDescription>Last updated 3 minutes ago</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>This project is on track for the Q2 release.</p>
+  </CardContent>
+</Card>
+```
+
+## Card with action
+
+`CardAction` positions its content to the top-right of the header area:
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>API Usage</CardTitle>
+    <CardDescription>Current billing period</CardDescription>
+    <CardAction>
+      <Button variant="ghost" size="sm">View details</Button>
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    <p className="text-2xl font-bold">84,231 <span className="text-sm font-normal text-muted-foreground">/ 100,000 requests</span></p>
+  </CardContent>
+</Card>
+```
+
+## Card with footer
+
+```tsx
+<Card className="max-w-sm">
+  <CardHeader>
+    <CardTitle>Free Plan</CardTitle>
+    <CardDescription>Everything you need to get started.</CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-2">
+    <p>✓ Up to 3 projects</p>
+    <p>✓ 1,000 API requests/month</p>
+    <p>✓ Community support</p>
+  </CardContent>
+  <CardFooter>
+    <Button className="w-full">Get started for free</Button>
+  </CardFooter>
+</Card>
+```
+
+## Stat card
+
+A common pattern for displaying a single metric:
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardDescription>Total Revenue</CardDescription>
+    <CardAction>
+      <Badge variant="secondary">+12.5%</Badge>
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    <p className="text-3xl font-bold">$45,231.89</p>
+  </CardContent>
+  <CardFooter>
+    <p className="text-sm text-muted-foreground">+$2,350 from last month</p>
+  </CardFooter>
+</Card>
+```
+
+## Clickable card
+
+Wrap the card in a link or add an `onClick` handler:
+
+```tsx
+<Card
+  className="cursor-pointer hover:shadow-md transition-shadow"
+  onClick={() => navigate('/projects/alpha')}
+>
+  <CardHeader>
+    <CardTitle>Project Alpha</CardTitle>
+    <CardDescription>Click to open</CardDescription>
+  </CardHeader>
+</Card>
+```
+
+## Grid of cards
+
+```tsx
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {projects.map((project) => (
+    <Card key={project.id}>
+      <CardHeader>
+        <CardTitle>{project.name}</CardTitle>
+        <CardDescription>{project.description}</CardDescription>
+      </CardHeader>
+      <CardFooter>
+        <Badge>{project.status}</Badge>
+      </CardFooter>
+    </Card>
+  ))}
+</div>
+```
+
+## Sub-components
+
+| Component | Description |
+| --- | --- |
+| `Card` | The outer container. Renders a `<div>` with border, background, and rounded corners. |
+| `CardHeader` | Top section with a grid layout to accommodate `CardAction`. |
+| `CardTitle` | Semibold heading text inside the header. |
+| `CardDescription` | Muted smaller text below the title. |
+| `CardAction` | Absolute-positioned slot in the top-right of the header. |
+| `CardContent` | Main body area with padding. |
+| `CardFooter` | Bottom section with flex layout for actions. |
+
+All sub-components accept `className` and `children` props, plus standard `<div>` HTML attributes.
