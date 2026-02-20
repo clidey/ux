@@ -385,8 +385,10 @@ function TableDrawer() {
     )
   }
   
+  if (!context.isDrawerOpen) return null
+
   return (
-    <Drawer open={context.isDrawerOpen} onOpenChange={context.setIsDrawerOpen}>
+    <Drawer open onOpenChange={context.setIsDrawerOpen}>
       <DrawerContent className="min-h-[40vh] px-8 pb-8 max-h-[70vh]">
         <DrawerHeader>
           <DrawerTitle className="self-start">Preview</DrawerTitle>
