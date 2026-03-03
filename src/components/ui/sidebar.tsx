@@ -158,6 +158,9 @@ function Sidebar({
   side = "left",
   variant = "sidebar",
   collapsible = "offcanvas",
+  defaultOpen = true,
+  open: openProp,
+  onOpenChange: setOpenProp,
   className,
   children,
   ...props
@@ -165,8 +168,45 @@ function Sidebar({
   side?: "left" | "right"
   variant?: "sidebar" | "floating" | "inset" | "embed"
   collapsible?: "offcanvas" | "icon" | "none"
+  defaultOpen?: boolean
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const { isMobile, state: outerState, openMobile, setOpenMobile } = useSidebar()
+
+  // Embed variant manages its own open state independently from the outer sidebar
+  const [_embedOpen, _setEmbedOpen] = React.useState(defaultOpen)
+  const embedOpen = openProp ?? _embedOpen
+  const setEmbedOpen = React.useCallback(
+    (value: boolean | ((value: boolean) => boolean)) => {
+      const openState = typeof value === "function" ? value(embedOpen) : value
+      if (setOpenProp) {
+        setOpenProp(openState)
+      } else {
+        _setEmbedOpen(openState)
+      }
+    },
+    [setOpenProp, embedOpen]
+  )
+  const toggleEmbedSidebar = React.useCallback(
+    () => setEmbedOpen((open) => !open),
+    [setEmbedOpen]
+  )
+  const embedState = embedOpen ? "expanded" : "collapsed"
+  const embedContextValue = React.useMemo<SidebarContextProps>(
+    () => ({
+      state: embedState,
+      open: embedOpen,
+      setOpen: setEmbedOpen,
+      isMobile,
+      openMobile: false,
+      setOpenMobile: () => {},
+      toggleSidebar: toggleEmbedSidebar,
+    }),
+    [embedState, embedOpen, setEmbedOpen, isMobile, toggleEmbedSidebar]
+  )
+
+  const state = variant === "embed" ? embedState : outerState
 
   if (collapsible === "none") {
     return (
@@ -183,7 +223,7 @@ function Sidebar({
     )
   }
 
-  if (isMobile) {
+  if (isMobile && variant !== "embed") {
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
@@ -208,9 +248,9 @@ function Sidebar({
     )
   }
 
-  return (
+  const sidebarContent = (
     <div
-      className="group peer text-sidebar-foreground hidden md:block"
+      className={cn("group peer text-sidebar-foreground hidden md:block", variant === "embed" && "h-full")}
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
       data-variant={variant}
@@ -232,7 +272,8 @@ function Sidebar({
       <div
         data-slot="sidebar-container"
         className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+          "fixed inset-y-0 z-10 hidden w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+          variant === "embed" ? "h-full" : "h-svh",
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
             : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
@@ -240,7 +281,7 @@ function Sidebar({
           {
             "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]": variant === "floating" || variant === "inset",
             "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l": variant !== "floating" && variant !== "inset",
-            "static": variant === "embed",
+            "static overflow-hidden group-data-[collapsible=offcanvas]:w-0": variant === "embed",
           },
           className
         )}
@@ -260,6 +301,16 @@ function Sidebar({
       </div>
     </div>
   )
+
+  if (variant === "embed") {
+    return (
+      <SidebarContext.Provider value={embedContextValue}>
+        {sidebarContent}
+      </SidebarContext.Provider>
+    )
+  }
+
+  return sidebarContent
 }
 
 function SidebarTrigger({

@@ -173,7 +173,13 @@ export function OverlaysShowcase() {
                         <SheetTrigger asChild>
                             <Button variant="outline">Open Sheet</Button>
                         </SheetTrigger>
-                        <SheetContent>
+                        <SheetContent footer={
+                            <SheetFooter>
+                                <SheetClose asChild>
+                                    <Button type="submit">Save changes</Button>
+                                </SheetClose>
+                            </SheetFooter>
+                        }>
                             <SheetHeader>
                                 <SheetTitle>Edit profile</SheetTitle>
                                 <SheetDescription>
@@ -194,11 +200,34 @@ export function OverlaysShowcase() {
                                     <Input id="username-sheet" defaultValue="@peduarte" className="col-span-3"/>
                                 </div>
                             </div>
+                        </SheetContent>
+                    </Sheet>
+
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="outline">Open Sheet (Overflow)</Button>
+                        </SheetTrigger>
+                        <SheetContent footer={
                             <SheetFooter>
                                 <SheetClose asChild>
-                                    <Button type="submit">Save changes</Button>
+                                    <Button type="submit">Save all</Button>
                                 </SheetClose>
                             </SheetFooter>
+                        }>
+                            <SheetHeader>
+                                <SheetTitle>Scrollable content</SheetTitle>
+                                <SheetDescription>
+                                    This sheet has more content than fits — scroll to see it all.
+                                </SheetDescription>
+                            </SheetHeader>
+                            <div className="space-y-4 py-4">
+                                {Array.from({length: 20}).map((_, i) => (
+                                    <div key={i} className="space-y-1">
+                                        <Label htmlFor={`field-${i}`}>Field {i + 1}</Label>
+                                        <Input id={`field-${i}`} placeholder={`Enter value for field ${i + 1}`}/>
+                                    </div>
+                                ))}
+                            </div>
                         </SheetContent>
                     </Sheet>
 
