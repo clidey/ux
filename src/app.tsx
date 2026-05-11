@@ -30,6 +30,7 @@ const FeedbackShowcase = lazy(() => import("./showcases/feedback-showcase").then
 const DataShowcase = lazy(() => import("./showcases/data-showcase").then(m => ({default: m.DataShowcase})))
 const ChartsShowcase = lazy(() => import("./showcases/charts-showcase").then(m => ({default: m.ChartsShowcase})))
 const LayoutShowcase = lazy(() => import("./showcases/layout-showcase").then(m => ({default: m.LayoutShowcase})))
+const MapShowcase = lazy(() => import("./showcases/map-showcase").then(m => ({default: m.MapShowcase})))
 
 // Loading component
 const LoadingSection = () => (
@@ -54,7 +55,7 @@ function App() {
           {/* Main Content */}
           <div className="container py-8">
             <Tabs defaultValue="buttons" className="w-full">
-              <TabsList className="grid w-full grid-cols-8 mb-8">
+              <TabsList className="grid w-full grid-cols-9 mb-8">
                 <TabsTrigger value="buttons">Buttons</TabsTrigger>
                 <TabsTrigger value="forms">Forms</TabsTrigger>
                 <TabsTrigger value="navigation">Navigation</TabsTrigger>
@@ -62,6 +63,7 @@ function App() {
                 <TabsTrigger value="feedback">Feedback</TabsTrigger>
                 <TabsTrigger value="data">Data</TabsTrigger>
                 <TabsTrigger value="charts">Charts</TabsTrigger>
+                <TabsTrigger value="maps">Maps</TabsTrigger>
                 <TabsTrigger value="layout">Layout</TabsTrigger>
               </TabsList>
 
@@ -111,6 +113,13 @@ function App() {
               <TabsContent value="charts" className="space-y-6">
                 <Suspense fallback={<LoadingSection/>}>
                   <ChartsShowcase/>
+                </Suspense>
+              </TabsContent>
+
+              {/* Maps Showcase */}
+              <TabsContent value="maps" className="space-y-6">
+                <Suspense fallback={<LoadingSection/>}>
+                  <MapShowcase/>
                 </Suspense>
               </TabsContent>
 
