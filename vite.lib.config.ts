@@ -73,7 +73,7 @@ export default defineConfig({
         'vaul',
         'react-map-gl',
         'react-map-gl/maplibre',
-        'maplibre-gl',
+        /^maplibre-gl(?!.*\.css)/,
       ],
       output: {
         globals: {

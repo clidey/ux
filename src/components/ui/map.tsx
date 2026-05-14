@@ -10,8 +10,6 @@ import MapGL, {
   type ViewState,
 } from "react-map-gl/maplibre"
 import type { LayerSpecification } from "maplibre-gl"
-import "maplibre-gl/dist/maplibre-gl.css"
-
 import { cn } from "@/lib/utils"
 
 export type MapConfig = {
