@@ -16,9 +16,10 @@
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Checkbox} from "@/components/ui/checkbox"
-import {Input, TextArea} from "@/components/ui/input"
+import {Input, SearchInput, TextArea} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {
+    SearchSelect,
     Select,
     SelectContent,
     SelectGroup,
@@ -30,7 +31,7 @@ import {
 } from "@/components/ui/select"
 import {Separator} from "@/components/ui/separator"
 import {Switch} from "@/components/ui/switch"
-import {Search} from "lucide-react"
+import {Globe, Laptop, Search, Smartphone, Tablet} from "lucide-react"
 
 export function FormsShowcase() {
     return (
@@ -76,6 +77,24 @@ export function FormsShowcase() {
                             <p className="text-sm text-red-500">This field is required</p>
                         </div>
                     </div>
+                    <Separator/>
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Search Input</h3>
+                        <div className="grid gap-4 md:grid-cols-2">
+                            <div className="space-y-2">
+                                <Label htmlFor="search-input">SearchInput Component</Label>
+                                <SearchInput id="search-input" placeholder="Search anything..."/>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="search-disabled">Disabled Search</Label>
+                                <SearchInput id="search-disabled" placeholder="Disabled search" disabled/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <Separator/>
+
                     <div className="space-y-2">
                         <Label htmlFor="textarea">Textarea</Label>
                         <TextArea id="textarea" placeholder="Enter your message here..." rows={4}/>
@@ -179,6 +198,39 @@ export function FormsShowcase() {
                                         <SelectItem value="xl">Extra Large</SelectItem>
                                     </SelectContent>
                                 </Select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <Separator/>
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Search Select (Combobox)</h3>
+                        <div className="grid gap-4 md:grid-cols-2">
+                            <div className="space-y-2">
+                                <Label>Device Type</Label>
+                                <SearchSelect
+                                    options={[
+                                        {value: "desktop", label: "Desktop", icon: <Laptop className="h-4 w-4"/>},
+                                        {value: "mobile", label: "Mobile", icon: <Smartphone className="h-4 w-4"/>},
+                                        {value: "tablet", label: "Tablet", icon: <Tablet className="h-4 w-4"/>},
+                                        {value: "other", label: "Other", icon: <Globe className="h-4 w-4"/>},
+                                    ]}
+                                    placeholder="Select device..."
+                                    searchPlaceholder="Search devices..."
+                                    label="device"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Disabled Search Select</Label>
+                                <SearchSelect
+                                    options={[
+                                        {value: "a", label: "Option A"},
+                                        {value: "b", label: "Option B"},
+                                    ]}
+                                    placeholder="Disabled..."
+                                    disabled
+                                />
                             </div>
                         </div>
                     </div>
