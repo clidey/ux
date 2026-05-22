@@ -8,9 +8,9 @@ RUN pnpm build
 
 
 FROM nginx:alpine
-COPY k8s/config/nginx-default.conf /etc/nginx/conf.d/default.conf
+RUN rm /etc/nginx/conf.d/default.conf
+COPY k8s/config/nginx-default.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
-
 
 CMD ["nginx", "-g", "daemon off;"]
