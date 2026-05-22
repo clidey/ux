@@ -1,33 +1,90 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
+This file is the single source of truth for AI coding assistants (Claude Code, Copilot, Cursor, etc.) working in this repository.
 
-This is a Vite React/TypeScript component library. Public UI components live in `src/components/ui`, theme utilities in `src/components/theme`, hooks in `src/hooks`, and shared helpers in `src/lib`. The package entry point is `src/index.ts`; export new public components there. Demo/showcase code is in `src/showcases`, documentation pages are in `docs`, and tests are in `tests`. Build output is generated in `dist` and should not be edited directly.
+## Commands
 
-## Build, Test, and Development Commands
+```bash
+pnpm dev                   # Start Vite dev server with hot reload
+pnpm build                 # TypeScript check + build demo app
+pnpm build:lib             # Build publishable library (vite.lib.config.ts)
+pnpm preview               # Serve production build locally
+pnpm lint                  # ESLint (typescript-eslint + react-hooks + react-refresh)
+pnpm test                  # Vitest with coverage (watch mode)
+pnpm test:coverage         # Vitest coverage run (CI-style, exits after)
+pnpm docker:push           # Build and push multi-arch Docker image
+```
 
-Use `pnpm` to match the checked-in lockfile and package manager metadata.
+### Running a Single Test
 
-- `pnpm dev` starts the Vite development server for the showcase app.
-- `pnpm build` runs TypeScript project builds and creates the app bundle.
-- `pnpm build:lib` builds the publishable library with `vite.lib.config.ts`.
-- `pnpm lint` runs ESLint across the repository.
-- `pnpm test` runs Vitest with coverage in watch-capable mode.
-- `pnpm test:coverage` runs the coverage suite once for CI-style checks.
-- `pnpm preview` serves the production build locally.
+```bash
+pnpm vitest run tests/button.test.tsx          # Run one test file
+pnpm vitest run -t "renders correctly"         # Run tests matching name
+```
 
-## Coding Style & Naming Conventions
+## Architecture
 
-Write TypeScript and React function components. Prefer existing Radix UI, Tailwind CSS v4, `class-variance-authority`, and `cn` utility patterns before adding new abstractions. Component filenames use kebab case, for example `alert-dialog.tsx`; exported component names use PascalCase. Keep aliases such as `@/lib/utils` for source imports. Follow the surrounding file style for quote and semicolon usage, and run `pnpm lint` before submitting changes.
+### Overview
+
+This is `@clidey/ux` — a React component library built on Radix UI primitives with Tailwind CSS v4 styling. It exports 38 UI components, a theme system, and utility functions as an ES module package on npm.
+
+### Key Directories
+
+- `src/components/ui/` — All UI components (kebab-case filenames, PascalCase exports)
+- `src/components/theme/` — ThemeProvider and ModeToggle
+- `src/hooks/` — Custom hooks (e.g., `use-mobile.ts`)
+- `src/lib/utils.ts` — `cn()` class merging utility, `toTitleCase`, `formatDate`
+- `src/index.ts` — **Package entry point; new public components must be exported here**
+- `src/showcases/` — Demo/showcase pages (excluded from lib build and coverage)
+- `tests/` — Vitest test files (`<component>.test.tsx`)
+- `k8s/` — Kubernetes and Docker deployment config
+- `docs/` — Documentation assets
+
+### Build Configuration
+
+Three Vite configs serve different purposes:
+
+- `vite.config.ts` — Dev server and demo app (uses `@vitejs/plugin-react-swc`)
+- `vite.lib.config.ts` — Library build: ES modules only, externalizes all deps, emits TypeScript declarations via `vite-plugin-dts`, bundles CSS
+- `vitest.config.ts` — Test runner with jsdom, `@/*` path alias, v8 coverage
+
+### Core Technologies
+
+- **React 18/19** (peer dependency)
+- **Tailwind CSS v4** with `@tailwindcss/vite` plugin
+- **Radix UI** for accessible primitives
+- **TypeScript** in strict mode (`tsconfig.lib.json` for lib, `tsconfig.app.json` for demo)
+- **class-variance-authority (cva)** for type-safe variant management
+- **cmdk / sonner / vaul / recharts / react-resizable-panels / react-map-gl + maplibre-gl** — integrated component deps
+
+### Path Aliases
+
+`@/*` maps to `./src/*` (configured in all tsconfigs and Vite configs).
+
+## Component Patterns
+
+- Built on Radix UI primitives for accessibility
+- Use `forwardRef` for ref forwarding
+- Use `cva()` for variant definitions with `cn()` for className merging
+- Accept `className` prop for consumer customization
+- Sub-component composition pattern (e.g., `Card` → `CardHeader`, `CardContent`, `CardFooter`)
+- File naming: kebab-case (`alert-dialog.tsx`); export names: PascalCase
+
+## Coding Style
+
+- Use existing patterns (Radix, Tailwind v4, `cn`, `cva`) before introducing new abstractions
+- Follow surrounding file style for quotes and semicolons
+- Use `@/` alias for source imports
+- Run `pnpm lint` before submitting changes
 
 ## Testing Guidelines
 
-Tests use Vitest, jsdom, Testing Library, and `tests/setup.ts`. Add or update `tests/<component>.test.tsx` for UI components and `tests/<hook-or-util>.test.ts` for hooks or utilities. Prefer user-visible queries such as `screen.getByRole` and cover behavior, variants, accessibility states, and disabled/error paths. Coverage reports are produced by V8 in text, JSON, and HTML formats.
+- Tests use Vitest + jsdom + Testing Library (`tests/setup.ts` for global config)
+- Test file naming: `tests/<component>.test.tsx`
+- Prefer user-visible queries (`screen.getByRole`, `screen.getByText`)
+- Cover: behavior, variants, accessibility states, disabled/error paths
+- Coverage: v8 provider, outputs text + JSON + HTML
 
-## Commit & Pull Request Guidelines
+## Commit Style
 
-Recent history uses short imperative subjects such as `fix up default padding...` and occasional conventional prefixes like `feat(docs): add details`. Keep commits focused and descriptive. Pull requests should explain the change, list verification commands run, link relevant issues, and include screenshots or recordings for visual component or documentation changes.
-
-## Security & Configuration Tips
-
-Do not commit secrets, generated credentials, or local environment files. Review `SECURITY.md` for vulnerability reporting expectations. When touching Docker, Kubernetes, or release files under `k8s` and `release`, call out deployment impact in the pull request.
+Short imperative subjects. Keep commits focused. Occasional conventional prefixes (`feat(docs):`, `fix:`). Pull requests should explain the change, list verification commands run, and include screenshots for visual changes.
