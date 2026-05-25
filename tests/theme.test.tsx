@@ -177,7 +177,7 @@ describe('ModeToggle', () => {
             </ThemeProvider>
         );
 
-        const button = screen.getByRole('button');
+        const button = screen.getAllByRole('button', {name: /toggle theme/i})[0];
         expect(screen.getByTestId('theme-display')).toHaveTextContent('light');
 
         // Open dropdown
@@ -229,7 +229,7 @@ describe('ModeToggle', () => {
         expect(document.documentElement).toHaveClass('light');
 
         // Open dropdown and click Dark
-        await user.click(screen.getByRole('button'));
+        await user.click(screen.getAllByRole('button', {name: /toggle theme/i})[0]);
         await user.click(await screen.findByText('Dark'));
         await waitFor(() => {
             expect(document.documentElement).toHaveClass('dark');

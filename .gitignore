@@ -25,3 +25,4 @@ dist-ssr
 
 # Coverage reports
 coverage/
+.codex

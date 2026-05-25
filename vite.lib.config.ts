@@ -71,6 +71,9 @@ export default defineConfig({
         'tailwind-merge',
         'tw-animate-css',
         'vaul',
+        'react-map-gl',
+        'react-map-gl/maplibre',
+        /^maplibre-gl(?!.*\.css)/,
       ],
       output: {
         globals: {

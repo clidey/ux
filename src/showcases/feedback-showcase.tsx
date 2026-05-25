@@ -22,6 +22,7 @@ import {EmptyState} from "@/components/ui/empty-state"
 import {Progress} from "@/components/ui/progress"
 import {Separator} from "@/components/ui/separator"
 import {Skeleton} from "@/components/ui/skeleton"
+import {Spinner} from "@/components/ui/spinner"
 import {toast} from "sonner"
 import {AlertCircle, AlertTriangle, CheckCircle2, FileX, Info, Package, Search, Users} from "lucide-react"
 
@@ -321,6 +322,64 @@ export function FeedbackShowcase() {
                         >
                             Toast with Action
                         </Button>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Spinner</CardTitle>
+                    <CardDescription>Animated loading spinners with variant colors and sizes</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Sizes</h3>
+                        <div className="flex items-center gap-6">
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner size="sm" />
+                                <span className="text-xs text-muted-foreground">sm</span>
+                            </div>
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner size="default" />
+                                <span className="text-xs text-muted-foreground">default</span>
+                            </div>
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner size="lg" />
+                                <span className="text-xs text-muted-foreground">lg</span>
+                            </div>
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner size={40} />
+                                <span className="text-xs text-muted-foreground">40px</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Variants</h3>
+                        <div className="flex items-center gap-6">
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner variant="default" />
+                                <span className="text-xs text-muted-foreground">default</span>
+                            </div>
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner variant="primary" />
+                                <span className="text-xs text-muted-foreground">primary</span>
+                            </div>
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner variant="secondary" />
+                                <span className="text-xs text-muted-foreground">secondary</span>
+                            </div>
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner variant="destructive" />
+                                <span className="text-xs text-muted-foreground">destructive</span>
+                            </div>
+                            <div className="flex flex-col items-center gap-2">
+                                <Spinner variant="muted" />
+                                <span className="text-xs text-muted-foreground">muted</span>
+                            </div>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
