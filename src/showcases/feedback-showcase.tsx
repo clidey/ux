@@ -66,6 +66,54 @@ export function FeedbackShowcase() {
                             Your free trial expires in 3 days. Upgrade now to continue using all features.
                         </AlertDescription>
                     </Alert>
+
+                    <Separator/>
+
+                    <h3 className="text-lg font-semibold">Without Description</h3>
+
+                    <Alert>
+                        <Info className="h-4 w-4"/>
+                        <AlertTitle>Your account has been verified.</AlertTitle>
+                    </Alert>
+
+                    <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4"/>
+                        <AlertTitle>Unable to connect to the server.</AlertTitle>
+                    </Alert>
+
+                    <Separator/>
+
+                    <h3 className="text-lg font-semibold">Without Icon</h3>
+
+                    <Alert>
+                        <AlertTitle>Heads up!</AlertTitle>
+                        <AlertDescription>
+                            You can add components to your app using the CLI.
+                        </AlertDescription>
+                    </Alert>
+
+                    <Alert variant="destructive">
+                        <AlertTitle>Deletion failed</AlertTitle>
+                        <AlertDescription>
+                            The item could not be deleted because it is referenced by other resources.
+                        </AlertDescription>
+                    </Alert>
+
+                    <Separator/>
+
+                    <h3 className="text-lg font-semibold">Description Only</h3>
+
+                    <Alert>
+                        <AlertDescription>
+                            This is a simple informational alert with only a description.
+                        </AlertDescription>
+                    </Alert>
+
+                    <Alert variant="destructive">
+                        <AlertDescription>
+                            Something went wrong. Please try again later.
+                        </AlertDescription>
+                    </Alert>
                 </CardContent>
             </Card>
 
