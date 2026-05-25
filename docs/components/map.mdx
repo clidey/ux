@@ -1,0 +1,349 @@
+---
+title: 'Map'
+description: 'Declarative map components for markers, lines, arcs, polygons, circle layers, and heatmaps. Built on MapLibre GL.'
+---
+
+# Map
+
+A composable set of map components for rendering interactive geographic visualizations. Built on [MapLibre GL](https://maplibre.org/) via `react-map-gl`, with automatic dark/light style detection and a `configKey` pattern for centralized theming.
+
+## Import
+
+```tsx
+import {
+  MapContainer,
+  MapMarker,
+  MapLine,
+  MapArc,
+  MapPolygon,
+  MapCircleLayer,
+  MapHeatmap,
+  useMap,
+} from '@clidey/ux';
+```
+
+## Architecture
+
+`MapContainer` provides context for all child map components. Every child can access the shared `config` via the `useMap()` hook. This is the same pattern used by `ChartContainer`.
+
+```tsx
+const config = {
+  cities: { label: "City", color: "#ef4444" },
+  routes: { label: "Route", color: "#8b5cf6" },
+};
+
+<MapContainer config={config}>
+  <MapMarker configKey="cities" latitude={40.71} longitude={-74.0} />
+  <MapLine configKey="routes" coordinates={[...]} />
+</MapContainer>
+```
+
+## MapContainer
+
+The root component that wraps all map layers. It renders a MapLibre GL map instance.
+
+```tsx
+<MapContainer
+  config={{ primary: { label: "Point", color: "#ef4444" } }}
+  initialViewState={{ latitude: 39.83, longitude: -98.58, zoom: 3 }}
+  className="h-[400px]"
+>
+  {/* child map components */}
+</MapContainer>
+```
+
+### Dark mode
+
+MapContainer automatically selects a light or dark basemap based on the current theme. You can override this with the `mapStyle` prop.
+
+```tsx
+// Force dark style
+<MapContainer
+  config={config}
+  mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+>
+  ...
+</MapContainer>
+```
+
+### Globe projection
+
+Switch from the default flat Mercator to a 3D globe:
+
+```tsx
+<MapContainer
+  config={config}
+  projection="globe"
+  initialViewState={{ latitude: 30, longitude: -30, zoom: 1.5 }}
+>
+  ...
+</MapContainer>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `config` | `MapConfig` | — | Required. Map of keys to `{ label?, color? }` for child theming. |
+| `initialViewState` | `{ latitude, longitude, zoom }` | US center, zoom 3 | Starting camera position. |
+| `projection` | `"mercator" \| "globe"` | `"mercator"` | Map projection mode. |
+| `mapStyle` | `string` | Auto (light/dark) | MapLibre style URL. |
+| `interactive` | `boolean` | `true` | Enable pan, zoom, and rotate. |
+| `showNavigation` | `boolean` | `true` | Show zoom/rotate controls (top-right). |
+| `showScale` | `boolean` | `false` | Show distance scale bar. |
+| `mapRef` | `React.Ref<MapRef>` | — | Ref to the underlying MapLibre instance. |
+| `className` | `string` | — | Additional CSS classes. |
+
+## MapMarker
+
+Renders a circular marker at a geographic coordinate.
+
+```tsx
+<MapMarker
+  latitude={40.7128}
+  longitude={-74.006}
+  color="#ef4444"
+  size={14}
+  label="New York"
+/>
+```
+
+### Using configKey
+
+Instead of hardcoding colors, reference the container's config:
+
+```tsx
+<MapContainer config={{ hub: { label: "Hub", color: "#3b82f6" } }}>
+  <MapMarker latitude={40.71} longitude={-74.0} configKey="hub" />
+</MapContainer>
+```
+
+### Custom marker content
+
+Pass `children` to render any React node instead of the default circle:
+
+```tsx
+<MapMarker latitude={40.71} longitude={-74.0}>
+  <div className="bg-white p-2 rounded shadow text-xs font-bold">HQ</div>
+</MapMarker>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `latitude` | `number` | — | Required. Latitude coordinate. |
+| `longitude` | `number` | — | Required. Longitude coordinate. |
+| `color` | `string` | `var(--chart-1)` | Marker fill color. |
+| `size` | `number` | `12` | Diameter in pixels. |
+| `label` | `string` | — | Text label rendered below the marker. |
+| `configKey` | `string` | — | Key into the container config for color/label. |
+| `children` | `ReactNode` | — | Custom content replaces the default circle. |
+| `onClick` | `() => void` | — | Click handler. |
+
+## MapLine
+
+Draws a line connecting an array of coordinates.
+
+```tsx
+<MapLine
+  coordinates={[
+    [-74.006, 40.7128],
+    [-87.63, 41.88],
+    [-118.24, 34.05],
+  ]}
+  color="#8b5cf6"
+  width={3}
+/>
+```
+
+### Dashed lines
+
+```tsx
+<MapLine coordinates={coords} dashed color="#64748b" />
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `coordinates` | `[longitude, latitude][]` | — | Required. Array of `[lng, lat]` pairs. |
+| `color` | `string` | `var(--chart-2)` | Line stroke color. |
+| `width` | `number` | `2` | Line width in pixels. |
+| `configKey` | `string` | — | Key into container config. |
+| `dashed` | `boolean` | `false` | Render as a dashed line. |
+
+## MapArc
+
+Draws a curved arc between two points — useful for flight routes or connections between distant locations.
+
+```tsx
+<MapArc
+  from={[-74.006, 40.7128]}
+  to={[2.3522, 48.8566]}
+  color="#f59e0b"
+  width={2.5}
+  height={0.4}
+/>
+```
+
+The `height` prop controls how much the arc bows outward (0–1 range). Higher values create more dramatic curves. Best used with `projection="globe"` for a dramatic effect.
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `from` | `[longitude, latitude]` | — | Required. Start point. |
+| `to` | `[longitude, latitude]` | — | Required. End point. |
+| `color` | `string` | `var(--chart-2)` | Arc stroke color. |
+| `width` | `number` | `2` | Arc width in pixels. |
+| `height` | `number` | `0.5` | Arc curvature (0–1). Higher = more curved. |
+| `segments` | `number` | `64` | Number of line segments composing the arc. |
+| `configKey` | `string` | — | Key into container config. |
+
+## MapPolygon
+
+Draws a filled polygon with an optional stroke.
+
+```tsx
+<MapPolygon
+  coordinates={[[
+    [-74.006, 40.7128],
+    [-87.63, 41.88],
+    [-95.37, 29.76],
+    [-74.006, 40.7128],  // close the ring
+  ]]}
+  fillColor="#10b981"
+  fillOpacity={0.2}
+  strokeWidth={2}
+/>
+```
+
+Note: coordinates follow the GeoJSON Polygon format — an array of rings, where each ring is an array of `[lng, lat]` pairs. The first and last point must be identical to close the polygon.
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `coordinates` | `[longitude, latitude][][]` | — | Required. GeoJSON polygon rings. |
+| `fillColor` | `string` | `var(--chart-3)` | Fill color. |
+| `fillOpacity` | `number` | `0.3` | Fill opacity (0–1). |
+| `strokeColor` | `string` | Same as `fillColor` | Border color. |
+| `strokeWidth` | `number` | `2` | Border width in pixels. |
+| `configKey` | `string` | — | Key into container config. |
+
+## MapCircleLayer
+
+Efficiently renders many points as circles using a single MapLibre layer. Better performance than individual `MapMarker` components for large datasets.
+
+```tsx
+<MapCircleLayer
+  points={[
+    { latitude: 40.71, longitude: -74.0, radius: 10 },
+    { latitude: 34.05, longitude: -118.24, radius: 6 },
+    { latitude: 41.88, longitude: -87.63, radius: 8 },
+  ]}
+  color="#3b82f6"
+  opacity={0.7}
+/>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `points` | `{ latitude, longitude, radius?, properties? }[]` | — | Required. Array of point objects. |
+| `color` | `string` | `var(--chart-4)` | Circle fill color. |
+| `opacity` | `number` | `0.6` | Circle opacity (0–1). |
+| `configKey` | `string` | — | Key into container config. |
+
+## MapHeatmap
+
+Renders a density heatmap from an array of weighted points.
+
+```tsx
+<MapHeatmap
+  points={[
+    { latitude: 40.71, longitude: -74.0, weight: 0.9 },
+    { latitude: 34.05, longitude: -118.24, weight: 0.7 },
+    // ... hundreds of points
+  ]}
+  radius={25}
+  intensity={0.8}
+/>
+```
+
+The color ramp transitions from transparent → blue → cyan → green → yellow → red based on point density.
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `points` | `{ latitude, longitude, weight? }[]` | — | Required. Array of weighted points. |
+| `radius` | `number` | `20` | Blur radius in pixels. |
+| `intensity` | `number` | `1` | Heatmap intensity multiplier. |
+| `configKey` | `string` | — | Key into container config. |
+
+## useMap hook
+
+Access the container's config from any child component:
+
+```tsx
+import { useMap } from '@clidey/ux';
+
+function CustomLayer() {
+  const { config } = useMap();
+  const color = config.myKey?.color ?? '#000';
+  // use color in a custom MapLibre layer
+}
+```
+
+Must be rendered inside a `MapContainer`. Throws if used outside one.
+
+## Full example
+
+```tsx
+import {
+  MapContainer,
+  MapMarker,
+  MapLine,
+  MapArc,
+  MapPolygon,
+  MapHeatmap,
+  type MapConfig,
+} from '@clidey/ux';
+
+const config = {
+  cities: { label: "City", color: "#ef4444" },
+  routes: { label: "Route", color: "#8b5cf6" },
+  region: { label: "Region", color: "#10b981" },
+} satisfies MapConfig;
+
+function FlightMap() {
+  return (
+    <MapContainer
+      config={config}
+      projection="globe"
+      initialViewState={{ latitude: 30, longitude: -30, zoom: 1.5 }}
+      className="h-[500px]"
+    >
+      <MapArc
+        from={[-74.006, 40.71]}
+        to={[2.35, 48.86]}
+        color="#f59e0b"
+        width={2.5}
+        height={0.4}
+      />
+      <MapMarker latitude={40.71} longitude={-74.006} configKey="cities" label="NYC" />
+      <MapMarker latitude={48.86} longitude={2.35} configKey="cities" label="Paris" />
+    </MapContainer>
+  );
+}
+```
+
+## Notes
+
+- **No API key required** — MapLibre GL is fully open-source. The default basemap tiles are from CARTO (free for moderate usage).
+- **Coordinate order** — All coordinate arrays use `[longitude, latitude]` order (GeoJSON standard), while marker props use separate `latitude` and `longitude` named parameters.
+- **Performance** — For more than ~50 markers, prefer `MapCircleLayer` over individual `MapMarker` components. For density visualization, use `MapHeatmap`.
+- **Dark mode** — The container auto-detects theme at mount time. If the theme changes dynamically, remount the component or pass `mapStyle` explicitly.

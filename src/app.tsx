@@ -48,7 +48,10 @@ function App() {
             <div className="container flex h-16 items-center justify-between">
               <h1 className="text-brand-foreground dark:text-brand-foreground font-bold text-2xl">Clidey UX - Component
                 Showcase</h1>
-              <ModeToggle/>
+              <div className="flex items-center gap-4">
+                <a href="/docs" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Docs</a>
+                <ModeToggle/>
+              </div>
             </div>
           </header>
 

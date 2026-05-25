@@ -116,7 +116,8 @@
             "pages": [
               "components/table",
               "components/chart",
-              "components/tree"
+              "components/tree",
+              "components/map"
             ]
           },
           {
