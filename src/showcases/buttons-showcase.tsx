@@ -25,28 +25,23 @@ import {AlignCenter, AlignLeft, AlignRight, Bell, Bold, Calendar, Copy, Download
 export function ButtonsShowcase() {
     return (
         <>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Button Variants</CardTitle>
-                    <CardDescription>All available button variants, sizes, and states</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Variants</h3>
-                        <div className="flex flex-wrap gap-4">
-                            <Button>Default</Button>
-                            <Button variant="secondary">Secondary</Button>
-                            <Button variant="destructive">Destructive</Button>
-                            <Button variant="outline">Outline</Button>
-                            <Button variant="ghost">Ghost</Button>
-                            <Button variant="link">Link</Button>
-                        </div>
-                    </div>
+            <section className="space-y-8">
+                <div>
+                    <h2 className="text-lg font-semibold">Variants</h2>
+                    <p className="text-sm text-muted-foreground mt-1">Six button styles for different levels of emphasis.</p>
+                </div>
+                <div className="flex flex-wrap gap-4">
+                    <Button>Default</Button>
+                    <Button variant="secondary">Secondary</Button>
+                    <Button variant="destructive">Destructive</Button>
+                    <Button variant="outline">Outline</Button>
+                    <Button variant="ghost">Ghost</Button>
+                    <Button variant="link">Link</Button>
+                </div>
 
-                    <Separator/>
-
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Sizes</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-muted-foreground">Sizes</h3>
                         <div className="flex flex-wrap items-center gap-4">
                             <Button size="sm">Small</Button>
                             <Button size="default">Default</Button>
@@ -54,37 +49,31 @@ export function ButtonsShowcase() {
                             <Button size="icon"><User className="h-4 w-4"/></Button>
                         </div>
                     </div>
-
-                    <Separator/>
-
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">States & Icons</h3>
+                    <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-muted-foreground">With icons and states</h3>
                         <div className="flex flex-wrap gap-4">
                             <Button disabled>Disabled</Button>
                             <Button><Spinner className="mr-2 h-4 w-4"/>Loading</Button>
                             <Button><Download className="mr-2 h-4 w-4"/>Download</Button>
-                            <Button><Upload className="mr-2 h-4 w-4"/>Upload</Button>
                             <Button variant="destructive"><Trash2 className="mr-2 h-4 w-4"/>Delete</Button>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </section>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Icon Component</CardTitle>
-                    <CardDescription>Lucide icon wrapper with different sizes</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex items-center gap-4">
-                        <Icon icon={<Home/>} size={16}/>
-                        <Icon icon={<Settings/>} size={24}/>
-                        <Icon icon={<Bell/>} size={32}/>
-                        <Icon icon={<Mail/>} className="text-blue-500"/>
-                        <Icon icon={<Calendar/>} className="text-green-500"/>
-                    </div>
-                </CardContent>
-            </Card>
+            <section className="space-y-3">
+                <div>
+                    <h2 className="text-lg font-semibold">Icons</h2>
+                    <p className="text-sm text-muted-foreground mt-1">Lucide icon wrapper with size and color control.</p>
+                </div>
+                <div className="flex items-center gap-4">
+                    <Icon icon={<Home/>} size={16}/>
+                    <Icon icon={<Settings/>} size={24}/>
+                    <Icon icon={<Bell/>} size={32}/>
+                    <Icon icon={<Mail/>} className="text-blue-500"/>
+                    <Icon icon={<Calendar/>} className="text-green-500"/>
+                </div>
+            </section>
 
             <Card>
                 <CardHeader>

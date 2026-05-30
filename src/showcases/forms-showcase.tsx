@@ -73,8 +73,8 @@ export function FormsShowcase() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="error">Input with Error</Label>
-                            <Input id="error" placeholder="Error state" className="border-red-500"/>
-                            <p className="text-sm text-red-500">This field is required</p>
+                            <Input id="error" placeholder="Error state" aria-invalid="true"/>
+                            <p className="text-sm text-destructive">This field is required</p>
                         </div>
                     </div>
                     <Separator/>
@@ -120,8 +120,8 @@ export function FormsShowcase() {
                                 <Label htmlFor="marketing">Receive marketing emails</Label>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <Checkbox id="disabled" disabled/>
-                                <Label htmlFor="disabled" className="text-muted-foreground">Disabled option</Label>
+                                <Checkbox id="disabled-checkbox" disabled/>
+                                <Label htmlFor="disabled-checkbox" className="text-muted-foreground">Disabled option</Label>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <Checkbox id="indeterminate" checked="indeterminate"/>

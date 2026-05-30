@@ -127,13 +127,13 @@ export function OverlaysShowcase() {
                                     <Label htmlFor="name" className="text-right">
                                         Name
                                     </Label>
-                                    <Input id="name" defaultValue="Pedro Duarte" className="col-span-3"/>
+                                    <Input id="name" defaultValue="Luis Guzmán" className="col-span-3"/>
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="username" className="text-right">
                                         Username
                                     </Label>
-                                    <Input id="username" defaultValue="@peduarte" className="col-span-3"/>
+                                    <Input id="username" defaultValue="@luisguzman" className="col-span-3"/>
                                 </div>
                             </div>
                             <DialogFooter>
@@ -191,13 +191,13 @@ export function OverlaysShowcase() {
                                     <Label htmlFor="name-sheet" className="text-right">
                                         Name
                                     </Label>
-                                    <Input id="name-sheet" defaultValue="Pedro Duarte" className="col-span-3"/>
+                                    <Input id="name-sheet" defaultValue="Luis Guzmán" className="col-span-3"/>
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="username-sheet" className="text-right">
                                         Username
                                     </Label>
-                                    <Input id="username-sheet" defaultValue="@peduarte" className="col-span-3"/>
+                                    <Input id="username-sheet" defaultValue="@luisguzman" className="col-span-3"/>
                                 </div>
                             </div>
                         </SheetContent>
@@ -373,8 +373,9 @@ export function OverlaysShowcase() {
                 <CardContent>
                     <ContextMenu>
                         <ContextMenuTrigger
-                            className="flex h-[150px] w-full items-center justify-center rounded-md border border-dashed text-sm">
-                            Right click here
+                            className="flex h-[150px] w-full items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground">
+                            <span className="hidden sm:inline">Right-click to open menu</span>
+                            <span className="sm:hidden">Long-press to open menu</span>
                         </ContextMenuTrigger>
                         <ContextMenuContent className="w-64">
                             <ContextMenuItem>

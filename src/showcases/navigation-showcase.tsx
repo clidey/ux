@@ -53,21 +53,21 @@ export function NavigationShowcase() {
                 <CardContent>
                     <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="item-1">
-                            <AccordionTrigger>Is it accessible?</AccordionTrigger>
+                            <AccordionTrigger>What payment methods do you accept?</AccordionTrigger>
                             <AccordionContent>
-                                Yes. It adheres to the WAI-ARIA design pattern.
+                                We accept Visa, Mastercard, and American Express. All transactions are processed securely through Stripe.
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="item-2">
-                            <AccordionTrigger>Is it styled?</AccordionTrigger>
+                            <AccordionTrigger>Can I cancel my subscription?</AccordionTrigger>
                             <AccordionContent>
-                                Yes. It comes with default styles that matches the other components' aesthetic.
+                                Yes. You can cancel at any time from your account settings. Your access continues until the end of the current billing period.
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="item-3">
-                            <AccordionTrigger>Is it animated?</AccordionTrigger>
+                            <AccordionTrigger>Do you offer team pricing?</AccordionTrigger>
                             <AccordionContent>
-                                Yes. It's animated by default, but you can disable it if you prefer.
+                                Teams of 5 or more get a 20% discount. Contact sales for custom enterprise agreements.
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
@@ -88,25 +88,25 @@ export function NavigationShowcase() {
                         </TabsList>
                         <TabsContent value="account" className="space-y-4">
                             <div className="p-4 border rounded-lg">
-                                <h4 className="font-medium mb-2">Account Settings</h4>
+                                <h4 className="font-medium mb-2">Profile</h4>
                                 <p className="text-sm text-muted-foreground">
-                                    Make changes to your account here. Click save when you're done.
+                                    Display name, email address, and avatar. Visible to other team members.
                                 </p>
                             </div>
                         </TabsContent>
                         <TabsContent value="password" className="space-y-4">
                             <div className="p-4 border rounded-lg">
-                                <h4 className="font-medium mb-2">Password Settings</h4>
+                                <h4 className="font-medium mb-2">Security</h4>
                                 <p className="text-sm text-muted-foreground">
-                                    Change your password here. After saving, you'll be logged out.
+                                    Password, two-factor authentication, and active sessions.
                                 </p>
                             </div>
                         </TabsContent>
                         <TabsContent value="settings" className="space-y-4">
                             <div className="p-4 border rounded-lg">
-                                <h4 className="font-medium mb-2">General Settings</h4>
+                                <h4 className="font-medium mb-2">Notifications</h4>
                                 <p className="text-sm text-muted-foreground">
-                                    Manage your general application settings and preferences.
+                                    Email digests, in-app alerts, and Slack integration preferences.
                                 </p>
                             </div>
                         </TabsContent>

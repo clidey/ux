@@ -53,6 +53,9 @@ import {
 import {Tree, type TreeDataItem} from "@/components/ui/tree"
 import {Button} from "@/components/ui/button"
 import {Badge} from "@/components/ui/badge"
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
+import {Switch} from "@/components/ui/switch"
 import {
     Archive,
     Calculator,
@@ -556,95 +559,90 @@ function VirtualizedTableExample() {
         }
     }
 
-    // Table rendering using primitives from @/components/ui/table
     return (
         <div className="space-y-6">
-            {/* Controls */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="space-x-2">
-                    <label className="text-sm font-medium">Use dynamic row heights?</label>
-                    <input
-                        type="checkbox"
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="flex items-center space-x-2">
+                    <Switch
+                        id="dynamic-row-height"
                         checked={useDynamicRowHeight}
-                        onChange={(e) => setUseDynamicRowHeight(e.target.checked)}
-                        className="rounded"
+                        onCheckedChange={setUseDynamicRowHeight}
                     />
+                    <Label htmlFor="dynamic-row-height">Dynamic row heights</Label>
                 </div>
-                <div className="space-x-2">
-                    <label className="text-sm font-medium">Hide index?</label>
-                    <input
-                        type="checkbox"
+                <div className="flex items-center space-x-2">
+                    <Switch
+                        id="hide-index"
                         checked={hideIndexRow}
-                        onChange={(e) => setHideIndexRow(e.target.checked)}
-                        className="rounded"
+                        onCheckedChange={setHideIndexRow}
                     />
+                    <Label htmlFor="hide-index">Hide index column</Label>
                 </div>
-                <div className="space-x-2">
-                    <label className="text-sm font-medium">Hide header?</label>
-                    <input
-                        type="checkbox"
+                <div className="flex items-center space-x-2">
+                    <Switch
+                        id="hide-header"
                         checked={disableHeader}
-                        onChange={(e) => setDisableHeader(e.target.checked)}
-                        className="rounded"
+                        onCheckedChange={setDisableHeader}
                     />
+                    <Label htmlFor="hide-header">Hide header</Label>
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Num rows</label>
-                    <input
+                    <Label htmlFor="row-count">Row count</Label>
+                    <Input
+                        id="row-count"
                         type="number"
                         value={rowCount}
                         onChange={(e) => setRowCount(parseInt(e.target.value, 10) || 0)}
-                        className="w-full px-3 py-2 border rounded-md"
                     />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Scroll to</label>
-                    <input
+                    <Label htmlFor="scroll-to">Scroll to row</Label>
+                    <Input
+                        id="scroll-to"
                         type="number"
-                        placeholder="Index..."
+                        placeholder="Row index"
                         value={scrollToIndex ?? ''}
                         onChange={(e) => handleScrollToRowChange(e.target.value)}
-                        className="w-full px-3 py-2 border rounded-md"
                     />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">List height</label>
-                    <input
+                    <Label htmlFor="list-height">List height (px)</Label>
+                    <Input
+                        id="list-height"
                         type="number"
                         value={height}
                         onChange={(e) => setHeight(parseInt(e.target.value, 10) || 1)}
-                        className="w-full px-3 py-2 border rounded-md"
                     />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Row height</label>
-                    <input
+                    <Label htmlFor="row-height">Row height (px)</Label>
+                    <Input
+                        id="row-height"
                         type="number"
                         disabled={useDynamicRowHeight}
                         value={rowHeight}
                         onChange={(e) => setRowHeight(parseInt(e.target.value, 10) || 1)}
-                        className="w-full px-3 py-2 border rounded-md disabled:opacity-50"
                     />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Header height</label>
-                    <input
+                    <Label htmlFor="header-height">Header height (px)</Label>
+                    <Input
+                        id="header-height"
                         type="number"
                         value={headerHeight}
                         onChange={(e) => setHeaderHeight(parseInt(e.target.value, 10) || 1)}
-                        className="w-full px-3 py-2 border rounded-md"
                     />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Overscan</label>
-                    <input
+                    <Label htmlFor="overscan">Overscan rows</Label>
+                    <Input
+                        id="overscan"
                         type="number"
                         value={overscanRowCount}
                         onChange={(e) => setOverscanRowCount(parseInt(e.target.value, 10) || 0)}
-                        className="w-full px-3 py-2 border rounded-md"
                     />
                 </div>
             </div>

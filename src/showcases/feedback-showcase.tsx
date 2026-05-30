@@ -27,7 +27,6 @@ import {toast} from "sonner"
 import {AlertCircle, AlertTriangle, CheckCircle2, FileX, Info, Package, Search, Users} from "lucide-react"
 
 export function FeedbackShowcase() {
-    // @ts-ignore
     return (
         <>
             <Card>
@@ -118,14 +117,14 @@ export function FeedbackShowcase() {
                 </CardContent>
             </Card>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Badges</CardTitle>
-                    <CardDescription>Small count and labeling components</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Variants</h3>
+            <section className="space-y-6">
+                <div>
+                    <h2 className="text-lg font-semibold">Badges</h2>
+                    <p className="text-sm text-muted-foreground mt-1">Inline labels for status, counts, and categories.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-muted-foreground">Variants</h3>
                         <div className="flex flex-wrap gap-2">
                             <Badge>Default</Badge>
                             <Badge variant="secondary">Secondary</Badge>
@@ -133,31 +132,17 @@ export function FeedbackShowcase() {
                             <Badge variant="outline">Outline</Badge>
                         </div>
                     </div>
-
-                    <Separator/>
-
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Status Badges</h3>
+                    <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-muted-foreground">Status</h3>
                         <div className="flex flex-wrap gap-2">
-                            <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                Active
-                            </Badge>
-                            <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                                Pending
-                            </Badge>
-                            <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                In Progress
-                            </Badge>
-                            <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
-                                Archived
-                            </Badge>
+                            <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</Badge>
+                            <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Pending</Badge>
+                            <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">In Progress</Badge>
+                            <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">Archived</Badge>
                         </div>
                     </div>
-
-                    <Separator/>
-
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">With Numbers</h3>
+                    <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-muted-foreground">With counts</h3>
                         <div className="flex flex-wrap gap-2">
                             <Badge>New <span className="ml-1">12</span></Badge>
                             <Badge variant="secondary">Messages <span className="ml-1">99+</span></Badge>
@@ -165,8 +150,8 @@ export function FeedbackShowcase() {
                             <Badge variant="outline">Updates <span className="ml-1">5</span></Badge>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </section>
 
             <Card>
                 <CardHeader>
@@ -326,14 +311,14 @@ export function FeedbackShowcase() {
                 </CardContent>
             </Card>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Spinner</CardTitle>
-                    <CardDescription>Animated loading spinners with variant colors and sizes</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Sizes</h3>
+            <section className="space-y-6">
+                <div>
+                    <h2 className="text-lg font-semibold">Spinner</h2>
+                    <p className="text-sm text-muted-foreground mt-1">Animated loading indicator with size and color variants.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-muted-foreground">Sizes</h3>
                         <div className="flex items-center gap-6">
                             <div className="flex flex-col items-center gap-2">
                                 <Spinner size="sm" />
@@ -353,11 +338,8 @@ export function FeedbackShowcase() {
                             </div>
                         </div>
                     </div>
-
-                    <Separator />
-
-                    <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Variants</h3>
+                    <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-muted-foreground">Color variants</h3>
                         <div className="flex items-center gap-6">
                             <div className="flex flex-col items-center gap-2">
                                 <Spinner variant="default" />
@@ -381,8 +363,8 @@ export function FeedbackShowcase() {
                             </div>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </section>
 
             <Card>
                 <CardHeader>
