@@ -101,7 +101,7 @@ The stylesheet exposes CSS custom properties using OKLCH color values. Override 
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.44 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -119,6 +119,22 @@ The stylesheet exposes CSS custom properties using OKLCH color values. Override 
   /* ... dark mode overrides ... */
 }
 ```
+
+### Backdrop token
+
+Overlay components (`Dialog`, `AlertDialog`, `Sheet`, `Drawer`) use the `--backdrop` token for their semi-transparent overlay background instead of a hardcoded color:
+
+```css
+:root {
+  --backdrop: oklch(0 0 0 / 50%);
+}
+
+.dark {
+  --backdrop: oklch(0 0 0 / 60%);
+}
+```
+
+Override `--backdrop` to customize overlay dimming across all modal components at once.
 
 <Tip>
   Values use the OKLCH color space for perceptual uniformity. The format is `oklch(lightness chroma hue)` where lightness is 0-1, chroma is the saturation intensity, and hue is degrees. Achromatic colors use `oklch(L 0 0)`.

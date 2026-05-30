@@ -16,10 +16,14 @@ import {
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
+  ThemedCartesianGrid,
+  ThemedXAxis,
+  ThemedYAxis,
+  ThemedPolarGrid,
 } from '@clidey/ux';
 ```
 
-You still import chart primitives from Recharts directly:
+You can still import chart primitives from Recharts directly, but the themed wrappers above are recommended for consistent styling:
 
 ```tsx
 import {
@@ -164,6 +168,35 @@ type ChartConfig = {
   };
 };
 ```
+
+## Themed axis and grid components
+
+The library exports pre-styled wrappers for Recharts grid and axis primitives. These automatically apply theme-aware colors so charts look correct in both light and dark mode without manual styling.
+
+| Component | Wraps | Default styling |
+| --- | --- | --- |
+| `ThemedCartesianGrid` | `CartesianGrid` | Uses `--border` color at 50% opacity. |
+| `ThemedXAxis` | `XAxis` | Tick text uses `--muted-foreground`; hides tick lines and axis line. |
+| `ThemedYAxis` | `YAxis` | Tick text uses `--muted-foreground`; hides tick lines and axis line. |
+| `ThemedPolarGrid` | `PolarGrid` | Uses `--border` color for grid lines. |
+
+### Usage
+
+Replace raw Recharts primitives with the themed versions:
+
+```tsx
+<ChartContainer config={chartConfig} className="h-64">
+  <BarChart data={data}>
+    <ThemedCartesianGrid strokeDasharray="3 3" />
+    <ThemedXAxis dataKey="month" />
+    <ThemedYAxis />
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <Bar dataKey="revenue" fill="var(--color-revenue)" radius={4} />
+  </BarChart>
+</ChartContainer>
+```
+
+All standard Recharts props are forwarded, so you can override any defaults when needed.
 
 ## useChart hook
 
