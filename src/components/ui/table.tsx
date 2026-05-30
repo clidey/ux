@@ -15,6 +15,7 @@
  */
 
 import { cn } from "@/lib/utils"
+import { ComponentErrorBoundary } from "@/lib/error-boundary"
 import { EyeIcon } from "lucide-react"
 import * as React from "react"
 import { Button } from "./button"
@@ -204,34 +205,36 @@ function VirtualizedTableBody({
   const bottomSpacerHeight = Math.max(0, totalHeight - getRowPosition(endIndex + 1))
 
   return (
-    <TableBody
-      data-slot="table-body"
-      ref={containerRef}
-      style={{
-        height: innerHeight,
-        ...style,
-      }}
-      className={cn("block [&_tr:last-child]:border-0 overflow-hidden overflow-y-visible w-full", className)}
-    >
-      {topSpacerHeight > 0 && (
-        <TableRow aria-hidden style={{ height: topSpacerHeight }}>
-          <TableCell colSpan={9999} />
-        </TableRow>
-      )}
+    <ComponentErrorBoundary>
+      <TableBody
+        data-slot="table-body"
+        ref={containerRef}
+        style={{
+          height: innerHeight,
+          ...style,
+        }}
+        className={cn("block [&_tr:last-child]:border-0 overflow-hidden overflow-y-visible w-full", className)}
+      >
+        {topSpacerHeight > 0 && (
+          <TableRow aria-hidden style={{ height: topSpacerHeight }}>
+            <TableCell colSpan={9999} />
+          </TableRow>
+        )}
 
-      {Array.from({ length: endIndex - startIndex + 1 }, (_, i) => {
-        const index = startIndex + i
-        const currentRowHeight = getRowHeight(index)
-        const rowStyle: React.CSSProperties = { height: currentRowHeight }
-        return children(index, rowStyle)
-      })}
+        {Array.from({ length: endIndex - startIndex + 1 }, (_, i) => {
+          const index = startIndex + i
+          const currentRowHeight = getRowHeight(index)
+          const rowStyle: React.CSSProperties = { height: currentRowHeight }
+          return children(index, rowStyle)
+        })}
 
-      {bottomSpacerHeight > 0 && (
-        <TableRow aria-hidden style={{ height: bottomSpacerHeight }}>
-          <TableCell colSpan={9999} />
-        </TableRow>
-      )}
-    </TableBody>
+        {bottomSpacerHeight > 0 && (
+          <TableRow aria-hidden style={{ height: bottomSpacerHeight }}>
+            <TableCell colSpan={9999} />
+          </TableRow>
+        )}
+      </TableBody>
+    </ComponentErrorBoundary>
   )
 }
 

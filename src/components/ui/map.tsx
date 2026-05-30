@@ -11,6 +11,7 @@ import MapGL, {
 } from "react-map-gl/maplibre"
 import type { LayerSpecification } from "maplibre-gl"
 import { cn } from "@/lib/utils"
+import { ComponentErrorBoundary } from "@/lib/error-boundary"
 
 export type MapConfig = {
   [k in string]: {
@@ -69,26 +70,28 @@ function MapContainer({
   )
 
   return (
-    <MapContext.Provider value={{ config }}>
-      <div
-        data-slot="map"
-        className={cn("relative h-[400px] w-full rounded-lg overflow-hidden border", className)}
-        {...props}
-      >
-        <MapGL
-          ref={mapRef}
-          initialViewState={initialViewState}
-          mapStyle={resolvedStyle}
-          interactive={interactive}
-          projection={projection}
-          style={{ width: "100%", height: "100%" }}
+    <ComponentErrorBoundary>
+      <MapContext.Provider value={{ config }}>
+        <div
+          data-slot="map"
+          className={cn("relative h-[400px] w-full rounded-lg overflow-hidden border", className)}
+          {...props}
         >
-          {showNavigation && <NavigationControl position="top-right" />}
-          {showScale && <ScaleControl position="bottom-left" />}
-          {children}
-        </MapGL>
-      </div>
-    </MapContext.Provider>
+          <MapGL
+            ref={mapRef}
+            initialViewState={initialViewState}
+            mapStyle={resolvedStyle}
+            interactive={interactive}
+            projection={projection}
+            style={{ width: "100%", height: "100%" }}
+          >
+            {showNavigation && <NavigationControl position="top-right" />}
+            {showScale && <ScaleControl position="bottom-left" />}
+            {children}
+          </MapGL>
+        </div>
+      </MapContext.Provider>
+    </ComponentErrorBoundary>
   )
 }
 

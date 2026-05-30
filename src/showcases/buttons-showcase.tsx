@@ -19,7 +19,6 @@ import {ButtonGroup, ButtonGroupSeparator, ButtonGroupText} from "@/components/u
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Icon} from "@/components/ui/icon"
 import {Separator} from "@/components/ui/separator"
-import {Spinner} from "@/components/ui/spinner"
 import {AlignCenter, AlignLeft, AlignRight, Bell, Bold, Calendar, Copy, Download, Home, Italic, Mail, Scissors, Settings, Trash2, Underline, Upload, User} from "lucide-react"
 
 export function ButtonsShowcase() {
@@ -61,7 +60,7 @@ export function ButtonsShowcase() {
                         <h3 className="text-lg font-semibold">States & Icons</h3>
                         <div className="flex flex-wrap gap-4">
                             <Button disabled>Disabled</Button>
-                            <Button><Spinner className="mr-2 h-4 w-4"/>Loading</Button>
+                            <Button loading>Loading</Button>
                             <Button><Download className="mr-2 h-4 w-4"/>Download</Button>
                             <Button variant="destructive"><Trash2 className="mr-2 h-4 w-4"/>Delete</Button>
                         </div>

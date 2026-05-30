@@ -70,3 +70,4 @@ export { ModeToggle } from './components/theme/toggle'
 
 // Utilities
 export * from './lib/utils'
+export { ComponentErrorBoundary } from './lib/error-boundary'
