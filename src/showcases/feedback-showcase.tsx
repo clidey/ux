@@ -38,9 +38,9 @@ export function FeedbackShowcase() {
                 <CardContent className="space-y-4">
                     <Alert>
                         <Info className="h-4 w-4"/>
-                        <AlertTitle>Default Alert</AlertTitle>
+                        <AlertTitle>New version available</AlertTitle>
                         <AlertDescription>
-                            This is a default alert with an informational message.
+                            Version 2.1 includes performance improvements and bug fixes. Restart to update.
                         </AlertDescription>
                     </Alert>
 
@@ -87,9 +87,9 @@ export function FeedbackShowcase() {
                     <h3 className="text-lg font-semibold">Without Icon</h3>
 
                     <Alert>
-                        <AlertTitle>Heads up!</AlertTitle>
+                        <AlertTitle>CLI available</AlertTitle>
                         <AlertDescription>
-                            You can add components to your app using the CLI.
+                            Install components individually with npx clidey-ux add [component].
                         </AlertDescription>
                     </Alert>
 
@@ -106,13 +106,13 @@ export function FeedbackShowcase() {
 
                     <Alert>
                         <AlertDescription>
-                            This is a simple informational alert with only a description.
+                            Your changes are saved automatically as you edit.
                         </AlertDescription>
                     </Alert>
 
                     <Alert variant="destructive">
                         <AlertDescription>
-                            Something went wrong. Please try again later.
+                            Could not save changes. Check your connection and try again.
                         </AlertDescription>
                     </Alert>
                 </CardContent>

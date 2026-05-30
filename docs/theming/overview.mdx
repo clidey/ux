@@ -90,37 +90,36 @@ All Clidey UX components use Tailwind's `dark:` modifier, so they respond automa
 
 ## Customizing CSS variables
 
-The stylesheet exposes CSS custom properties you can override in your own CSS:
+The stylesheet exposes CSS custom properties using OKLCH color values. Override them in your own CSS after importing `@clidey/ux/styles.css`:
 
 ```css
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
-  --radius: 0.5rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --primary: oklch(0.32 0.06 282.5);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
 }
 
 .dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
   /* ... dark mode overrides ... */
 }
 ```
 
-Override any of these variables after importing `@clidey/ux/styles.css` in your global stylesheet.
-
 <Tip>
-  Use HSL values (space-separated, no `hsl()` wrapper) to stay compatible with Tailwind's opacity modifier syntax.
+  Values use the OKLCH color space for perceptual uniformity. The format is `oklch(lightness chroma hue)` where lightness is 0-1, chroma is the saturation intensity, and hue is degrees. Achromatic colors use `oklch(L 0 0)`.
 </Tip>

@@ -119,7 +119,7 @@ export function OverlaysShowcase() {
                             <DialogHeader>
                                 <DialogTitle>Edit profile</DialogTitle>
                                 <DialogDescription>
-                                    Make changes to your profile here. Click save when you're done.
+                                    Update your display name and username. Changes apply immediately.
                                 </DialogDescription>
                             </DialogHeader>
                             <div className="grid gap-4 py-4">
@@ -148,15 +148,15 @@ export function OverlaysShowcase() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
-                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogTitle>Delete your account?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    This action cannot be undone. This will permanently delete your
-                                    account and remove your data from our servers.
+                                    Your account and all associated data will be permanently deleted.
+                                    This cannot be undone.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction>Continue</AlertDialogAction>
+                                <AlertDialogCancel>Keep account</AlertDialogCancel>
+                                <AlertDialogAction>Delete account</AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
@@ -183,7 +183,7 @@ export function OverlaysShowcase() {
                             <SheetHeader>
                                 <SheetTitle>Edit profile</SheetTitle>
                                 <SheetDescription>
-                                    Make changes to your profile here. Click save when you're done.
+                                    Update your display name and username. Changes apply immediately.
                                 </SheetDescription>
                             </SheetHeader>
                             <div className="grid gap-4 py-4">
@@ -260,9 +260,9 @@ export function OverlaysShowcase() {
                                     </div>
                                 </div>
                                 <DrawerFooter>
-                                    <Button>Submit</Button>
+                                    <Button>Set goal</Button>
                                     <DrawerClose asChild>
-                                        <Button variant="outline">Cancel</Button>
+                                        <Button variant="outline">Dismiss</Button>
                                     </DrawerClose>
                                 </DrawerFooter>
                             </div>
@@ -357,7 +357,7 @@ export function OverlaysShowcase() {
                             <DropdownMenuSeparator/>
                             <DropdownMenuItem>
                                 <LogOut className="mr-2 h-4 w-4"/>
-                                <span>Log out</span>
+                                <span>Sign out</span>
                                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -486,7 +486,7 @@ export function OverlaysShowcase() {
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>
-                                <p>This button is disabled</p>
+                                <p>Sign in to enable this action</p>
                             </TooltipContent>
                         </Tooltip>
                     </div>
