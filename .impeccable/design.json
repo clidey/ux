@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-30T00:00:00Z",
+  "title": "Design System: Clidey UX",
+  "extensions": {
+    "colorMeta": {
+      "primary-violet": {
+        "role": "primary",
+        "displayName": "Deep Instrument Violet",
+        "canonical": "oklch(0.32 0.06 282.5)",
+        "tonalRamp": [
+          "oklch(0.15 0.06 282.5)",
+          "oklch(0.22 0.06 282.5)",
+          "oklch(0.32 0.06 282.5)",
+          "oklch(0.45 0.06 282.5)",
+          "oklch(0.58 0.05 282.5)",
+          "oklch(0.70 0.04 282.5)",
+          "oklch(0.82 0.03 282.5)",
+          "oklch(0.94 0.01 282.5)"
+        ]
+      },
+      "icon-teal": {
+        "role": "secondary",
+        "displayName": "Signal Teal",
+        "canonical": "oklch(0.715 0.164 191.7)",
+        "tonalRamp": [
+          "oklch(0.20 0.10 191.7)",
+          "oklch(0.30 0.12 191.7)",
+          "oklch(0.42 0.14 191.7)",
+          "oklch(0.55 0.15 191.7)",
+          "oklch(0.715 0.164 191.7)",
+          "oklch(0.80 0.12 191.7)",
+          "oklch(0.88 0.08 191.7)",
+          "oklch(0.95 0.03 191.7)"
+        ]
+      },
+      "destructive-red": {
+        "role": "tertiary",
+        "displayName": "Alert Red",
+        "canonical": "oklch(0.577 0.245 27.325)",
+        "tonalRamp": [
+          "oklch(0.20 0.12 27.3)",
+          "oklch(0.30 0.16 27.3)",
+          "oklch(0.42 0.20 27.3)",
+          "oklch(0.577 0.245 27.3)",
+          "oklch(0.65 0.22 27.3)",
+          "oklch(0.75 0.18 27.3)",
+          "oklch(0.85 0.12 27.3)",
+          "oklch(0.94 0.05 27.3)"
+        ]
+      },
+      "background-light": {
+        "role": "neutral",
+        "displayName": "Pure White",
+        "canonical": "oklch(1 0 0)",
+        "tonalRamp": [
+          "oklch(0.145 0 0)",
+          "oklch(0.205 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.556 0 0)",
+          "oklch(0.708 0 0)",
+          "oklch(0.85 0 0)",
+          "oklch(0.922 0 0)",
+          "oklch(1 0 0)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "body": {
+        "displayName": "Body",
+        "purpose": "All content text in components. 16px on mobile, 14px on desktop via md:text-sm."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, menu items, button text. Weight distinction from body."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-xs",
+        "value": "0 1px 2px rgba(0,0,0,0.05)",
+        "purpose": "Buttons and inputs. Barely-visible grounding."
+      },
+      {
+        "name": "shadow-sm",
+        "value": "0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)",
+        "purpose": "Cards at rest. Edge definition, not depth."
+      }
+    ],
+    "motion": [
+      {
+        "name": "transition-colors",
+        "value": "color 150ms ease, background-color 150ms ease, border-color 150ms ease",
+        "purpose": "Default state transition for interactive elements."
+      },
+      {
+        "name": "transition-shadow",
+        "value": "box-shadow 150ms ease",
+        "purpose": "Focus ring appearance on keyboard navigation."
+      }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default interactive action. Deep violet in light mode, near-white in dark.",
+      "html": "<button class=\"ds-btn-primary\">Save changes</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 8px 16px; background: oklch(0.32 0.06 282.5); color: oklch(0.99 0 0); font-size: 14px; font-weight: 500; border: none; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer; transition: opacity 150ms ease; } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px oklch(1 0 0), 0 0 0 5px oklch(0.708 0 0 / 50%); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action with border stroke. Subtle dark-mode fill.",
+      "html": "<button class=\"ds-btn-outline\">Cancel</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 8px 16px; background: oklch(1 0 0); color: oklch(0.145 0 0); font-size: 14px; font-weight: 500; border: 1px solid oklch(0.922 0 0); border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer; transition: background 150ms ease; } .ds-btn-outline:hover { background: oklch(0.97 0 0); } .ds-btn-outline:focus-visible { outline: none; border-color: oklch(0.708 0 0); box-shadow: 0 0 0 3px oklch(0.708 0 0 / 50%); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Tertiary action with no border or shadow. Appears on hover only.",
+      "html": "<button class=\"ds-btn-ghost\">View all</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 8px 16px; background: transparent; color: oklch(0.145 0 0); font-size: 14px; font-weight: 500; border: none; border-radius: 8px; cursor: pointer; transition: background 150ms ease; } .ds-btn-ghost:hover { background: oklch(0.97 0 0); } .ds-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.708 0 0 / 50%); }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Text input with border stroke. Focus ring on keyboard interaction.",
+      "html": "<input class=\"ds-input\" placeholder=\"Enter value...\" />",
+      "css": ".ds-input { display: flex; height: 36px; width: 100%; padding: 4px 12px; background: transparent; color: oklch(0.145 0 0); font-size: 14px; border: 1px solid oklch(0.922 0 0); border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none; transition: border-color 150ms ease, box-shadow 150ms ease; } .ds-input::placeholder { color: oklch(0.556 0 0); } .ds-input:focus { border-color: oklch(0.708 0 0); box-shadow: 0 0 0 3px oklch(0.708 0 0 / 50%); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Content container with generous radius and border separation.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\"><h3 class=\"ds-card-title\">Card Title</h3><p class=\"ds-card-desc\">Supporting description text.</p></div><div class=\"ds-card-content\">Content goes here.</div></div>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 24px; padding: 24px 0; background: oklch(1 0 0); color: oklch(0.145 0 0); border: 1px solid oklch(0.922 0 0); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06); } .ds-card-header { display: grid; gap: 6px; padding: 0 24px; } .ds-card-title { font-size: 16px; font-weight: 600; line-height: 1; margin: 0; } .ds-card-desc { font-size: 14px; color: oklch(0.556 0 0); margin: 0; } .ds-card-content { padding: 0 24px; font-size: 14px; }"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Inline status indicator. Small, rounded, muted by default.",
+      "html": "<span class=\"ds-badge\">Active</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; padding: 2px 10px; font-size: 12px; font-weight: 600; line-height: 1; border: 1px solid oklch(0.922 0 0); border-radius: 9999px; background: transparent; color: oklch(0.145 0 0); }"
+    },
+    {
+      "name": "Sidebar Navigation Item",
+      "kind": "nav",
+      "refersTo": "sidebar-menu-button",
+      "description": "Ghost-style nav item with accent fill on hover/active.",
+      "html": "<button class=\"ds-nav-item\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><polyline points=\"9,22 9,12 15,12 15,22\"/></svg><span>Dashboard</span></button>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; background: transparent; color: oklch(0.556 0 0); font-size: 14px; font-weight: 400; border: none; border-radius: 8px; cursor: pointer; transition: background 150ms ease, color 150ms ease; } .ds-nav-item:hover { background: oklch(0.97 0 0); color: oklch(0.145 0 0); } .ds-nav-item:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.708 0 0 / 50%); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Precision Instrument",
+    "overview": "Clidey UX is engineered like a well-machined tool: every surface considered, every edge deliberate, nothing decorative. The system communicates through structural clarity and mechanical precision rather than ornamentation. Components are functional objects that earn trust through predictable behavior and dimensional consistency.\n\nThe aesthetic philosophy is subtractive. Start with nothing and add only what the interaction requires. Color is rare and meaningful. Typography carries hierarchy. Spacing is the primary tool for visual grouping. When a component appears on screen, it should feel like it was always meant to be there: no entrance fanfare, no competing for attention.\n\nThis system explicitly rejects the visual weight of Material UI, the generic sameness of Bootstrap templates, and the bare-bones abandonment of headless libraries.",
+    "keyCharacteristics": [
+      "Achromatic neutrals with one deliberate accent",
+      "Tight, consistent radius scale (6px-14px)",
+      "Typography-driven hierarchy (weight and scale, not color)",
+      "State changes through opacity and subtle shadow shifts, not color flooding",
+      "Dark mode as a true inversion, not a separate design language"
+    ],
+    "rules": [
+      { "name": "The Achromatic Backbone Rule", "body": "Neutrals carry zero chroma. No warm tinting, no cool tinting. The system's neutrality is what allows it to adapt to any consumer's brand colors via token overrides.", "section": "colors" },
+      { "name": "The Surgical Color Rule", "body": "Chromatic color appears on less than 5% of any given screen. Its rarity is what makes it meaningful.", "section": "colors" },
+      { "name": "The Weight-Not-Size Rule", "body": "Hierarchy is created through weight contrast (400 to 500 to 600), not size jumps. The entire component library operates within a 14px-16px band.", "section": "typography" },
+      { "name": "The System Stack Rule", "body": "No custom fonts are bundled or assumed. The library inherits the consumer's font decisions.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Shadow exists to define edges, not to imply floating planes.", "section": "elevation" },
+      { "name": "The Border-First Rule", "body": "Overlays use border + background contrast as the primary separation mechanism. Shadow is additive reinforcement, never the only depth cue.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use the semantic token names (primary, muted, accent, destructive) in all component styling.",
+      "Do maintain the 36px interactive element height for all touchable controls.",
+      "Do use focus-visible (not focus) for focus rings.",
+      "Do test every component in both light and dark modes.",
+      "Do use the achromatic neutral tokens for all non-interactive surfaces.",
+      "Do include data-slot attributes on every component root element."
+    ],
+    "donts": [
+      "Don't add visual weight through multiple borders, heavy shadows, or nested containers.",
+      "Don't assume specific font families or font metrics.",
+      "Don't use color to create hierarchy within a single component.",
+      "Don't ship components that look like Bootstrap.",
+      "Don't leave components unstyled or headless-feeling.",
+      "Don't use border-left or border-right greater than 1px as colored accent stripes.",
+      "Don't add gradient backgrounds, glassmorphism, or decorative blur effects.",
+      "Don't create tinted neutrals (warm or cool)."
+    ]
+  }
+}
