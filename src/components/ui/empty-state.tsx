@@ -36,8 +36,8 @@ export const EmptyState = ({
           "flex flex-col gap-4 items-center w-full max-w-[400px] p-8"
         )}>
         {icon}
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-sm text-muted-foreground text-center">{description}</p>
+        <h1 className="text-2xl font-bold text-center break-words">{title}</h1>
+        <p className="text-sm text-muted-foreground text-center break-words">{description}</p>
         {children}
       </div>
     </div>

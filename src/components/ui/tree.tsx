@@ -160,7 +160,7 @@ const TreeItem = React.forwardRef<
                     }
                     <p className={cn("text-sm truncate", selectedItemId === item.id && "font-bold underline underline-offset-4")}>{item.name}</p>
                   </AccordionTrigger>
-                  <AccordionContent className="pl-6">
+                  <AccordionContent className="pl-6 overflow-hidden">
                     <TreeItem
                       data={item.children}
                       selectedItemId={selectedItemId}

@@ -42,9 +42,9 @@ export function StackListItem({
 }: StackListItemProps) {
   return (
     <div className={cn("flex flex-col", itemClassName)}>
-      <p className={cn("flex flex-row items-center text-lg py-3", rowClassName)}>
-        <span className={cn("font-semibold min-w-1/2", keyClassName)}>{item}</span>
-        <span className={cn("ml-4", valueClassName)}>{children}</span>
+      <p className={cn("flex flex-row items-center text-lg py-3 min-w-0", rowClassName)}>
+        <span className={cn("font-semibold min-w-1/2 truncate", keyClassName)}>{item}</span>
+        <span className={cn("ml-4 truncate min-w-0", valueClassName)}>{children}</span>
       </p>
     </div>
   );
