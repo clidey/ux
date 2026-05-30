@@ -33,7 +33,7 @@ export const EmptyState = ({
     <div className={cn("flex justify-center items-center w-full h-full grow", className)} data-testid="empty-state">
       <div
         className={cn(
-          "flex flex-col gap-4 items-center w-[400px] p-8"
+          "flex flex-col gap-4 items-center w-full max-w-[400px] p-8"
         )}>
         {icon}
         <h1 className="text-2xl font-bold">{title}</h1>

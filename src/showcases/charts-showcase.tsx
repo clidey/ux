@@ -21,6 +21,9 @@ import {
     ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
+    ThemedCartesianGrid,
+    ThemedXAxis,
+    ThemedYAxis,
     type ChartConfig,
 } from "@/components/ui/chart"
 import { Separator } from "@/components/ui/separator"
@@ -29,14 +32,11 @@ import {
     AreaChart,
     Bar,
     BarChart,
-    CartesianGrid,
     Cell,
     Line,
     LineChart,
     Pie,
     PieChart,
-    XAxis,
-    YAxis,
 } from "recharts"
 
 // Sample data for different chart types
@@ -135,9 +135,9 @@ export function ChartsShowcase() {
         <CardContent>
           <ChartContainer config={salesConfig} className="h-[300px]">
             <BarChart data={salesData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
+              <ThemedCartesianGrid strokeDasharray="3 3" />
+              <ThemedXAxis dataKey="month" />
+              <ThemedYAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend content={<ChartLegendContent />} />
               <Bar dataKey="desktop" fill="var(--color-desktop)" />
@@ -159,9 +159,9 @@ export function ChartsShowcase() {
         <CardContent>
           <ChartContainer config={revenueConfig} className="h-[300px]">
             <LineChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
+              <ThemedCartesianGrid strokeDasharray="3 3" />
+              <ThemedXAxis dataKey="month" />
+              <ThemedYAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend content={<ChartLegendContent />} />
               <Line
@@ -194,9 +194,9 @@ export function ChartsShowcase() {
         <CardContent>
           <ChartContainer config={revenueConfig} className="h-[300px]">
             <AreaChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
+              <ThemedCartesianGrid strokeDasharray="3 3" />
+              <ThemedXAxis dataKey="month" />
+              <ThemedYAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend content={<ChartLegendContent />} />
               <Area

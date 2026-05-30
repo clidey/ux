@@ -66,7 +66,7 @@ function ChartContainer({
         data-slot="chart"
         data-chart={chartId}
         className={cn(
-          "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border flex aspect-video justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
+          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden",
           className
         )}
         {...props}
@@ -361,6 +361,47 @@ function getPayloadConfigFromPayload(
     : config[key as keyof typeof config]
 }
 
+function ThemedCartesianGrid(props: React.ComponentProps<typeof RechartsPrimitive.CartesianGrid>) {
+  return (
+    <RechartsPrimitive.CartesianGrid
+      stroke="var(--color-border)"
+      strokeOpacity={0.5}
+      {...props}
+    />
+  )
+}
+
+function ThemedXAxis(props: React.ComponentProps<typeof RechartsPrimitive.XAxis>) {
+  return (
+    <RechartsPrimitive.XAxis
+      tick={{ fill: "var(--color-muted-foreground)" }}
+      tickLine={false}
+      axisLine={false}
+      {...props}
+    />
+  )
+}
+
+function ThemedYAxis(props: React.ComponentProps<typeof RechartsPrimitive.YAxis>) {
+  return (
+    <RechartsPrimitive.YAxis
+      tick={{ fill: "var(--color-muted-foreground)" }}
+      tickLine={false}
+      axisLine={false}
+      {...props}
+    />
+  )
+}
+
+function ThemedPolarGrid(props: React.ComponentProps<typeof RechartsPrimitive.PolarGrid>) {
+  return (
+    <RechartsPrimitive.PolarGrid
+      stroke="var(--color-border)"
+      {...props}
+    />
+  )
+}
+
 export {
   ChartContainer,
   ChartTooltip,
@@ -368,4 +409,8 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  ThemedCartesianGrid,
+  ThemedXAxis,
+  ThemedYAxis,
+  ThemedPolarGrid,
 }
