@@ -149,6 +149,54 @@ describe("AlertDialog", () => {
         expect(screen.getByText("Action")).toHaveClass("custom-action");
     });
 
+    it('has data-slot="alert-dialog-action" on AlertDialogAction', async () => {
+        const user = userEvent.setup();
+        render(
+            <AlertDialog>
+                <AlertDialogTrigger>Open</AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Title</AlertDialogTitle>
+                        <AlertDialogDescription>Desc</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        );
+
+        await user.click(screen.getByText("Open"));
+        const action = document.querySelector('[data-slot="alert-dialog-action"]');
+        expect(action).toBeInTheDocument();
+        expect(action).toHaveTextContent("Continue");
+    });
+
+    it('has data-slot="alert-dialog-cancel" on AlertDialogCancel', async () => {
+        const user = userEvent.setup();
+        render(
+            <AlertDialog>
+                <AlertDialogTrigger>Open</AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Title</AlertDialogTitle>
+                        <AlertDialogDescription>Desc</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        );
+
+        await user.click(screen.getByText("Open"));
+        const cancel = document.querySelector('[data-slot="alert-dialog-cancel"]');
+        expect(cancel).toBeInTheDocument();
+        expect(cancel).toHaveTextContent("Cancel");
+    });
+
     it("handles controlled open state", async () => {
         const user = userEvent.setup();
         const Component = () => {

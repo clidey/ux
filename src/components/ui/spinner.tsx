@@ -49,6 +49,7 @@ export interface SpinnerProps
 
 const Spinner = ({ className, variant, size = 'default' }: SpinnerProps) => (
   <div
+    data-slot="spinner"
     role="status"
     aria-label="Loading"
     className={cn(

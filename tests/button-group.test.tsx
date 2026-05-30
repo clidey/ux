@@ -60,6 +60,13 @@ describe('ButtonGroupText', () => {
         const el = screen.getByText('Label:');
         expect(el).toHaveClass('bg-muted');
     });
+
+    it('has data-slot="button-group-text"', () => {
+        const {container} = render(<ButtonGroupText>Label:</ButtonGroupText>);
+        const el = container.querySelector('[data-slot="button-group-text"]');
+        expect(el).toBeInTheDocument();
+        expect(el).toHaveTextContent('Label:');
+    });
 });
 
 describe('ButtonGroupSeparator', () => {

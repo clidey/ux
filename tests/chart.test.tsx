@@ -109,6 +109,23 @@ describe('ChartTooltipContent', () => {
         );
         expect(container.querySelector('.min-w-\\[8rem\\]')).not.toBeInTheDocument();
     });
+
+    it('renders with data-slot="chart-tooltip-content" when active with payload', () => {
+        const payload = [
+            {dataKey: 'desktop', name: 'Desktop', value: 100, color: '#ff0000'},
+        ];
+        const {container} = render(
+            <ChartContainer config={testConfig}>
+                <svg>
+                    <foreignObject>
+                        <ChartTooltipContent active={true} payload={payload} />
+                    </foreignObject>
+                </svg>
+            </ChartContainer>
+        );
+        const el = container.querySelector('[data-slot="chart-tooltip-content"]');
+        expect(el).toBeInTheDocument();
+    });
 });
 
 describe('ChartLegendContent', () => {
@@ -141,5 +158,22 @@ describe('ChartLegendContent', () => {
         );
         expect(screen.getByText('Desktop')).toBeInTheDocument();
         expect(screen.getByText('Mobile')).toBeInTheDocument();
+    });
+
+    it('renders with data-slot="chart-legend-content" when payload is provided', () => {
+        const payload = [
+            {dataKey: 'desktop', value: 'Desktop', color: '#ff0000'},
+        ];
+        const {container} = render(
+            <ChartContainer config={testConfig}>
+                <svg>
+                    <foreignObject>
+                        <ChartLegendContent payload={payload} />
+                    </foreignObject>
+                </svg>
+            </ChartContainer>
+        );
+        const el = container.querySelector('[data-slot="chart-legend-content"]');
+        expect(el).toBeInTheDocument();
     });
 });

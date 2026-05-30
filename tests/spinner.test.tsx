@@ -36,4 +36,11 @@ describe('Spinner Component', () => {
         const spinner = screen.getByRole('status');
         expect(spinner).toHaveClass('custom-class');
     });
+
+    it('should have data-slot="spinner" on root element', () => {
+        const {container} = render(<Spinner/>);
+
+        const root = container.querySelector('[data-slot="spinner"]');
+        expect(root).toBeInTheDocument();
+    });
 });

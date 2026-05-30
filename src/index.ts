@@ -15,10 +15,10 @@
  */
 
 // UI Components
-export { Badge } from './components/ui/badge'
-export { Button } from './components/ui/button'
-export { ButtonGroup, ButtonGroupText, ButtonGroupSeparator } from "./components/ui/button-group";
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './components/ui/card'
+export { Badge, badgeVariants } from './components/ui/badge'
+export { Button, buttonVariants } from './components/ui/button'
+export { ButtonGroup, ButtonGroupText, ButtonGroupSeparator, buttonGroupVariants } from "./components/ui/button-group";
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, CardAction } from './components/ui/card'
 export { ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuRadioGroup, ContextMenuRadioItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger } from './components/ui/context-menu'
 export { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from './components/ui/drawer'
 export { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from './components/ui/dropdown-menu'
@@ -28,10 +28,10 @@ export { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 export { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover'
 export { Skeleton } from './components/ui/skeleton'
 export { Toaster, toast } from './components/ui/sonner'
-export { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableHeadRow, TableRow, VirtualizedTableBody } from './components/ui/table'
+export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableHeadRow, TableRow, VirtualizedTableBody, type TableColumn } from './components/ui/table'
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip'
-export { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './components/ui/breadcrumb'
+export { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './components/ui/breadcrumb'
 export {
     Select,
     SelectContent,
@@ -45,11 +45,11 @@ export {
 } from './components/ui/select'
 export { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarSeparator, SidebarTrigger, useSidebar } from './components/ui/sidebar'
 export { Separator } from './components/ui/separator'
-export { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './components/ui/sheet'
+export { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './components/ui/sheet'
 export {ScrollArea, ScrollBar} from "./components/ui/scroll-area";
 export { StackList, StackListItem } from "./components/ui/stack-list";
-export { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./components/ui/command";
-export { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./components/ui/dialog";
+export { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "./components/ui/command";
+export { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogTitle, DialogTrigger } from "./components/ui/dialog";
 export { Checkbox } from "./components/ui/checkbox";
 export { EmptyState } from "./components/ui/empty-state";
 export { Tree, type TreeDataItem } from "./components/ui/tree";
@@ -59,8 +59,8 @@ export { Alert, AlertTitle, AlertDescription } from "./components/ui/alert";
 export { Icon } from "./components/ui/icon";
 export { Switch } from "./components/ui/switch";
 export { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "./components/ui/alert-dialog";
-export { Spinner } from "./components/ui/spinner";
-export { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, ChartStyle, ThemedCartesianGrid, ThemedXAxis, ThemedYAxis, ThemedPolarGrid } from "./components/ui/chart";
+export { Spinner, spinnerVariants } from "./components/ui/spinner";
+export { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, ChartStyle, ThemedCartesianGrid, ThemedXAxis, ThemedYAxis, ThemedPolarGrid, type ChartConfig } from "./components/ui/chart";
 export { Progress } from "./components/ui/progress";
 export { MapContainer, MapMarker, MapLine, MapArc, MapPolygon, MapCircleLayer, MapHeatmap, useMap, type MapConfig, type MapProjection, type MapContainerProps, type MapMarkerProps, type MapLineProps, type MapArcProps, type MapPolygonProps, type MapCircleLayerProps, type MapHeatmapProps } from "./components/ui/map";
 

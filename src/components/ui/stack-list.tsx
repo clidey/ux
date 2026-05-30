@@ -20,12 +20,14 @@ import {cn} from "@/lib/utils";
 
 type StackListProps = {
   children: React.ReactNode;
+  className?: string;
   separatorClassName?: string;
 };
 
 type StackListItemProps = {
   item: React.ReactNode;
   children: React.ReactNode;
+  className?: string;
   keyClassName?: string;
   valueClassName?: string;
   rowClassName?: string;
@@ -35,13 +37,14 @@ type StackListItemProps = {
 export function StackListItem({
   item,
   children,
+  className,
   keyClassName,
   valueClassName,
   rowClassName,
   itemClassName,
 }: StackListItemProps) {
   return (
-    <div className={cn("flex flex-col", itemClassName)}>
+    <div data-slot="stack-list-item" className={cn("flex flex-col", itemClassName, className)}>
       <p className={cn("flex flex-row items-center text-lg py-3 min-w-0", rowClassName)}>
         <span className={cn("font-semibold min-w-1/2 truncate", keyClassName)}>{item}</span>
         <span className={cn("ml-4 truncate min-w-0", valueClassName)}>{children}</span>
@@ -52,12 +55,13 @@ export function StackListItem({
 
 export function StackList({
   children,
+  className,
   separatorClassName = "w-full",
 }: StackListProps) {
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <div className="flex flex-col">
+    <div data-slot="stack-list" className={cn("flex flex-col", className)}>
       {childrenArray.map((child, idx) => (
         <React.Fragment key={idx}>
           {child}

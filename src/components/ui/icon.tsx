@@ -37,6 +37,7 @@ export function Icon({
 }: IconProps) {
   return (
     <span
+      data-slot="icon"
       className={cn(
         "inline-flex items-center justify-center rounded-md bg-icon dark:bg-icon p-2",
         className

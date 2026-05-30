@@ -84,4 +84,12 @@ describe('Icon Component', () => {
         expect(wrapper).toHaveClass('text-green-600');
         expect(wrapper).toHaveClass('p-2');
     });
+
+    it('should have data-slot="icon" on root span', () => {
+        const {container} = render(<Icon icon={<Home/>}/>);
+
+        const wrapper = container.querySelector('[data-slot="icon"]');
+        expect(wrapper).toBeInTheDocument();
+        expect(wrapper?.tagName).toBe('SPAN');
+    });
 });

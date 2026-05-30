@@ -100,4 +100,13 @@ describe('EmptyState Component', () => {
         expect(screen.getByText('📭')).toBeInTheDocument();
         expect(screen.getByRole('button', {name: 'Compose Message'})).toBeInTheDocument();
     });
+
+    it('should have data-slot="empty-state" on root element', () => {
+        const {container} = render(
+            <EmptyState title="Empty" description="" icon={null}/>
+        );
+
+        const root = container.querySelector('[data-slot="empty-state"]');
+        expect(root).toBeInTheDocument();
+    });
 });

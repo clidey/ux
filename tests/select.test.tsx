@@ -423,4 +423,16 @@ describe('SearchSelect Component', () => {
         const newSearchInput = await screen.findByPlaceholderText('Search...');
         expect(newSearchInput).toHaveValue('');
     });
+
+    it('should apply className prop to trigger button', () => {
+        render(
+            <SearchSelect
+                options={options}
+                className="custom-search-select"
+            />
+        );
+
+        const trigger = screen.getByRole('combobox');
+        expect(trigger).toHaveClass('custom-search-select');
+    });
 });

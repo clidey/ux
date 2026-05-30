@@ -203,6 +203,7 @@ type SearchSelectProps = {
   onChange?: (value: string) => void
     onValueChange?: (value: string) => void
     notFoundMessage?: string
+  className?: string
   buttonClassName?: string
   contentClassName?: string
   disabled?: boolean
@@ -225,6 +226,7 @@ function SearchSelect({
   onChange,
                           onValueChange,
                           notFoundMessage,
+  className,
   buttonClassName,
   contentClassName,
   disabled = false,
@@ -270,7 +272,7 @@ function SearchSelect({
       <Popover open={open} onOpenChange={(newOpen) => {
           setOpen(newOpen);
           if (!newOpen) {
-              setSearch(""); // Clear search when closing
+              setSearch("");
           }
       }} modal={true}>
           <PopoverTrigger>
@@ -279,8 +281,9 @@ function SearchSelect({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-full justify-between overflow-hidden", // Add overflow-hidden
+            "w-full justify-between overflow-hidden",
             buttonClassName,
+            className,
             {
               "has-[>svg]:px-2 px-2": onlyIcon,
             }

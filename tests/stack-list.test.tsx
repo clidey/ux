@@ -193,4 +193,48 @@ describe("StackList", () => {
         expect(screen.getByText("Status")).toBeInTheDocument();
         expect(screen.getByText("Active")).toBeInTheDocument();
     });
+
+    it('has data-slot="stack-list" on StackList root', () => {
+        const {container} = render(
+            <StackList>
+                <StackListItem item="Key">Value</StackListItem>
+            </StackList>
+        );
+
+        const root = container.querySelector('[data-slot="stack-list"]');
+        expect(root).toBeInTheDocument();
+    });
+
+    it('has data-slot="stack-list-item" on StackListItem root', () => {
+        const {container} = render(
+            <StackList>
+                <StackListItem item="Key">Value</StackListItem>
+            </StackList>
+        );
+
+        const item = container.querySelector('[data-slot="stack-list-item"]');
+        expect(item).toBeInTheDocument();
+    });
+
+    it("applies className prop to StackList root", () => {
+        const {container} = render(
+            <StackList className="custom-list-class">
+                <StackListItem item="Key">Value</StackListItem>
+            </StackList>
+        );
+
+        const root = container.querySelector('[data-slot="stack-list"]');
+        expect(root).toHaveClass("custom-list-class");
+    });
+
+    it("applies className prop to StackListItem root", () => {
+        const {container} = render(
+            <StackList>
+                <StackListItem item="Key" className="custom-item-class">Value</StackListItem>
+            </StackList>
+        );
+
+        const item = container.querySelector('[data-slot="stack-list-item"]');
+        expect(item).toHaveClass("custom-item-class");
+    });
 });
