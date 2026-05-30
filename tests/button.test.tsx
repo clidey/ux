@@ -126,4 +126,45 @@ describe('Button Component', () => {
         const link = screen.getByRole('link', {name: /click me/i});
         expect(link).toBeInTheDocument();
     });
+
+    it('should render a spinner SVG when loading is true', () => {
+        const {container} = render(<Button loading>Submit</Button>);
+        const svg = container.querySelector('svg.animate-spin');
+        expect(svg).toBeInTheDocument();
+        expect(svg).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('should disable the button when loading is true', () => {
+        render(<Button loading>Submit</Button>);
+        const button = screen.getByRole('button', {name: /submit/i});
+        expect(button).toBeDisabled();
+    });
+
+    it('should not render a spinner when loading is false', () => {
+        const {container} = render(<Button loading={false}>Submit</Button>);
+        const svg = container.querySelector('svg.animate-spin');
+        expect(svg).not.toBeInTheDocument();
+    });
+
+    it('should render children alongside spinner when loading', () => {
+        render(<Button loading>Submit</Button>);
+        const button = screen.getByRole('button', {name: /submit/i});
+        expect(button).toHaveTextContent('Submit');
+    });
+
+    it('should not call onClick when loading is true', async () => {
+        const onClick = vi.fn();
+        render(
+            <Button loading onClick={onClick}>
+                Submit
+            </Button>
+        );
+        const button = screen.getByRole('button', {name: /submit/i});
+        try {
+            await userEvent.click(button);
+        } catch (e) {
+            // userEvent throws on disabled elements
+        }
+        expect(onClick).not.toHaveBeenCalled();
+    });
 });

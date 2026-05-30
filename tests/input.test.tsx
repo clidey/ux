@@ -71,6 +71,65 @@ describe('TextArea Component', () => {
     });
 });
 
+describe('Input with showPasswordToggle', () => {
+    it('should render password input with toggle button', () => {
+        render(<Input type="password" showPasswordToggle placeholder="Enter password" />);
+
+        const input = screen.getByTestId('password-input');
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveAttribute('type', 'password');
+
+        const toggleButton = screen.getByTestId('password-toggle');
+        expect(toggleButton).toBeInTheDocument();
+    });
+
+    it('should toggle password visibility when button is clicked', async () => {
+        render(<Input type="password" showPasswordToggle />);
+
+        const input = screen.getByTestId('password-input');
+        const toggleButton = screen.getByTestId('password-toggle');
+
+        // Initially password is hidden
+        expect(input).toHaveAttribute('type', 'password');
+        expect(toggleButton).toHaveAttribute('aria-label', 'Show password');
+
+        // Click to show password
+        await userEvent.click(toggleButton);
+        expect(input).toHaveAttribute('type', 'text');
+        expect(toggleButton).toHaveAttribute('aria-label', 'Hide password');
+
+        // Click to hide password again
+        await userEvent.click(toggleButton);
+        expect(input).toHaveAttribute('type', 'password');
+        expect(toggleButton).toHaveAttribute('aria-label', 'Show password');
+    });
+
+    it('should render wrapper with data-slot attribute', () => {
+        const {container} = render(<Input type="password" showPasswordToggle />);
+        const wrapper = container.querySelector('[data-slot="password-input-wrapper"]');
+        expect(wrapper).toBeInTheDocument();
+    });
+
+    it('should render normal password input without toggle when showPasswordToggle is false', () => {
+        render(<Input type="password" />);
+        const input = screen.getByTestId('input');
+        expect(input).toHaveAttribute('type', 'password');
+        expect(screen.queryByTestId('password-toggle')).not.toBeInTheDocument();
+    });
+
+    it('should accept custom className on password wrapper', () => {
+        const {container} = render(<Input type="password" showPasswordToggle className="custom-pw" />);
+        const wrapper = container.querySelector('[data-slot="password-input-wrapper"]');
+        expect(wrapper).toHaveClass('custom-pw');
+    });
+
+    it('should handle disabled state on password input with toggle', () => {
+        render(<Input type="password" showPasswordToggle disabled />);
+        const input = screen.getByTestId('password-input');
+        expect(input).toBeDisabled();
+    });
+});
+
 describe('SearchInput Component', () => {
     it('should render a search input element', () => {
         render(<SearchInput/>);
