@@ -40,7 +40,7 @@ export default defineConfig({
       name: '@clidey/ux',
       formats: ['es'],
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         'react',
         'react-dom',
