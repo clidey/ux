@@ -408,9 +408,9 @@ export function DataShowcase() {
             <Card>
                 <CardHeader>
                     <CardTitle>Tree View</CardTitle>
-                    <CardDescription>Hierarchical data display with expand/collapse</CardDescription>
+                    <CardDescription>Keyboard navigable file tree with expand/collapse. Click to focus, then use arrow keys, Enter to select, or type to search.</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-4">
                     <Tree
                         data={treeData}
                         className="h-[300px] w-full"
@@ -420,10 +420,16 @@ export function DataShowcase() {
                         itemIcon={File}
                     />
                     {selectedItem && (
-                        <div className="mt-4 p-4 border rounded-lg">
-                            <p className="text-sm text-muted-foreground">Selected: {selectedItem.name}</p>
+                        <div className="p-3 border rounded-lg bg-muted/50">
+                            <p className="text-sm">Selected: <span className="font-medium">{selectedItem.name}</span></p>
                         </div>
                     )}
+                    <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                        <span className="px-2 py-1 border rounded">↑↓ Navigate</span>
+                        <span className="px-2 py-1 border rounded">←→ Collapse/Expand</span>
+                        <span className="px-2 py-1 border rounded">Enter Select</span>
+                        <span className="px-2 py-1 border rounded">Type to search</span>
+                    </div>
                 </CardContent>
             </Card>
 
