@@ -1,8 +1,22 @@
 import {render, screen} from '@testing-library/react';
 import {ChartContainer, ChartStyle, ChartLegendContent, ChartTooltipContent} from '@/components/ui/chart';
 import type {ChartConfig} from '@/components/ui/chart';
-import {describe, expect, it} from 'vitest';
+import {beforeAll, describe, expect, it, vi} from 'vitest';
 import * as React from 'react';
+
+beforeAll(() => {
+    Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {configurable: true, value: 400});
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {configurable: true, value: 300});
+    vi.stubGlobal('ResizeObserver', class {
+        callback: ResizeObserverCallback;
+        constructor(cb: ResizeObserverCallback) { this.callback = cb; }
+        observe(target: Element) {
+            this.callback([{target, contentRect: {width: 400, height: 300}} as unknown as ResizeObserverEntry], this as unknown as ResizeObserver);
+        }
+        unobserve() {}
+        disconnect() {}
+    });
+});
 
 const testConfig: ChartConfig = {
     desktop: {label: 'Desktop', color: '#ff0000'},
@@ -115,13 +129,15 @@ describe('ChartTooltipContent', () => {
             {dataKey: 'desktop', name: 'Desktop', value: 100, color: '#ff0000'},
         ];
         const {container} = render(
-            <ChartContainer config={testConfig}>
-                <svg>
-                    <foreignObject>
-                        <ChartTooltipContent active={true} payload={payload} />
-                    </foreignObject>
-                </svg>
-            </ChartContainer>
+            <div style={{width: 400, height: 300}}>
+                <ChartContainer config={testConfig}>
+                    <svg>
+                        <foreignObject>
+                            <ChartTooltipContent active={true} payload={payload} />
+                        </foreignObject>
+                    </svg>
+                </ChartContainer>
+            </div>
         );
         const el = container.querySelector('[data-slot="chart-tooltip-content"]');
         expect(el).toBeInTheDocument();
@@ -148,13 +164,15 @@ describe('ChartLegendContent', () => {
             {dataKey: 'mobile', value: 'Mobile', color: '#00ff00'},
         ];
         render(
-            <ChartContainer config={testConfig}>
-                <svg>
-                    <foreignObject>
-                        <ChartLegendContent payload={payload} />
-                    </foreignObject>
-                </svg>
-            </ChartContainer>
+            <div style={{width: 400, height: 300}}>
+                <ChartContainer config={testConfig}>
+                    <svg>
+                        <foreignObject>
+                            <ChartLegendContent payload={payload} />
+                        </foreignObject>
+                    </svg>
+                </ChartContainer>
+            </div>
         );
         expect(screen.getByText('Desktop')).toBeInTheDocument();
         expect(screen.getByText('Mobile')).toBeInTheDocument();
@@ -165,13 +183,15 @@ describe('ChartLegendContent', () => {
             {dataKey: 'desktop', value: 'Desktop', color: '#ff0000'},
         ];
         const {container} = render(
-            <ChartContainer config={testConfig}>
-                <svg>
-                    <foreignObject>
-                        <ChartLegendContent payload={payload} />
-                    </foreignObject>
-                </svg>
-            </ChartContainer>
+            <div style={{width: 400, height: 300}}>
+                <ChartContainer config={testConfig}>
+                    <svg>
+                        <foreignObject>
+                            <ChartLegendContent payload={payload} />
+                        </foreignObject>
+                    </svg>
+                </ChartContainer>
+            </div>
         );
         const el = container.querySelector('[data-slot="chart-legend-content"]');
         expect(el).toBeInTheDocument();

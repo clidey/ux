@@ -66,7 +66,7 @@ import {
     File,
     FileText,
     Folder,
-    Home,
+    House,
     Mail,
     Settings,
     Smile,
@@ -468,7 +468,7 @@ export function DataShowcase() {
                             <div
                                 className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                                 <div className="flex items-center gap-3">
-                                    <Home className="h-5 w-5 text-muted-foreground"/>
+                                    <House className="h-5 w-5 text-muted-foreground"/>
                                     <div>
                                         <div className="font-medium">Dashboard</div>
                                         <div className="text-sm text-muted-foreground">View your overview and

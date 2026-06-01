@@ -21,7 +21,7 @@ import {CopyButton} from "@/components/ui/copy-button"
 import {Icon} from "@/components/ui/icon"
 import {Kbd} from "@/components/ui/kbd"
 import {Separator} from "@/components/ui/separator"
-import {AlignCenter, AlignLeft, AlignRight, Bell, Bold, Calendar, Copy, Download, Home, Italic, Mail, Scissors, Settings, Trash2, Underline, Upload, User} from "lucide-react"
+import {TextAlignCenter, TextAlignStart, TextAlignEnd, Bell, Bold, Calendar, Copy, Download, House, Italic, Mail, Scissors, Settings, Trash2, Underline, Upload, User} from "lucide-react"
 
 export function ButtonsShowcase() {
     return (
@@ -77,7 +77,7 @@ export function ButtonsShowcase() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex items-center gap-4">
-                        <Icon icon={<Home/>} size={16}/>
+                        <Icon icon={<House/>} size={16}/>
                         <Icon icon={<Settings/>} size={24}/>
                         <Icon icon={<Bell/>} size={32}/>
                         <Icon icon={<Mail/>} className="text-blue-500"/>
@@ -136,15 +136,15 @@ export function ButtonsShowcase() {
                         <h3 className="text-lg font-semibold">With Separators</h3>
                         <ButtonGroup>
                             <Button variant="outline">
-                                <AlignLeft className="h-4 w-4" />
+                                <TextAlignStart className="h-4 w-4" />
                             </Button>
                             <ButtonGroupSeparator />
                             <Button variant="outline">
-                                <AlignCenter className="h-4 w-4" />
+                                <TextAlignCenter className="h-4 w-4" />
                             </Button>
                             <ButtonGroupSeparator />
                             <Button variant="outline">
-                                <AlignRight className="h-4 w-4" />
+                                <TextAlignEnd className="h-4 w-4" />
                             </Button>
                         </ButtonGroup>
                     </div>

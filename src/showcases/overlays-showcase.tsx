@@ -91,7 +91,7 @@ import {
     ChevronDown,
     Cloud,
     CreditCard,
-    Github,
+    GitBranch,
     Keyboard,
     LifeBuoy,
     LogOut,
@@ -346,7 +346,7 @@ export function OverlaysShowcase() {
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator/>
                             <DropdownMenuItem>
-                                <Github className="mr-2 h-4 w-4"/>
+                                <GitBranch className="mr-2 h-4 w-4"/>
                                 <span>GitHub</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem>

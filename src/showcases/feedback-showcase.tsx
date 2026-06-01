@@ -24,7 +24,7 @@ import {Separator} from "@/components/ui/separator"
 import {Skeleton} from "@/components/ui/skeleton"
 import {Spinner} from "@/components/ui/spinner"
 import {toast} from "sonner"
-import {AlertCircle, AlertTriangle, CheckCircle2, FileX, Info, Package, Search, Users} from "lucide-react"
+import {CircleAlert, TriangleAlert, CircleCheck, FileX, Info, Package, Search, Users} from "lucide-react"
 
 export function FeedbackShowcase() {
     return (
@@ -44,7 +44,7 @@ export function FeedbackShowcase() {
                     </Alert>
 
                     <Alert variant="destructive">
-                        <AlertCircle className="h-4 w-4"/>
+                        <CircleAlert className="h-4 w-4"/>
                         <AlertTitle>Error</AlertTitle>
                         <AlertDescription>
                             Your session has expired. Please log in again.
@@ -52,7 +52,7 @@ export function FeedbackShowcase() {
                     </Alert>
 
                     <Alert variant="success">
-                        <CheckCircle2 className="h-4 w-4"/>
+                        <CircleCheck className="h-4 w-4"/>
                         <AlertTitle>Changes saved</AlertTitle>
                         <AlertDescription>
                             Your changes have been saved successfully.
@@ -60,7 +60,7 @@ export function FeedbackShowcase() {
                     </Alert>
 
                     <Alert variant="warning">
-                        <AlertTriangle className="h-4 w-4"/>
+                        <TriangleAlert className="h-4 w-4"/>
                         <AlertTitle>Trial expiring</AlertTitle>
                         <AlertDescription>
                             Your free trial expires in 3 days. Upgrade to continue using all features.
@@ -85,7 +85,7 @@ export function FeedbackShowcase() {
                     </Alert>
 
                     <Alert variant="destructive">
-                        <AlertCircle className="h-4 w-4"/>
+                        <CircleAlert className="h-4 w-4"/>
                         <AlertTitle>Unable to connect to the server.</AlertTitle>
                     </Alert>
 
@@ -136,7 +136,7 @@ export function FeedbackShowcase() {
                     </Alert>
 
                     <Alert variant="warning" dismissible onClose={() => {}}>
-                        <AlertTriangle className="h-4 w-4"/>
+                        <TriangleAlert className="h-4 w-4"/>
                         <AlertTitle>Browser outdated</AlertTitle>
                         <AlertDescription>
                             Some features may not work correctly. Update your browser for the best experience.

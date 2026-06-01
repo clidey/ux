@@ -41,7 +41,7 @@ describe("Resizable", () => {
             </ResizablePanelGroup>
         );
 
-        const group = document.querySelector('[data-panel-group]');
+        const group = document.querySelector('[data-group]');
         expect(group).toHaveAttribute("data-orientation", "horizontal");
     });
 
@@ -54,7 +54,7 @@ describe("Resizable", () => {
             </ResizablePanelGroup>
         );
 
-        const group = document.querySelector('[data-panel-group]');
+        const group = document.querySelector('[data-group]');
         expect(group).toHaveAttribute("data-orientation", "vertical");
     });
 
@@ -67,7 +67,7 @@ describe("Resizable", () => {
             </ResizablePanelGroup>
         );
 
-        const handleIcon = document.querySelector('[data-panel-resize-handle-enabled] svg');
+        const handleIcon = document.querySelector('[data-separator] svg');
         expect(handleIcon).toBeInTheDocument();
     });
 
@@ -78,7 +78,7 @@ describe("Resizable", () => {
             </ResizablePanelGroup>
         );
 
-        const group = document.querySelector('[data-panel-group]');
+        const group = document.querySelector('[data-group]');
         expect(group).toHaveClass("custom-group");
     });
 
@@ -102,7 +102,7 @@ describe("Resizable", () => {
             </ResizablePanelGroup>
         );
 
-        const handle = document.querySelector('[data-panel-resize-handle-enabled]');
+        const handle = document.querySelector('[data-separator]');
         expect(handle).toHaveClass("custom-handle");
     });
 
@@ -149,7 +149,7 @@ describe("Resizable", () => {
         expect(screen.getByText("Panel 2")).toBeInTheDocument();
         expect(screen.getByText("Panel 3")).toBeInTheDocument();
 
-        const handles = document.querySelectorAll('[data-panel-resize-handle-enabled]');
+        const handles = document.querySelectorAll('[data-separator]');
         expect(handles).toHaveLength(2);
     });
 

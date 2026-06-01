@@ -40,7 +40,7 @@ import {
     SidebarTrigger
 } from "@/components/ui/sidebar"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
-import {Calendar, CreditCard, FileText, Folder, Home, Mail, PanelLeftIcon, PanelRightIcon, Settings, User} from "lucide-react"
+import {Calendar, CreditCard, FileText, Folder, House, Mail, PanelLeftIcon, PanelRightIcon, Settings, User} from "lucide-react"
 
 export function NavigationShowcase() {
     return (
@@ -140,7 +140,7 @@ export function NavigationShowcase() {
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink href="#" className="flex items-center gap-2">
-                                    <Home className="h-4 w-4"/>
+                                    <House className="h-4 w-4"/>
                                     Dashboard
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
@@ -204,7 +204,7 @@ function SidebarBasicDemo() {
                                     <SidebarMenu>
                                         <SidebarMenuItem>
                                             <SidebarMenuButton asChild>
-                                                <a href="#"><Home className="h-4 w-4"/><span>Dashboard</span></a>
+                                                <a href="#"><House className="h-4 w-4"/><span>Dashboard</span></a>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
@@ -281,7 +281,7 @@ function SidebarEmbedDemo() {
                                     <SidebarMenu>
                                         <SidebarMenuItem>
                                             <SidebarMenuButton tooltip="Dashboard" isActive>
-                                                <Home/><span>Dashboard</span>
+                                                <House/><span>Dashboard</span>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
