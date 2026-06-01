@@ -16,249 +16,244 @@
 
 "use client";
 
-import React from "react";
+import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import {ScrollArea} from "@/components/ui/scroll-area"
-import {ChevronRight, type LucideIcon} from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ChevronRight, type LucideIcon } from "lucide-react";
 import useResizeObserver from "@/lib/use-resize-observer";
-import {cn} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 export interface TreeDataItem {
   id: string;
   name: string;
-  icon?: LucideIcon,
+  icon?: LucideIcon;
   children?: TreeDataItem[];
 }
 
-type TreeProps =
-  React.HTMLAttributes<HTMLDivElement> &
-  {
-    data: TreeDataItem[] | TreeDataItem,
-    initialSelectedItemId?: string,
-    onSelectChange?: (item: TreeDataItem | undefined) => void,
-    expandAll?: boolean,
-    folderIcon?: LucideIcon,
-    itemIcon?: LucideIcon
+type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
+  data: TreeDataItem[] | TreeDataItem;
+  initialSelectedItemId?: string;
+  onSelectChange?: (item: TreeDataItem | undefined) => void;
+  expandAll?: boolean;
+  folderIcon?: LucideIcon;
+  itemIcon?: LucideIcon;
+};
+
+function collectExpandedIds(
+  data: TreeDataItem[] | TreeDataItem,
+  targetId: string | undefined,
+  expandAll: boolean
+): string[] {
+  const ids: string[] = [];
+
+  function walk(items: TreeDataItem[]): boolean {
+    for (const item of items) {
+      if (expandAll && item.children) {
+        ids.push(item.id);
+        walk(item.children);
+      } else if (targetId) {
+        if (item.id === targetId) return true;
+        if (item.children) {
+          ids.push(item.id);
+          if (walk(item.children)) return true;
+          ids.pop();
+        }
+      }
+    }
+    return false;
   }
 
-export const Tree = React.forwardRef<
-  HTMLDivElement,
-  TreeProps
->(({
-  data, initialSelectedItemId, onSelectChange, expandAll,
+  const items = Array.isArray(data) ? data : [data];
+  walk(items);
+  return ids;
+}
+
+function Tree({
+  data,
+  initialSelectedItemId,
+  onSelectChange,
+  expandAll = false,
   folderIcon,
   itemIcon,
-  className, ...props
-}, ref) => {
-  const [selectedItemId, setSelectedItemId] = React.useState<string | undefined>(initialSelectedItemId)
+  className,
+  ...props
+}: TreeProps) {
+  const [selectedItemId, setSelectedItemId] = React.useState<string | undefined>(initialSelectedItemId);
 
   const handleSelectChange = React.useCallback((item: TreeDataItem | undefined) => {
     setSelectedItemId(item?.id);
-    if (onSelectChange) {
-      onSelectChange(item)
-    }
+    onSelectChange?.(item);
   }, [onSelectChange]);
 
-  const expandedItemIds = React.useMemo(() => {
-    const ids: string[] = []
-
-      function walkTreeItems(items: TreeDataItem[] | TreeDataItem, targetId?: string) {
-      if (items instanceof Array) {
-        for (const item of items) {
-            if (expandAll && item.children) {
-                ids.push(item.id);
-            } else if (targetId) {
-                ids.push(item.id);
-                if (walkTreeItems(item, targetId)) {
-                    return true;
-                }
-                if (!expandAll) ids.pop();
-            }
-            if (item.children) {
-                walkTreeItems(item.children, targetId);
-            }
-        }
-      } else if (targetId && items.id === targetId) {
-        return true;
-      } else if (items.children) {
-          if (expandAll) {
-              ids.push(items.id);
-          }
-        return walkTreeItems(items.children, targetId)
-      }
-    }
-
-      if (expandAll || initialSelectedItemId) {
-          walkTreeItems(data, initialSelectedItemId)
-      }
-    return ids;
-  }, [data, initialSelectedItemId, expandAll])
+  const expandedItemIds = React.useMemo(
+    () => collectExpandedIds(data, initialSelectedItemId, expandAll),
+    [data, initialSelectedItemId, expandAll]
+  );
 
   const { ref: refRoot, width, height } = useResizeObserver<HTMLDivElement>();
 
   return (
-    <div ref={refRoot} className={cn("overflow-hidden", className)}>
+    <div ref={refRoot} data-slot="tree" className={cn("overflow-hidden", className)} {...props}>
       <ScrollArea style={{ width, height }}>
         <div className="relative p-2">
-          <TreeItem
+          <TreeItems
             data={data}
-            ref={ref}
             selectedItemId={selectedItemId}
             handleSelectChange={handleSelectChange}
             expandedItemIds={expandedItemIds}
-            FolderIcon={folderIcon}
-            ItemIcon={itemIcon}
-            {...props}
+            folderIcon={folderIcon}
+            itemIcon={itemIcon}
           />
         </div>
       </ScrollArea>
     </div>
-  )
-})
-
-type TreeItemProps =
-  TreeProps &
-  {
-    selectedItemId?: string,
-    handleSelectChange: (item: TreeDataItem | undefined) => void,
-    expandedItemIds: string[],
-    FolderIcon?: LucideIcon,
-    ItemIcon?: LucideIcon
-  }
-
-const TreeItem = React.forwardRef<
-  HTMLDivElement,
-  TreeItemProps
->(({ className, data, selectedItemId, handleSelectChange, expandedItemIds, FolderIcon, ItemIcon, ...props }, ref) => {
-  return (
-    <div ref={ref} role="tree" className={className} {...props}><ul>
-      {data instanceof Array ? (
-        data.map((item) => (
-          <li key={item.id}>
-            {item.children ? (
-              <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
-                <AccordionPrimitive.Item value={item.id}>
-                  <AccordionTrigger
-                      aria-label={item.name}
-                    className={cn(
-                      "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
-                      selectedItemId === item.id && "before:opacity-100 before:bg-accent text-accent-foreground"
-                    )}
-                    onClick={() => handleSelectChange(item)}
-                  >
-                    {item.icon &&
-                      <item.icon
-                        className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50"
-                        aria-hidden="true"
-                      />
-                    }
-                    {!item.icon && FolderIcon &&
-                      <FolderIcon
-                        className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50"
-                        aria-hidden="true"
-                      />
-                    }
-                    <p className={cn("text-sm truncate", selectedItemId === item.id && "font-bold underline underline-offset-4")}>{item.name}</p>
-                  </AccordionTrigger>
-                  <AccordionContent className="pl-6 overflow-hidden">
-                    <TreeItem
-                      data={item.children}
-                      selectedItemId={selectedItemId}
-                      handleSelectChange={handleSelectChange}
-                      expandedItemIds={expandedItemIds}
-                      FolderIcon={FolderIcon}
-                      ItemIcon={ItemIcon}
-                    />
-                  </AccordionContent>
-                </AccordionPrimitive.Item>
-              </AccordionPrimitive.Root>
-            ) : (
-              <Leaf
-                item={item}
-                isSelected={selectedItemId === item.id}
-                onClick={() => handleSelectChange(item)}
-                Icon={ItemIcon}
-              />
-            )}
-          </li>
-        ))
-      ) : (
-        <li>
-          <Leaf
-            item={data}
-            isSelected={selectedItemId === data.id}
-            onClick={() => handleSelectChange(data)}
-            Icon={ItemIcon}
-          />
-        </li>
-      )}
-    </ul></div>
   );
-})
+}
 
-const Leaf = React.forwardRef<
-    HTMLButtonElement,
-    React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    item: TreeDataItem, isSelected?: boolean,
-    Icon?: LucideIcon
-  }
->(({ className, item, isSelected, Icon, ...props }, ref) => {
+function TreeItems({
+  data,
+  selectedItemId,
+  handleSelectChange,
+  expandedItemIds,
+  folderIcon: FolderIcon,
+  itemIcon: ItemIcon,
+}: {
+  data: TreeDataItem[] | TreeDataItem;
+  selectedItemId?: string;
+  handleSelectChange: (item: TreeDataItem | undefined) => void;
+  expandedItemIds: string[];
+  folderIcon?: LucideIcon;
+  itemIcon?: LucideIcon;
+}) {
+  const items = Array.isArray(data) ? data : [data];
+
   return (
-      <button
-      ref={ref}
+    <ul role="tree">
+      {items.map((item) => (
+        <li key={item.id} role="treeitem">
+          {item.children ? (
+            <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
+              <AccordionPrimitive.Item value={item.id}>
+                <TreeFolder
+                  item={item}
+                  isSelected={selectedItemId === item.id}
+                  FolderIcon={FolderIcon}
+                  onClick={() => handleSelectChange(item)}
+                />
+                <TreeContent className="pl-6 overflow-hidden">
+                  <TreeItems
+                    data={item.children}
+                    selectedItemId={selectedItemId}
+                    handleSelectChange={handleSelectChange}
+                    expandedItemIds={expandedItemIds}
+                    folderIcon={FolderIcon}
+                    itemIcon={ItemIcon}
+                  />
+                </TreeContent>
+              </AccordionPrimitive.Item>
+            </AccordionPrimitive.Root>
+          ) : (
+            <TreeLeaf
+              item={item}
+              isSelected={selectedItemId === item.id}
+              Icon={ItemIcon}
+              onClick={() => handleSelectChange(item)}
+            />
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function TreeFolder({
+  item,
+  isSelected,
+  FolderIcon,
+  onClick,
+}: {
+  item: TreeDataItem;
+  isSelected: boolean;
+  FolderIcon?: LucideIcon;
+  onClick: () => void;
+}) {
+  const Icon = item.icon || FolderIcon;
+
+  return (
+    <AccordionPrimitive.Header>
+      <AccordionPrimitive.Trigger
+        data-slot="tree-folder"
+        aria-label={item.name}
+        className={cn(
+          "flex flex-1 w-full items-center py-2 px-2 transition-all last:[&[data-state=open]>svg]:rotate-90",
+          "hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
+          isSelected && "before:opacity-100 before:bg-accent text-accent-foreground"
+        )}
+        onClick={onClick}
+      >
+        {Icon && (
+          <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />
+        )}
+        <span className={cn("text-sm truncate", isSelected && "font-semibold")}>
+          {item.name}
+        </span>
+        <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 text-accent-foreground/50 ml-auto" />
+      </AccordionPrimitive.Trigger>
+    </AccordionPrimitive.Header>
+  );
+}
+
+function TreeLeaf({
+  item,
+  isSelected,
+  Icon: DefaultIcon,
+  onClick,
+}: {
+  item: TreeDataItem;
+  isSelected: boolean;
+  Icon?: LucideIcon;
+  onClick: () => void;
+}) {
+  const Icon = item.icon || DefaultIcon;
+
+  return (
+    <button
       type="button"
-      role="button"
+      data-slot="tree-leaf"
       aria-label={item.name}
       data-state={isSelected ? "selected" : undefined}
       className={cn(
-          "flex items-center py-2 px-2 cursor-pointer w-full text-left \
-          hover:before:opacity-100 before:absolute before:left-0 before:right-1 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
-        className,
+        "flex items-center py-2 px-2 cursor-pointer w-full text-left",
+        "hover:before:opacity-100 before:absolute before:left-0 before:right-1 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
         isSelected && "before:opacity-100 before:bg-accent text-accent-foreground"
       )}
-      {...props}
+      onClick={onClick}
     >
-      {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-      {!item.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-      <p className={cn("flex-grow text-sm truncate", isSelected && "font-bold underline underline-offset-4")}>{item.name}</p>
-      </button>
+      {Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
+      <span className={cn("flex-grow text-sm truncate", isSelected && "font-semibold")}>
+        {item.name}
+      </span>
+    </button>
   );
-})
+}
 
-const AccordionTrigger = React.forwardRef<
-  React.ComponentRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header>
-    <AccordionPrimitive.Trigger
-      ref={ref}
+function TreeContent({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+  return (
+    <AccordionPrimitive.Content
+      data-slot="tree-content"
       className={cn(
-        "flex flex-1 w-full items-center py-2 transition-all last:[&[data-state=open]>svg]:rotate-90",
+        "overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
         className
       )}
       {...props}
     >
-      {children}
-      <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 text-accent-foreground/50 ml-auto" />
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
-));
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
+      <div className="pb-1 pt-0">{children}</div>
+    </AccordionPrimitive.Content>
+  );
+}
 
-const AccordionContent = React.forwardRef<
-  React.ComponentRef<typeof AccordionPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className={cn(
-      "overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-      className
-    )}
-    {...props}
-  >
-    <div className="pb-1 pt-0">{children}</div>
-  </AccordionPrimitive.Content>
-));
-AccordionContent.displayName = AccordionPrimitive.Content.displayName;
-
+export { Tree };

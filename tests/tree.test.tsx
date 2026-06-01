@@ -222,12 +222,9 @@ describe("Tree", () => {
         expect(screen.getByText("Selected: Root 2")).toBeInTheDocument();
     });
 
-    it("forwards ref to inner tree element", () => {
-        const ref = React.createRef<HTMLDivElement>();
-        render(<Tree data={mockData} ref={ref}/>);
-
-        expect(ref.current).toBeInstanceOf(HTMLDivElement);
-        expect(ref.current?.getAttribute("role")).toBe("tree");
+    it("renders with data-slot attribute", () => {
+        const { container } = render(<Tree data={mockData}/>);
+        expect(container.querySelector('[data-slot="tree"]')).toBeInTheDocument();
     });
 
     it("auto-expands parents when initialSelectedItemId is nested", () => {
@@ -269,7 +266,7 @@ describe("Tree", () => {
         }));
     });
 
-    it("renders single item with children as a leaf", () => {
+    it("renders single item with children as expandable folder", () => {
         const singleParent: TreeDataItem = {
             id: "parent",
             name: "Parent",
@@ -281,10 +278,9 @@ describe("Tree", () => {
 
         render(<Tree data={singleParent} expandAll/>);
 
-        // Single (non-array) data renders as a Leaf regardless of children
         expect(screen.getByText("Parent")).toBeInTheDocument();
-        expect(screen.queryByText("Child A")).not.toBeInTheDocument();
-        expect(screen.queryByText("Child B")).not.toBeInTheDocument();
+        expect(screen.getByText("Child A")).toBeInTheDocument();
+        expect(screen.getByText("Child B")).toBeInTheDocument();
     });
 
     it("renders item-level icon on a leaf node", () => {
