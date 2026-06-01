@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import React from "react"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -27,6 +28,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
+import {ConfirmDialog} from "@/components/ui/confirm-dialog"
 import {
     ContextMenu,
     ContextMenuContent,
@@ -38,6 +40,7 @@ import {
     ContextMenuSubTrigger,
     ContextMenuTrigger
 } from "@/components/ui/context-menu"
+import {FormSheet} from "@/components/ui/form-sheet"
 import {
     Dialog,
     DialogContent,
@@ -493,6 +496,76 @@ export function OverlaysShowcase() {
                     </div>
                 </CardContent>
             </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>FormSheet</CardTitle>
+                    <CardDescription>Pre-composed slide-out panel for forms</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <FormSheetDemo />
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Confirm Dialog</CardTitle>
+                    <CardDescription>Pre-composed confirmation for destructive actions</CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-4">
+                    <ConfirmDialogDemo />
+                </CardContent>
+            </Card>
+        </>
+    )
+}
+
+function FormSheetDemo() {
+    const [open, setOpen] = React.useState(false)
+    return (
+        <>
+            <Button variant="outline" onClick={() => setOpen(true)}>Open FormSheet</Button>
+            <FormSheet open={open} onClose={() => setOpen(false)} title="Create project" description="Fill in the details for your new project.">
+                <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="project-name">Name</Label>
+                        <Input id="project-name" placeholder="My project" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="project-desc">Description</Label>
+                        <Input id="project-desc" placeholder="A short description" />
+                    </div>
+                </div>
+            </FormSheet>
+        </>
+    )
+}
+
+function ConfirmDialogDemo() {
+    const [open, setOpen] = React.useState(false)
+    const [openBlocked, setOpenBlocked] = React.useState(false)
+    return (
+        <>
+            <Button variant="destructive" onClick={() => setOpen(true)}>Delete project</Button>
+            <ConfirmDialog
+                open={open}
+                onOpenChange={setOpen}
+                title="Delete project?"
+                description="This will permanently delete the project and all its data. This cannot be undone."
+                onConfirm={() => setOpen(false)}
+                confirmLabel="Delete project"
+                cancelLabel="Keep project"
+            />
+            <Button variant="outline" onClick={() => setOpenBlocked(true)}>Delete (blocked)</Button>
+            <ConfirmDialog
+                open={openBlocked}
+                onOpenChange={setOpenBlocked}
+                title="Delete database?"
+                description="This database cannot be deleted because other resources depend on it."
+                onConfirm={() => setOpenBlocked(false)}
+                confirmLabel="Delete"
+                dependencies={["3 active connections", "2 scheduled backups"]}
+            />
         </>
     )
 }

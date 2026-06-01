@@ -1,0 +1,53 @@
+---
+title: 'FormSheet'
+description: 'Pre-composed slide-out panel for hosting forms.'
+---
+
+# FormSheet
+
+A convenience wrapper around `Sheet` that provides a standard slide-out panel with title, description, and optional pinned footer. Reduces boilerplate for the common "open a side panel with a form" pattern.
+
+## Usage
+
+```tsx
+import { FormSheet, Button, Input, Label } from '@clidey/ux';
+
+function CreateProjectPanel() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>New project</Button>
+      <FormSheet
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Create project"
+        description="Fill in the details."
+        footer={<Button className="w-full">Create</Button>}
+      >
+        <div className="space-y-4 py-4">
+          <Label>Name</Label>
+          <Input placeholder="My project" />
+        </div>
+      </FormSheet>
+    </>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | — | **Required.** Whether the sheet is open |
+| `onClose` | `() => void` | — | **Required.** Called when the sheet should close |
+| `title` | `string` | — | **Required.** Sheet heading |
+| `description` | `string` | — | Optional subheading below the title |
+| `children` | `ReactNode` | — | Form content (scrollable) |
+| `side` | `"right" \| "left" \| "top" \| "bottom"` | `"right"` | Which edge the sheet slides from |
+| `className` | `string` | `"w-full sm:max-w-lg..."` | Override SheetContent classes |
+| `footer` | `ReactNode` | — | Pinned content at the bottom (outside scroll area) |
+
+<Note>
+  The `footer` prop renders below the scrollable content area. Use it for action buttons (Save, Cancel) that should always be visible regardless of scroll position.
+</Note>

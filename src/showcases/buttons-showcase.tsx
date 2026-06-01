@@ -17,7 +17,9 @@
 import {Button} from "@/components/ui/button"
 import {ButtonGroup, ButtonGroupSeparator, ButtonGroupText} from "@/components/ui/button-group"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
+import {CopyButton} from "@/components/ui/copy-button"
 import {Icon} from "@/components/ui/icon"
+import {Kbd} from "@/components/ui/kbd"
 import {Separator} from "@/components/ui/separator"
 import {AlignCenter, AlignLeft, AlignRight, Bell, Bold, Calendar, Copy, Download, Home, Italic, Mail, Scissors, Settings, Trash2, Underline, Upload, User} from "lucide-react"
 
@@ -173,6 +175,41 @@ export function ButtonsShowcase() {
                             <Button variant="outline">Second</Button>
                             <Button variant="outline">Third</Button>
                         </ButtonGroup>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Utility Components</CardTitle>
+                    <CardDescription>Keyboard indicators and clipboard actions</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Keyboard Keys</h3>
+                        <p className="text-sm text-muted-foreground">Visual key cap indicators. Purely presentational; does not bind any keyboard shortcuts.</p>
+                        <div className="flex items-center gap-2">
+                            <Kbd>⌘</Kbd><Kbd>K</Kbd>
+                            <span className="text-sm text-muted-foreground ml-2">Command palette</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Kbd>Esc</Kbd>
+                            <span className="text-sm text-muted-foreground ml-2">Close dialog</span>
+                        </div>
+                    </div>
+
+                    <Separator/>
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Copy Button</h3>
+                        <div className="flex items-center gap-4">
+                            <code className="text-sm bg-muted px-3 py-1.5 rounded">npm install @clidey/ux</code>
+                            <CopyButton text="npm install @clidey/ux" />
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <code className="text-sm bg-muted px-3 py-1.5 rounded">pnpm add @clidey/ux</code>
+                            <CopyButton text="pnpm add @clidey/ux" variant="outline" />
+                        </div>
                     </div>
                 </CardContent>
             </Card>

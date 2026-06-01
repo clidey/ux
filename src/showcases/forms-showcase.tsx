@@ -18,6 +18,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Checkbox} from "@/components/ui/checkbox"
 import {Input, SearchInput, TextArea} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
+import {MultiSearchSelect} from "@/components/ui/multi-search-select"
 import {
     SearchSelect,
     Select,
@@ -160,7 +161,7 @@ export function FormsShowcase() {
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold">Select Dropdowns</h3>
                         <div className="grid gap-4 md:grid-cols-2">
-                            <div>
+                            <div className="space-y-2">
                                 <Label htmlFor="framework">Framework</Label>
                                 <Select>
                                     <SelectTrigger id="framework">
@@ -184,7 +185,7 @@ export function FormsShowcase() {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div>
+                            <div className="space-y-2">
                                 <Label htmlFor="size-select">Size</Label>
                                 <Select>
                                     <SelectTrigger id="size-select">
@@ -232,6 +233,43 @@ export function FormsShowcase() {
                                     disabled
                                 />
                             </div>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Multi Search Select</CardTitle>
+                    <CardDescription>Select multiple values with search filtering</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                            <Label>Frameworks</Label>
+                            <MultiSearchSelect
+                                options={[
+                                    { value: "react", label: "React" },
+                                    { value: "vue", label: "Vue" },
+                                    { value: "svelte", label: "Svelte" },
+                                    { value: "angular", label: "Angular" },
+                                    { value: "solid", label: "Solid" },
+                                    { value: "qwik", label: "Qwik" },
+                                ]}
+                                placeholder="Select frameworks..."
+                                searchPlaceholder="Search frameworks..."
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Disabled</Label>
+                            <MultiSearchSelect
+                                options={[
+                                    { value: "a", label: "Option A" },
+                                    { value: "b", label: "Option B" },
+                                ]}
+                                placeholder="Disabled..."
+                                disabled
+                            />
                         </div>
                     </div>
                 </CardContent>

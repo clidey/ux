@@ -1,0 +1,50 @@
+---
+title: 'Kbd'
+description: 'Styled keyboard key indicator for displaying shortcuts.'
+---
+
+# Kbd
+
+A visual keyboard key cap component for displaying keyboard shortcuts. Purely presentational; it does not bind any keyboard listeners or register shortcuts.
+
+## Usage
+
+```tsx
+import { Kbd } from '@clidey/ux';
+
+function ShortcutHint() {
+  return (
+    <div className="flex items-center gap-1">
+      <Kbd>⌘</Kbd><Kbd>K</Kbd>
+      <span className="text-sm text-muted-foreground ml-2">Open search</span>
+    </div>
+  );
+}
+```
+
+## Props
+
+`Kbd` extends all native `<kbd>` element attributes.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — | The key label to display (e.g., "⌘", "Shift", "K") |
+| `className` | `string` | — | Additional CSS classes |
+
+## Examples
+
+### Single key
+```tsx
+<Kbd>Esc</Kbd>
+```
+
+### Key combination
+```tsx
+<div className="flex items-center gap-1">
+  <Kbd>⌘</Kbd><Kbd>⇧</Kbd><Kbd>P</Kbd>
+</div>
+```
+
+<Note>
+  This component is purely visual. To actually register keyboard shortcuts, use `addEventListener('keydown', ...)` or a shortcut library separately.
+</Note>

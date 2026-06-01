@@ -1,0 +1,78 @@
+---
+title: 'MultiSearchSelect'
+description: 'Multi-value combobox with search filtering and select-all.'
+---
+
+# MultiSearchSelect
+
+A multi-select combobox that combines a Popover trigger with a searchable Command list. Supports selecting multiple values, a "Select All" toggle, and icon-labeled options.
+
+## Usage
+
+```tsx
+import { MultiSearchSelect } from '@clidey/ux';
+
+function FrameworkPicker() {
+  const [selected, setSelected] = useState<string[]>([]);
+
+  return (
+    <MultiSearchSelect
+      options={[
+        { value: 'react', label: 'React' },
+        { value: 'vue', label: 'Vue' },
+        { value: 'svelte', label: 'Svelte' },
+      ]}
+      value={selected}
+      onValueChange={setSelected}
+      placeholder="Select frameworks..."
+    />
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `options` | `MultiSearchSelectOption[]` | — | **Required.** Array of selectable options |
+| `value` | `string[]` | — | Controlled selected values |
+| `defaultValue` | `string[]` | `[]` | Initial values (uncontrolled) |
+| `onValueChange` | `(value: string[]) => void` | — | Callback when selection changes |
+| `selected` | `string[]` | — | Alias for `value` (legacy compatibility) |
+| `onChange` | `(selected: string[]) => void` | — | Alias for `onValueChange` (legacy compatibility) |
+| `placeholder` | `string` | `"Select..."` | Trigger button text when empty |
+| `searchPlaceholder` | `string` | `"Search..."` | Search input placeholder |
+| `notFoundMessage` | `string` | `"No results found."` | Empty search message |
+| `selectAllLabel` | `string` | `"Select all"` | Label for the select-all item |
+| `showSelectAll` | `boolean` | `true` | Show select-all toggle |
+| `disabled` | `boolean` | `false` | Disable the component |
+| `className` | `string` | — | Class applied to the trigger button |
+| `side` | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Popover placement |
+| `align` | `"start" \| "center" \| "end"` | `"start"` | Popover alignment |
+
+### MultiSearchSelectOption
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `string` | Unique identifier |
+| `label` | `string` | Display text |
+| `icon` | `ReactNode` | Optional leading icon |
+
+## Examples
+
+### With icons
+```tsx
+<MultiSearchSelect
+  options={[
+    { value: 'desktop', label: 'Desktop', icon: <Laptop className="size-4" /> },
+    { value: 'mobile', label: 'Mobile', icon: <Smartphone className="size-4" /> },
+  ]}
+  value={devices}
+  onValueChange={setDevices}
+/>
+```
+
+### Without select-all
+```tsx
+<MultiSearchSelect options={options} showSelectAll={false} />
+```

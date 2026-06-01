@@ -1,0 +1,61 @@
+---
+title: 'CopyButton'
+description: 'Button that copies text to clipboard with visual feedback.'
+---
+
+# CopyButton
+
+A button that copies the provided text to the clipboard and shows a brief checkmark confirmation. Includes a tooltip label.
+
+## Usage
+
+```tsx
+import { CopyButton } from '@clidey/ux';
+
+function CodeBlock({ code }: { code: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <code className="bg-muted px-3 py-1.5 rounded text-sm">{code}</code>
+      <CopyButton text={code} />
+    </div>
+  );
+}
+```
+
+## Props
+
+`CopyButton` extends all `Button` props (except `onClick` and `children`).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | — | **Required.** Text to copy to clipboard |
+| `onCopy` | `() => void` | — | Callback fired after successful copy |
+| `tooltipLabel` | `string` | `"Copy"` | Tooltip text shown on hover |
+| `copiedLabel` | `string` | `"Copied"` | Tooltip text shown after copying |
+| `variant` | `ButtonVariant` | `"ghost"` | Button style variant |
+| `size` | `ButtonSize` | `"icon"` | Button size |
+| `className` | `string` | — | Additional CSS classes |
+
+## Examples
+
+### With callback
+```tsx
+<CopyButton text={errorMessage} onCopy={() => toast.success('Copied!')} />
+```
+
+### Custom styling
+```tsx
+<CopyButton text={code} variant="outline" className="border-input" />
+```
+
+## Clipboard Utility
+
+The underlying utility function is also exported for programmatic use:
+
+```tsx
+import { copyToClipboard } from '@clidey/ux';
+
+const success = await copyToClipboard('Hello world');
+```
+
+Returns `true` if the copy succeeded, `false` otherwise. Uses the Clipboard API with an `execCommand` fallback for older browsers.

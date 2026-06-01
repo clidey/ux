@@ -64,10 +64,17 @@ export { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLe
 export { Progress, progressVariants } from "./components/ui/progress";
 export { MapContainer, MapMarker, MapLine, MapArc, MapPolygon, MapCircleLayer, MapHeatmap, useMap, type MapConfig, type MapProjection, type MapContainerProps, type MapMarkerProps, type MapLineProps, type MapArcProps, type MapPolygonProps, type MapCircleLayerProps, type MapHeatmapProps } from "./components/ui/map";
 
+export { Kbd } from './components/ui/kbd'
+export { CopyButton } from './components/ui/copy-button'
+export { MultiSearchSelect, type MultiSearchSelectOption } from './components/ui/multi-search-select'
+export { FormSheet } from './components/ui/form-sheet'
+export { ConfirmDialog } from './components/ui/confirm-dialog'
+
 // Theme Components
 export { ThemeProvider, useTheme } from './components/theme/provider'
 export { ModeToggle } from './components/theme/toggle'
 
 // Utilities
 export * from './lib/utils'
+export { copyToClipboard } from './lib/clipboard'
 export { ComponentErrorBoundary } from './lib/error-boundary'

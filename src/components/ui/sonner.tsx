@@ -25,6 +25,7 @@ const Toaster = ({className, ...props}: ToasterProps) => {
       <div data-slot="toaster" className={cn("toaster group", className)}>
           <Sonner
               theme={theme as ToasterProps["theme"]}
+              richColors
               className={cn("toaster group", className)}
               style={
                   {

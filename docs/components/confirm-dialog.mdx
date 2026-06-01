@@ -1,0 +1,85 @@
+---
+title: 'ConfirmDialog'
+description: 'Pre-composed confirmation dialog for destructive or important actions.'
+---
+
+# ConfirmDialog
+
+A pre-composed `AlertDialog` for confirming actions. Supports dependency blocking (disabling confirmation when prerequisites aren't met) and an item preview list.
+
+## Usage
+
+```tsx
+import { ConfirmDialog, Button } from '@clidey/ux';
+
+function DeleteButton() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Delete project
+      </Button>
+      <ConfirmDialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Delete project?"
+        description="This will permanently delete the project and all its data."
+        onConfirm={() => { deleteProject(); setOpen(false); }}
+        confirmLabel="Delete project"
+        cancelLabel="Keep project"
+      />
+    </>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | — | **Required.** Whether the dialog is visible |
+| `onOpenChange` | `(open: boolean) => void` | — | **Required.** Called on open/close state change |
+| `title` | `string` | — | **Required.** Dialog heading |
+| `description` | `string` | — | **Required.** Explanatory text |
+| `onConfirm` | `() => void` | — | **Required.** Called when user confirms |
+| `confirmLabel` | `string` | `"Confirm"` | Text on the confirm button |
+| `cancelLabel` | `string` | `"Cancel"` | Text on the cancel button |
+| `confirmVariant` | `"default" \| "destructive" \| "outline" \| "secondary"` | `"destructive"` | Confirm button style |
+| `disabled` | `boolean` | `false` | Explicitly disable the confirm button |
+| `dependencies` | `string[]` | — | Blocker reasons (disables confirm and shows list) |
+| `dependenciesLabel` | `string` | `"Blocked by:"` | Label above the blocker list |
+| `items` | `ReactNode[]` | — | Preview list of affected items |
+| `className` | `string` | — | Additional classes on the dialog content |
+
+## Examples
+
+### With blocking dependencies
+```tsx
+<ConfirmDialog
+  open={open}
+  onOpenChange={setOpen}
+  title="Delete database?"
+  description="Cannot delete while other resources depend on it."
+  onConfirm={handleDelete}
+  confirmLabel="Delete"
+  dependencies={["3 active connections", "2 scheduled backups"]}
+/>
+```
+
+### With item preview
+```tsx
+<ConfirmDialog
+  open={open}
+  onOpenChange={setOpen}
+  title="Remove 3 members?"
+  description="These members will lose access immediately."
+  onConfirm={handleRemove}
+  confirmLabel="Remove members"
+  items={selectedMembers.map(m => <span key={m.id}>{m.name}</span>)}
+/>
+```
+
+<Note>
+  When `dependencies` is non-empty, the confirm button is automatically disabled and the dependency list is displayed. This prevents accidental destructive actions when prerequisites exist.
+</Note>
