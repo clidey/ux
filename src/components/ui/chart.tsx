@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
+import type { TooltipPayloadEntry } from "recharts"
 
 import { cn } from "@/lib/utils"
 import { ComponentErrorBoundary } from "@/lib/error-boundary"
@@ -17,18 +18,7 @@ export type ChartConfig = {
   )
 }
 
-type PayloadItem = {
-  type?: "none"
-  name?: string
-  dataKey?: string
-  value?: number
-  color?: string
-  payload?: {
-    fill?: string
-    [key: string]: unknown
-  }
-  [key: string]: unknown
-}
+type PayloadItem = TooltipPayloadEntry
 
 type ChartContextProps = {
   config: ChartConfig
@@ -205,7 +195,7 @@ function ChartTooltipContent({
 
             return (
               <div
-                key={item.dataKey}
+                key={`${item.dataKey}`}
                 className={cn(
                   "[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5",
                   indicator === "dot" && "items-center"
@@ -304,7 +294,7 @@ function ChartLegendContent({
 
           return (
             <div
-              key={item.value}
+              key={`${item.value}`}
               className={cn(
                 "[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3"
               )}
