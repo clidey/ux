@@ -33,6 +33,7 @@ const spinnerVariants = cva(
       size: {
         sm: 'size-4',
         default: 'size-5',
+        md: 'size-6',
         lg: 'size-8',
       },
     },
