@@ -410,38 +410,34 @@ export function FeedbackShowcase() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Progress Levels</h3>
+                        <h3 className="text-lg font-semibold">Sizes</h3>
                         <div className="space-y-4">
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm">
-                                    <span>0%</span>
-                                </div>
-                                <Progress value={0} />
-                            </div>
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm">
-                                    <span>25%</span>
-                                </div>
-                                <Progress value={25} />
-                            </div>
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm">
-                                    <span>50%</span>
-                                </div>
-                                <Progress value={50} />
-                            </div>
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm">
-                                    <span>75%</span>
-                                </div>
-                                <Progress value={75} />
-                            </div>
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm">
-                                    <span>100%</span>
-                                </div>
-                                <Progress value={100} />
-                            </div>
+                            <Progress value={60} size="sm" />
+                            <Progress value={60} size="default" />
+                            <Progress value={60} size="md" />
+                            <Progress value={60} size="lg" />
+                        </div>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Variants</h3>
+                        <div className="space-y-4">
+                            <Progress value={75} variant="default" showValue />
+                            <Progress value={90} variant="success" showValue />
+                            <Progress value={45} variant="warning" showValue />
+                            <Progress value={20} variant="destructive" showValue />
+                        </div>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Indeterminate</h3>
+                        <div className="space-y-4">
+                            <Progress indeterminate />
+                            <Progress indeterminate variant="success" size="md" />
                         </div>
                     </div>
 
@@ -453,23 +449,20 @@ export function FeedbackShowcase() {
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">File Upload</span>
-                                    <span className="font-medium">67%</span>
                                 </div>
-                                <Progress value={67} />
+                                <Progress value={67} showValue />
                             </div>
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Profile Completion</span>
-                                    <span className="font-medium">33%</span>
                                 </div>
-                                <Progress value={33} />
+                                <Progress value={33} variant="warning" showValue />
                             </div>
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Course Progress</span>
-                                    <span className="font-medium">89%</span>
                                 </div>
-                                <Progress value={89} />
+                                <Progress value={89} variant="success" showValue />
                             </div>
                         </div>
                     </div>

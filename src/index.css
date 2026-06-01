@@ -48,6 +48,19 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --animate-spinner: spinner 1s linear infinite;
+  --animate-progress-indeterminate: progress-indeterminate 2.2s ease-in-out infinite;
+
+  @keyframes progress-indeterminate {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(200%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
 
   @keyframes spinner {
     0% {

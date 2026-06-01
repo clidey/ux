@@ -61,7 +61,7 @@ export { Switch } from "./components/ui/switch";
 export { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "./components/ui/alert-dialog";
 export { Spinner, spinnerVariants } from "./components/ui/spinner";
 export { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, ChartStyle, ThemedCartesianGrid, ThemedXAxis, ThemedYAxis, ThemedPolarGrid, type ChartConfig } from "./components/ui/chart";
-export { Progress } from "./components/ui/progress";
+export { Progress, progressVariants } from "./components/ui/progress";
 export { MapContainer, MapMarker, MapLine, MapArc, MapPolygon, MapCircleLayer, MapHeatmap, useMap, type MapConfig, type MapProjection, type MapContainerProps, type MapMarkerProps, type MapLineProps, type MapArcProps, type MapPolygonProps, type MapCircleLayerProps, type MapHeatmapProps } from "./components/ui/map";
 
 // Theme Components
