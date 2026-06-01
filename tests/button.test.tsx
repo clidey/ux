@@ -110,7 +110,7 @@ describe('Button Component', () => {
         const button = screen.getByRole('button', {name: /click me/i});
         try {
             await userEvent.click(button);
-        } catch (e) {
+        } catch {
             // userEvent.click throws an error when the element is disabled
             // so we can safely ignore it.
         }
@@ -162,7 +162,7 @@ describe('Button Component', () => {
         const button = screen.getByRole('button', {name: /submit/i});
         try {
             await userEvent.click(button);
-        } catch (e) {
+        } catch {
             // userEvent throws on disabled elements
         }
         expect(onClick).not.toHaveBeenCalled();

@@ -166,7 +166,7 @@ export function MapShowcase() {
         <CardHeader>
           <CardTitle>Arc Lines (Flight Routes)</CardTitle>
           <CardDescription>
-            Curved arcs that bow outward like airplane routes. Each arc starts from one city and "flies" to the next.
+            Curved arcs that bow outward like airplane routes. Each arc starts from one city and &quot;flies&quot; to the next.
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -246,7 +246,7 @@ export function FeedbackShowcase() {
             <Card>
                 <CardHeader>
                     <CardTitle>Empty States</CardTitle>
-                    <CardDescription>Placeholder content when there's no data</CardDescription>
+                    <CardDescription>Placeholder content when there&apos;s no data</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <EmptyState

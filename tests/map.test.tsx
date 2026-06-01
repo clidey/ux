@@ -4,7 +4,7 @@ import {describe, expect, it, vi} from 'vitest';
 
 vi.mock('react-map-gl/maplibre', () => ({
     __esModule: true,
-    default: React.forwardRef(({children, ...props}: any, ref: any) => (
+    default: React.forwardRef(({children}: any, ref: any) => (
         <div data-testid="map-gl" ref={ref}>{children}</div>
     )),
     Marker: ({children, latitude, longitude}: any) => (
