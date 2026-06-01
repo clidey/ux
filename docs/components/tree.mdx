@@ -5,7 +5,7 @@ description: 'Hierarchical tree component for file explorers and nested navigati
 
 # Tree
 
-`Tree` renders a hierarchical data structure with expand/collapse functionality and item selection. Common use cases include file explorers, category trees, and nested menu structures. Selected items are indicated with a bold label, underline, and accent background highlight (no side-stripe border).
+`Tree` renders a hierarchical data structure with expand/collapse, keyboard navigation, and type-ahead search. Common use cases include file explorers, category trees, and nested menu structures. Selected items are indicated with a semibold label and accent background. Focused items show a ring indicator.
 
 ## Import
 
@@ -124,6 +124,39 @@ const treeData: TreeDataItem[] = [
 ];
 ```
 
+## Keyboard navigation
+
+Click inside the tree to focus it, then use keyboard shortcuts:
+
+| Key | Action |
+| --- | --- |
+| `↑` / `↓` | Move focus between visible nodes |
+| `→` | Expand collapsed folder, or move to first child |
+| `←` | Collapse expanded folder, or move to parent |
+| `Enter` / `Space` | Select the focused node |
+| `Home` / `End` | Jump to first / last visible node |
+| Type a letter | Jump to next node whose name starts with that character |
+
+Type-ahead resets after 500ms of inactivity, allowing multi-character search (e.g., type "re" to jump to "Reports").
+
+## Controlled expand/collapse
+
+Control which nodes are expanded externally (useful for search filtering):
+
+```tsx
+function SearchableTree() {
+  const [expandedIds, setExpandedIds] = useState<string[]>([]);
+
+  return (
+    <Tree
+      data={treeData}
+      expandedIds={expandedIds}
+      onExpandChange={setExpandedIds}
+    />
+  );
+}
+```
+
 ## Props
 
 ### Tree
@@ -134,8 +167,10 @@ const treeData: TreeDataItem[] = [
 | `initialSelectedItemId` | `string` | — | ID of the item selected on initial render. |
 | `onSelectChange` | `(item: TreeDataItem \| undefined) => void` | — | Called when the selected item changes. |
 | `expandAll` | `boolean` | `false` | Expands all nodes on initial render. |
-| `folderIcon` | `LucideIcon` | Folder icon | Custom icon for nodes that have children. |
-| `itemIcon` | `LucideIcon` | File icon | Custom icon for leaf nodes. |
+| `expandedIds` | `string[]` | — | Controlled expanded node IDs. |
+| `onExpandChange` | `(ids: string[]) => void` | — | Called when expand state changes. |
+| `folderIcon` | `LucideIcon` | — | Custom icon for folder nodes. |
+| `itemIcon` | `LucideIcon` | — | Custom icon for leaf nodes. |
 | `className` | `string` | — | Additional CSS classes. |
 
 ### TreeDataItem type
@@ -148,3 +183,7 @@ type TreeDataItem = {
   children?: TreeDataItem[];
 };
 ```
+
+<Note>
+  Keyboard navigation follows the WAI-ARIA treeview pattern. Focus remains on the tree container; individual nodes are highlighted via `aria-activedescendant`.
+</Note>
