@@ -28,6 +28,7 @@ import {
     CommandShortcut
 } from "@/components/ui/command"
 import {
+    DataPagination,
     Pagination,
     PaginationContent,
     PaginationEllipsis,
@@ -36,6 +37,7 @@ import {
     PaginationNext,
     PaginationPrevious
 } from "@/components/ui/pagination"
+import {Separator} from "@/components/ui/separator"
 import {StackList, StackListItem} from "@/components/ui/stack-list"
 import {
     Table,
@@ -167,6 +169,55 @@ const treeData: TreeDataItem[] = [
     },
 ]
 
+const paginatedItems = Array.from({ length: 100 }, (_, i) => ({
+    id: i + 1,
+    name: `Item ${i + 1}`,
+    status: ["Active", "Pending", "Archived"][i % 3],
+}))
+
+function DataPaginationDemo() {
+    const [page, setPage] = useState(1)
+    const pageSize = 5
+    const totalPages = Math.ceil(paginatedItems.length / pageSize)
+    const currentItems = paginatedItems.slice((page - 1) * pageSize, page * pageSize)
+
+    return (
+        <div className="space-y-4">
+            <div className="rounded-md border">
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b bg-muted/50">
+                            <th className="px-4 py-2 text-left font-medium">ID</th>
+                            <th className="px-4 py-2 text-left font-medium">Name</th>
+                            <th className="px-4 py-2 text-left font-medium">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentItems.map(item => (
+                            <tr key={item.id} className="border-b last:border-0">
+                                <td className="px-4 py-2 text-muted-foreground">{item.id}</td>
+                                <td className="px-4 py-2">{item.name}</td>
+                                <td className="px-4 py-2">{item.status}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                    Showing {(page - 1) * pageSize + 1}-{Math.min(page * pageSize, paginatedItems.length)} of {paginatedItems.length}
+                </p>
+                <DataPagination
+                    totalPages={totalPages}
+                    currentPage={page}
+                    onPageChange={setPage}
+                    className="mx-0 w-auto"
+                />
+            </div>
+        </div>
+    )
+}
+
 export function DataShowcase() {
     const [open, setOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState<TreeDataItem | undefined>(undefined)
@@ -276,6 +327,11 @@ export function DataShowcase() {
                             </PaginationItem>
                         </PaginationContent>
                     </Pagination>
+
+                    <Separator />
+
+                    <h3 className="text-lg font-semibold">DataPagination (controlled)</h3>
+                    <DataPaginationDemo />
                 </CardContent>
             </Card>
 

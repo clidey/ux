@@ -128,6 +128,91 @@ function PaginationEllipsis({
   )
 }
 
+type DataPaginationProps = {
+  totalPages: number
+  currentPage: number
+  onPageChange: (page: number) => void
+  siblingsCount?: number
+  className?: string
+  size?: React.ComponentProps<typeof PaginationLink>["size"]
+}
+
+function DataPagination({
+  totalPages,
+  currentPage,
+  onPageChange,
+  siblingsCount = 2,
+  className,
+  size = "icon",
+}: DataPaginationProps) {
+  if (totalPages <= 1) return null
+
+  const start = Math.max(1, currentPage - siblingsCount)
+  const end = Math.min(totalPages, currentPage + siblingsCount)
+
+  const pages: (number | "ellipsis-start" | "ellipsis-end")[] = []
+
+  if (start > 1) {
+    pages.push(1)
+    if (start > 2) pages.push("ellipsis-start")
+  }
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+
+  if (end < totalPages) {
+    if (end < totalPages - 1) pages.push("ellipsis-end")
+    pages.push(totalPages)
+  }
+
+  return (
+    <Pagination className={className}>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            href="#"
+            onClick={(e) => { e.preventDefault(); if (currentPage > 1) onPageChange(currentPage - 1) }}
+            aria-disabled={currentPage === 1}
+            size={size === "icon" ? "default" : size}
+            className={cn({ "opacity-50 pointer-events-none": currentPage === 1 })}
+          />
+        </PaginationItem>
+
+        {pages.map((page) => {
+          if (page === "ellipsis-start" || page === "ellipsis-end") {
+            return <PaginationEllipsis key={page} />
+          }
+          return (
+            <PaginationItem key={page}>
+              <PaginationLink
+                href="#"
+                isActive={page === currentPage}
+                onClick={(e) => { e.preventDefault(); onPageChange(page) }}
+                size={size}
+                aria-label={page === currentPage ? `Page ${page}` : `Go to page ${page}`}
+                aria-current={page === currentPage ? "page" : undefined}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          )
+        })}
+
+        <PaginationItem>
+          <PaginationNext
+            href="#"
+            onClick={(e) => { e.preventDefault(); if (currentPage < totalPages) onPageChange(currentPage + 1) }}
+            aria-disabled={currentPage === totalPages}
+            size={size === "icon" ? "default" : size}
+            className={cn({ "opacity-50 pointer-events-none": currentPage === totalPages })}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  )
+}
+
 export {
   Pagination,
   PaginationContent,
@@ -136,4 +221,5 @@ export {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
+  DataPagination,
 }

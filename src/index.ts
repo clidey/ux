@@ -24,7 +24,7 @@ export { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 export { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from './components/ui/dropdown-menu'
 export { Input, SearchInput, TextArea } from './components/ui/input'
 export { Label } from './components/ui/label'
-export { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from './components/ui/pagination'
+export { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, DataPagination } from './components/ui/pagination'
 export { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover'
 export { Skeleton } from './components/ui/skeleton'
 export { Toaster, toast } from './components/ui/sonner'
