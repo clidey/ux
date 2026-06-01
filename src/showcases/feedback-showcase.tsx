@@ -51,19 +51,27 @@ export function FeedbackShowcase() {
                         </AlertDescription>
                     </Alert>
 
-                    <Alert className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
-                        <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400"/>
-                        <AlertTitle className="text-green-800 dark:text-green-200">Success!</AlertTitle>
-                        <AlertDescription className="text-green-700 dark:text-green-300">
+                    <Alert variant="success">
+                        <CheckCircle2 className="h-4 w-4"/>
+                        <AlertTitle>Changes saved</AlertTitle>
+                        <AlertDescription>
                             Your changes have been saved successfully.
                         </AlertDescription>
                     </Alert>
 
-                    <Alert className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
-                        <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400"/>
-                        <AlertTitle className="text-yellow-800 dark:text-yellow-200">Warning</AlertTitle>
-                        <AlertDescription className="text-yellow-700 dark:text-yellow-300">
-                            Your free trial expires in 3 days. Upgrade now to continue using all features.
+                    <Alert variant="warning">
+                        <AlertTriangle className="h-4 w-4"/>
+                        <AlertTitle>Trial expiring</AlertTitle>
+                        <AlertDescription>
+                            Your free trial expires in 3 days. Upgrade to continue using all features.
+                        </AlertDescription>
+                    </Alert>
+
+                    <Alert variant="info">
+                        <Info className="h-4 w-4"/>
+                        <AlertTitle>Scheduled maintenance</AlertTitle>
+                        <AlertDescription>
+                            The system will be briefly unavailable on Sunday 2:00 AM UTC for upgrades.
                         </AlertDescription>
                     </Alert>
 
@@ -112,6 +120,26 @@ export function FeedbackShowcase() {
                     <Alert variant="destructive">
                         <AlertDescription>
                             Could not save changes. Check your connection and try again.
+                        </AlertDescription>
+                    </Alert>
+
+                    <Separator/>
+
+                    <h3 className="text-lg font-semibold">Dismissible</h3>
+
+                    <Alert variant="info" dismissible onClose={() => {}}>
+                        <Info className="h-4 w-4"/>
+                        <AlertTitle>New feature available</AlertTitle>
+                        <AlertDescription>
+                            You can now export data in CSV format. Try it from the toolbar.
+                        </AlertDescription>
+                    </Alert>
+
+                    <Alert variant="warning" dismissible onClose={() => {}}>
+                        <AlertTriangle className="h-4 w-4"/>
+                        <AlertTitle>Browser outdated</AlertTitle>
+                        <AlertDescription>
+                            Some features may not work correctly. Update your browser for the best experience.
                         </AlertDescription>
                     </Alert>
                 </CardContent>

@@ -55,7 +55,7 @@ export { EmptyState } from "./components/ui/empty-state";
 export { Tree, type TreeDataItem } from "./components/ui/tree";
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./components/ui/accordion";
 export { ResizablePanel, ResizablePanelGroup, ResizableHandle } from "./components/ui/resizable";
-export { Alert, AlertTitle, AlertDescription } from "./components/ui/alert";
+export { Alert, AlertTitle, AlertDescription, AlertAction, alertVariants } from "./components/ui/alert";
 export { Icon } from "./components/ui/icon";
 export { Switch } from "./components/ui/switch";
 export { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "./components/ui/alert-dialog";

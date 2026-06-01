@@ -16,6 +16,7 @@
 
 import * as React from "react"
 import {cva, type VariantProps} from "class-variance-authority"
+import {XIcon} from "lucide-react"
 
 import {cn} from "@/lib/utils"
 
@@ -26,6 +27,9 @@ const alertVariants = cva(
       variant: {
         default: "bg-card text-card-foreground",
         destructive: "text-destructive bg-card [&>svg]:text-current *:data-[slot=alert-description]:text-destructive/90",
+        info: "border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200 [&>svg]:text-blue-600 dark:[&>svg]:text-blue-400 *:data-[slot=alert-description]:text-blue-800 dark:*:data-[slot=alert-description]:text-blue-300",
+        warning: "border-yellow-200 bg-yellow-50 text-yellow-900 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400 *:data-[slot=alert-description]:text-yellow-800 dark:*:data-[slot=alert-description]:text-yellow-300",
+        success: "border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950 dark:text-green-200 [&>svg]:text-green-600 dark:[&>svg]:text-green-400 *:data-[slot=alert-description]:text-green-800 dark:*:data-[slot=alert-description]:text-green-300",
       },
     },
     defaultVariants: {
@@ -37,16 +41,33 @@ const alertVariants = cva(
 function Alert({
   className,
   variant,
+  dismissible,
+  onClose,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants> & {
+  dismissible?: boolean
+  onClose?: () => void
+}) {
   return (
     <div
-        data-variant={variant || 'default'}
+      data-variant={variant || 'default'}
       data-slot="alert"
       role="alert"
-      className={cn(alertVariants({ variant }), className)}
+      className={cn(alertVariants({ variant }), dismissible && "pr-10", className)}
       {...props}
-    />
+    >
+      {props.children}
+      {dismissible && (
+        <button
+          data-slot="alert-close"
+          onClick={onClose}
+          className="absolute top-3 right-3 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring"
+          aria-label="Dismiss"
+        >
+          <XIcon className="size-4" />
+        </button>
+      )}
+    </div>
   )
 }
 
@@ -79,4 +100,17 @@ function AlertDescription({
   )
 }
 
-export { Alert, AlertTitle, AlertDescription }
+function AlertAction({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="alert-action"
+      className={cn("col-start-2 mt-2", className)}
+      {...props}
+    />
+  )
+}
+
+export { Alert, AlertTitle, AlertDescription, AlertAction, alertVariants }
