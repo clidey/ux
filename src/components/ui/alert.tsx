@@ -47,7 +47,7 @@ function Alert({
 }: React.ComponentProps<"div"> & VariantProps<typeof alertVariants> & {
   dismissible?: boolean
   onClose?: () => void
-}) {
+} & { [key: `data-${string}`]: unknown }) {
   return (
     <div
       data-variant={variant || 'default'}
