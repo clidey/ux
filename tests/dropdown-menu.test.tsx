@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {render, screen} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
     DropdownMenu,
@@ -160,12 +160,12 @@ describe('DropdownMenu Component', () => {
         await user.click(screen.getByText('Menu'));
         expect(screen.getByText('More Options')).toBeInTheDocument();
 
-        // Hover over submenu trigger to open it
-        await user.hover(screen.getByText('More Options'));
+        // Click submenu trigger to open it
+        await user.click(screen.getByText('More Options'));
 
-        // Wait for submenu to appear
-        await new Promise(resolve => setTimeout(resolve, 100));
-        expect(screen.getByText('Sub Item 1')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('Sub Item 1')).toBeInTheDocument();
+        });
     });
 
     it('should render menu item with shortcut', async () => {

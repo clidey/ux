@@ -27,24 +27,7 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from '@/components/ui/drawer';
-import {beforeAll, describe, expect, it} from 'vitest';
-
-// vaul calls window.matchMedia internally, which jsdom does not implement
-beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-        writable: true,
-        value: (query: string) => ({
-            matches: false,
-            media: query,
-            onchange: null,
-            addListener: () => {},
-            removeListener: () => {},
-            addEventListener: () => {},
-            removeEventListener: () => {},
-            dispatchEvent: () => false,
-        }),
-    });
-});
+import {describe, expect, it} from 'vitest';
 
 describe('Drawer Component', () => {
     it('should render drawer trigger', () => {

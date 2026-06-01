@@ -1,12 +1,13 @@
 import {defineConfig} from 'vitest/config'
 import react from '@vitejs/plugin-react'
+// @ts-ignore
 import path from 'path'
 
 export default defineConfig({
     plugins: [react()],
     test: {
         globals: true,
-        environment: 'jsdom',
+        environment: 'happy-dom',
         setupFiles: './tests/setup.ts',
         exclude: [
             'node_modules/**',
