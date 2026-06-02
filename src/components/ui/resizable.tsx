@@ -45,19 +45,30 @@ function ResizablePanelGroup({
   )
 }
 
+function toPercent(value: number | string | undefined): string | undefined {
+  if (value === undefined) return undefined
+  if (typeof value === "string") return value
+  return `${value}%`
+}
+
 function ResizablePanel({
   className,
-  children,
+  defaultSize,
+  minSize,
+  maxSize,
+  collapsedSize,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.Panel> & {
-  className?: string
-}) {
+}: React.ComponentProps<typeof ResizablePrimitive.Panel>) {
   return (
-    <ResizablePrimitive.Panel {...props}>
-      <div data-slot="resizable-panel" className={cn("h-full", className)}>
-        {children}
-      </div>
-    </ResizablePrimitive.Panel>
+    <ResizablePrimitive.Panel
+      data-slot="resizable-panel"
+      className={cn(className)}
+      defaultSize={toPercent(defaultSize)}
+      minSize={toPercent(minSize)}
+      maxSize={toPercent(maxSize)}
+      collapsedSize={toPercent(collapsedSize)}
+      {...props}
+    />
   )
 }
 
