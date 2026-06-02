@@ -111,7 +111,7 @@ function MultiSearchSelect({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <Button
           data-slot="multi-search-select"
           variant="outline"
