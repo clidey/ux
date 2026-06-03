@@ -142,7 +142,7 @@ function MultiSearchSelect({
                     "mr-2 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border",
                     allSelected ? "bg-primary border-primary text-primary-foreground" : "border-muted-foreground"
                   )}>
-                    {allSelected && <Check className="size-3" />}
+                    {allSelected && <Check className="size-3 text-primary-foreground" />}
                   </div>
                   <span className="font-medium">{selectAllLabel}</span>
                 </CommandItem>
@@ -159,7 +159,7 @@ function MultiSearchSelect({
                       "mr-2 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border",
                       isSelected ? "bg-primary border-primary text-primary-foreground" : "border-muted-foreground"
                     )}>
-                      {isSelected && <Check className="size-3" />}
+                      {isSelected && <Check className="size-3 text-primary-foreground" />}
                     </div>
                     {option.icon && <span className="mr-2">{option.icon}</span>}
                     <span>{option.label}</span>
