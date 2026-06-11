@@ -29,7 +29,7 @@ import { TooltipProvider } from '@clidey/ux';
 
 ```tsx
 <Tooltip>
-  <TooltipTrigger asChild>
+  <TooltipTrigger>
     <Button variant="ghost" size="icon">
       <Settings className="size-4" />
     </Button>
@@ -50,7 +50,7 @@ import { TooltipProvider } from '@clidey/ux';
 
 ```tsx
 <Tooltip>
-  <TooltipTrigger asChild>
+  <TooltipTrigger>
     <Button size="sm">Hover me</Button>
   </TooltipTrigger>
   <TooltipContent side="right" sideOffset={8}>
@@ -69,7 +69,7 @@ import { TooltipProvider } from '@clidey/ux';
     { icon: <Underline />, label: 'Underline', shortcut: '⌘U' },
   ].map((item) => (
     <Tooltip key={item.label}>
-      <TooltipTrigger asChild>
+      <TooltipTrigger>
         <Button variant="ghost" size="icon">
           {item.icon}
         </Button>
@@ -89,7 +89,7 @@ Radix UI requires the trigger to forward events. Wrap disabled elements in a `<s
 
 ```tsx
 <Tooltip>
-  <TooltipTrigger asChild>
+  <TooltipTrigger>
     <span>
       <Button disabled>Submit</Button>
     </span>

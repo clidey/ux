@@ -130,7 +130,7 @@ describe('Breadcrumb Component', () => {
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <BreadcrumbLink asChild>
+                        <BreadcrumbLink>
                             <CustomLink href="/custom">Custom Link</CustomLink>
                         </BreadcrumbLink>
                     </BreadcrumbItem>

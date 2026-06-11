@@ -115,7 +115,7 @@ export function OverlaysShowcase() {
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4">
                     <Dialog>
-                        <DialogTrigger asChild>
+                        <DialogTrigger>
                             <Button variant="outline">Open Dialog</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
@@ -146,7 +146,7 @@ export function OverlaysShowcase() {
                     </Dialog>
 
                     <AlertDialog>
-                        <AlertDialogTrigger asChild>
+                        <AlertDialogTrigger>
                             <Button variant="destructive">Delete Account</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
@@ -173,12 +173,12 @@ export function OverlaysShowcase() {
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4">
                     <Sheet>
-                        <SheetTrigger asChild>
+                        <SheetTrigger>
                             <Button variant="outline">Open Sheet</Button>
                         </SheetTrigger>
                         <SheetContent footer={
                             <SheetFooter>
-                                <SheetClose asChild>
+                                <SheetClose>
                                     <Button type="submit">Save changes</Button>
                                 </SheetClose>
                             </SheetFooter>
@@ -207,12 +207,12 @@ export function OverlaysShowcase() {
                     </Sheet>
 
                     <Sheet>
-                        <SheetTrigger asChild>
+                        <SheetTrigger>
                             <Button variant="outline">Open Sheet (Overflow)</Button>
                         </SheetTrigger>
                         <SheetContent footer={
                             <SheetFooter>
-                                <SheetClose asChild>
+                                <SheetClose>
                                     <Button type="submit">Save all</Button>
                                 </SheetClose>
                             </SheetFooter>
@@ -235,7 +235,7 @@ export function OverlaysShowcase() {
                     </Sheet>
 
                     <Drawer>
-                        <DrawerTrigger asChild>
+                        <DrawerTrigger>
                             <Button variant="outline">Open Drawer</Button>
                         </DrawerTrigger>
                         <DrawerContent>
@@ -264,7 +264,7 @@ export function OverlaysShowcase() {
                                 </div>
                                 <DrawerFooter>
                                     <Button>Set goal</Button>
-                                    <DrawerClose asChild>
+                                    <DrawerClose>
                                         <Button variant="outline">Dismiss</Button>
                                     </DrawerClose>
                                 </DrawerFooter>
@@ -281,7 +281,7 @@ export function OverlaysShowcase() {
                 </CardHeader>
                 <CardContent>
                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger>
                             <Button variant="outline">
                                 Open Menu <ChevronDown className="ml-2 h-4 w-4"/>
                             </Button>
@@ -429,7 +429,7 @@ export function OverlaysShowcase() {
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4">
                     <Popover>
-                        <PopoverTrigger asChild>
+                        <PopoverTrigger>
                             <Button variant="outline">Open Popover</Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-80">
@@ -464,7 +464,7 @@ export function OverlaysShowcase() {
 
                     <div className="flex gap-4">
                         <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger>
                                 <Button variant="outline">Hover for Tooltip</Button>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -473,7 +473,7 @@ export function OverlaysShowcase() {
                         </Tooltip>
 
                         <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger>
                                 <Button variant="outline" size="icon">
                                     <Settings className="h-4 w-4"/>
                                 </Button>
@@ -484,7 +484,7 @@ export function OverlaysShowcase() {
                         </Tooltip>
 
                         <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger>
                                 <Button variant="outline" disabled>
                                     Disabled with Tooltip
                                 </Button>

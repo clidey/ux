@@ -92,7 +92,7 @@ function ConfirmDialog({
 
         <AlertDialogFooter>
           <AlertDialogCancel>{cancelLabel}</AlertDialogCancel>
-          <AlertDialogAction asChild>
+          <AlertDialogAction>
             <Button
               variant={confirmVariant}
               onClick={onConfirm}

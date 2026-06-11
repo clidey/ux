@@ -26,7 +26,7 @@ import {
 
 ```tsx
 <Sheet>
-  <SheetTrigger asChild>
+  <SheetTrigger>
     <Button variant="outline">Open panel</Button>
   </SheetTrigger>
   <SheetContent>
@@ -47,7 +47,7 @@ import {
       </div>
     </div>
     <SheetFooter>
-      <SheetClose asChild>
+      <SheetClose>
         <Button variant="outline">Cancel</Button>
       </SheetClose>
       <Button>Save</Button>
@@ -79,7 +79,7 @@ import {
 
 ```tsx
 <Sheet>
-  <SheetTrigger asChild>
+  <SheetTrigger>
     <Button variant="ghost" size="icon" className="md:hidden">
       <Menu className="size-5" />
     </Button>
@@ -89,17 +89,17 @@ import {
       <SheetTitle>Navigation</SheetTitle>
     </SheetHeader>
     <nav className="mt-4 space-y-1">
-      <SheetClose asChild>
+      <SheetClose>
         <a href="/dashboard" className="block px-3 py-2 rounded hover:bg-accent">
           Dashboard
         </a>
       </SheetClose>
-      <SheetClose asChild>
+      <SheetClose>
         <a href="/projects" className="block px-3 py-2 rounded hover:bg-accent">
           Projects
         </a>
       </SheetClose>
-      <SheetClose asChild>
+      <SheetClose>
         <a href="/settings" className="block px-3 py-2 rounded hover:bg-accent">
           Settings
         </a>

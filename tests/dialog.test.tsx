@@ -33,7 +33,7 @@ describe('Dialog Component', () => {
     it('should open and close the dialog', async () => {
         render(
             <Dialog>
-                <DialogTrigger asChild>
+                <DialogTrigger>
                     <Button>Open Dialog</Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -44,7 +44,7 @@ describe('Dialog Component', () => {
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <DialogClose asChild>
+                        <DialogClose>
                             <Button>Close</Button>
                         </DialogClose>
                     </DialogFooter>
@@ -68,7 +68,7 @@ describe('Dialog Component', () => {
     it('should close the dialog with the Escape key', async () => {
         render(
             <Dialog>
-                <DialogTrigger asChild>
+                <DialogTrigger>
                     <Button>Open Dialog</Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -93,7 +93,7 @@ describe('Dialog Component', () => {
     it('should trap focus within the dialog', async () => {
         render(
             <Dialog>
-                <DialogTrigger asChild>
+                <DialogTrigger>
                     <Button>Open Dialog</Button>
                 </DialogTrigger>
                 <DialogContent>

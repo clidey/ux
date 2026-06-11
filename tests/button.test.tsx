@@ -119,7 +119,7 @@ describe('Button Component', () => {
 
     it('should render as a child component when asChild is true', () => {
         render(
-            <Button asChild>
+            <Button>
                 <a href="#">Click me</a>
             </Button>
         );

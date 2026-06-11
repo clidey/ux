@@ -26,7 +26,7 @@ import {
 
 ```tsx
 <Dialog>
-  <DialogTrigger asChild>
+  <DialogTrigger>
     <Button variant="outline">Open dialog</Button>
   </DialogTrigger>
   <DialogContent>
@@ -47,7 +47,7 @@ import {
       </div>
     </div>
     <DialogFooter>
-      <DialogClose asChild>
+      <DialogClose>
         <Button variant="outline">Cancel</Button>
       </DialogClose>
       <Button>Save changes</Button>
@@ -71,7 +71,7 @@ function ControlledDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger>
         <Button>Open</Button>
       </DialogTrigger>
       <DialogContent>
@@ -119,7 +119,7 @@ Pass `showCloseButton={false}` to hide the default X button in the corner:
     </div>
   </ScrollArea>
   <DialogFooter>
-    <DialogClose asChild>
+    <DialogClose>
       <Button variant="outline">Decline</Button>
     </DialogClose>
     <Button>Accept</Button>

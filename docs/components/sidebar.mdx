@@ -69,7 +69,7 @@ function AppSidebar() {
             <SidebarMenu>
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton>
                     <a href={item.href}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -84,7 +84,7 @@ function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton>
               <a href="/logout">
                 <LogOut />
                 <span>Log out</span>
@@ -108,12 +108,12 @@ function AppSidebar() {
   </SidebarMenuButton>
   <SidebarMenuSub>
     <SidebarMenuSubItem>
-      <SidebarMenuSubButton asChild>
+      <SidebarMenuSubButton>
         <a href="/docs/reports">Reports</a>
       </SidebarMenuSubButton>
     </SidebarMenuSubItem>
     <SidebarMenuSubItem>
-      <SidebarMenuSubButton asChild>
+      <SidebarMenuSubButton>
         <a href="/docs/invoices">Invoices</a>
       </SidebarMenuSubButton>
     </SidebarMenuSubItem>

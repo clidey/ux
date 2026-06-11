@@ -211,7 +211,7 @@ import {
 } from '@clidey/ux';
 
 <AlertDialog>
-  <AlertDialogTrigger asChild>
+  <AlertDialogTrigger>
     <Button variant="destructive">Delete account</Button>
   </AlertDialogTrigger>
   <AlertDialogContent>

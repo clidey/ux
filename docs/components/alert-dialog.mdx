@@ -27,7 +27,7 @@ import {
 
 ```tsx
 <AlertDialog>
-  <AlertDialogTrigger asChild>
+  <AlertDialogTrigger>
     <Button variant="destructive">Delete account</Button>
   </AlertDialogTrigger>
   <AlertDialogContent>
@@ -60,7 +60,7 @@ function DeleteDialog({ onDelete }: { onDelete: () => Promise<void> }) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger>
         <Button variant="destructive" size="sm">Delete</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -95,7 +95,7 @@ function DeleteDialog({ onDelete }: { onDelete: () => Promise<void> }) {
 const [open, setOpen] = useState(false);
 
 <AlertDialog open={open} onOpenChange={setOpen}>
-  <AlertDialogTrigger asChild>
+  <AlertDialogTrigger>
     <Button>Publish changes</Button>
   </AlertDialogTrigger>
   <AlertDialogContent>

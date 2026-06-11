@@ -203,17 +203,17 @@ function SidebarBasicDemo() {
                                 <SidebarGroupContent>
                                     <SidebarMenu>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild>
+                                            <SidebarMenuButton>
                                                 <a href="#"><House className="h-4 w-4"/><span>Dashboard</span></a>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild>
+                                            <SidebarMenuButton>
                                                 <a href="#"><FileText className="h-4 w-4"/><span>Documents</span></a>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild>
+                                            <SidebarMenuButton>
                                                 <a href="#"><Folder className="h-4 w-4"/><span>Projects</span></a>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
@@ -225,17 +225,17 @@ function SidebarBasicDemo() {
                                 <SidebarGroupContent>
                                     <SidebarMenu>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild>
+                                            <SidebarMenuButton>
                                                 <a href="#"><Mail className="h-4 w-4"/><span>Messages</span></a>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild>
+                                            <SidebarMenuButton>
                                                 <a href="#"><Calendar className="h-4 w-4"/><span>Calendar</span></a>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild>
+                                            <SidebarMenuButton>
                                                 <a href="#"><CreditCard className="h-4 w-4"/><span>Billing</span></a>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>

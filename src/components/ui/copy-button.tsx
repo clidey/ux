@@ -52,7 +52,7 @@ function CopyButton({
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
+      <TooltipTrigger>
         <Button
           data-slot="copy-button"
           variant={variant}

@@ -26,7 +26,7 @@ describe('Tooltip Component', () => {
         render(
             <TooltipProvider>
                 <Tooltip>
-                    <TooltipTrigger asChild>
+                    <TooltipTrigger>
                         <Button>Hover</Button>
                     </TooltipTrigger>
                     <TooltipContent>

@@ -17,7 +17,7 @@ import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from '@clidey/
 
 ```tsx
 <Popover>
-  <PopoverTrigger asChild>
+  <PopoverTrigger>
     <Button variant="outline">Open popover</Button>
   </PopoverTrigger>
   <PopoverContent>
@@ -30,7 +30,7 @@ import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from '@clidey/
 
 ```tsx
 <Popover>
-  <PopoverTrigger asChild>
+  <PopoverTrigger>
     <Button variant="outline">
       <CalendarIcon className="size-4 mr-2" />
       Pick a date
@@ -48,7 +48,7 @@ import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from '@clidey/
 const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'];
 
 <Popover>
-  <PopoverTrigger asChild>
+  <PopoverTrigger>
     <Button variant="outline" size="icon">
       <div className="size-4 rounded-full bg-blue-500" />
     </Button>
@@ -82,7 +82,7 @@ const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'
 const [open, setOpen] = useState(false);
 
 <Popover open={open} onOpenChange={setOpen}>
-  <PopoverTrigger asChild>
+  <PopoverTrigger>
     <Button onClick={() => setOpen(true)}>Open</Button>
   </PopoverTrigger>
   <PopoverContent>

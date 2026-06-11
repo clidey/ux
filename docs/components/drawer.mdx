@@ -26,7 +26,7 @@ import {
 
 ```tsx
 <Drawer>
-  <DrawerTrigger asChild>
+  <DrawerTrigger>
     <Button variant="outline">Open drawer</Button>
   </DrawerTrigger>
   <DrawerContent>
@@ -41,7 +41,7 @@ import {
     </div>
     <DrawerFooter>
       <Button>Submit</Button>
-      <DrawerClose asChild>
+      <DrawerClose>
         <Button variant="outline">Cancel</Button>
       </DrawerClose>
     </DrawerFooter>
@@ -56,7 +56,7 @@ Change the `direction` prop on the `Drawer` component to slide in from a differe
 ```tsx
 {/* From the right — good for detail panels */}
 <Drawer direction="right">
-  <DrawerTrigger asChild>
+  <DrawerTrigger>
     <Button>Open right panel</Button>
   </DrawerTrigger>
   <DrawerContent className="h-full w-80">
@@ -69,7 +69,7 @@ Change the `direction` prop on the `Drawer` component to slide in from a differe
 
 {/* From the top */}
 <Drawer direction="top">
-  <DrawerTrigger asChild>
+  <DrawerTrigger>
     <Button>Open top panel</Button>
   </DrawerTrigger>
   <DrawerContent>
@@ -86,7 +86,7 @@ The default bottom-positioned drawer works great as a mobile action sheet:
 
 ```tsx
 <Drawer>
-  <DrawerTrigger asChild>
+  <DrawerTrigger>
     <Button size="icon" variant="ghost">
       <MoreVertical className="size-4" />
     </Button>

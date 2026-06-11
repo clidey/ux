@@ -24,7 +24,7 @@ describe('Popover Component', () => {
     it('should open and close the popover', async () => {
         render(
             <Popover>
-                <PopoverTrigger asChild>
+                <PopoverTrigger>
                     <Button>Open Popover</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -46,7 +46,7 @@ describe('Popover Component', () => {
     it('should close the popover with the Escape key', async () => {
         render(
             <Popover>
-                <PopoverTrigger asChild>
+                <PopoverTrigger>
                     <Button>Open Popover</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -66,7 +66,7 @@ describe('Popover Component', () => {
     it('should return focus to the trigger when the popover is closed', async () => {
         render(
             <Popover>
-                <PopoverTrigger asChild>
+                <PopoverTrigger>
                     <Button>Open Popover</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -89,7 +89,7 @@ describe('Popover Component', () => {
 
         render(
             <Popover open={false} onOpenChange={handleOpenChange}>
-                <PopoverTrigger asChild>
+                <PopoverTrigger>
                     <Button>Open</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -156,7 +156,7 @@ describe('Popover Component', () => {
             <>
                 <div data-testid="outside">Outside element</div>
                 <Popover>
-                    <PopoverTrigger asChild>
+                    <PopoverTrigger>
                         <Button>Open</Button>
                     </PopoverTrigger>
                     <PopoverContent>
