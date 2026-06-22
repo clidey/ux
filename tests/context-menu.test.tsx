@@ -119,7 +119,7 @@ describe("ContextMenu", () => {
         expect(handleChange).toHaveBeenCalledWith("2");
     });
 
-    it.skip("renders submenu", async () => {
+    it("renders submenu", async () => {
         const user = userEvent.setup();
 
         render(
@@ -141,15 +141,10 @@ describe("ContextMenu", () => {
         const subTrigger = screen.getByText("More");
         expect(subTrigger).toBeInTheDocument();
 
-        // Note: Radix submenus may not open on hover in tests
-        // This is a known limitation of testing Radix components
-        // In real usage, the submenu opens on hover as expected
         await user.hover(subTrigger);
-        // Wait for submenu to potentially appear
-        await new Promise(resolve => setTimeout(resolve, 100));
 
-        // If submenu items aren't found, this might be a test environment limitation
-        // The component works correctly in actual usage
+        expect(await screen.findByText("Submenu Item 1")).toBeInTheDocument();
+        expect(screen.getByText("Submenu Item 2")).toBeInTheDocument();
     });
 
     it("renders labels and separators", async () => {

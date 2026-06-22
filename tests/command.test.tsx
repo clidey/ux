@@ -231,7 +231,7 @@ describe('Command Component', () => {
         expect(onSelect).not.toHaveBeenCalled();
     });
 
-    it.skip('should handle keyboard navigation', async () => {
+    it('should handle keyboard navigation', async () => {
         const user = userEvent.setup();
         const onSelect1 = vi.fn();
         const onSelect2 = vi.fn();
@@ -251,11 +251,15 @@ describe('Command Component', () => {
         const input = screen.getByPlaceholderText('Search...');
         await user.click(input);
 
-        // Navigate down
+        // cmdk auto-selects the first item, so Enter selects Item 1.
+        await user.keyboard('{Enter}');
+        expect(onSelect1).toHaveBeenCalledTimes(1);
+        expect(onSelect2).not.toHaveBeenCalled();
+
+        // ArrowDown moves selection to Item 2, so Enter selects Item 2.
         await user.keyboard('{ArrowDown}');
         await user.keyboard('{Enter}');
-
-        expect(onSelect1).toHaveBeenCalled();
+        expect(onSelect2).toHaveBeenCalledTimes(1);
     });
 
     it('should handle value prop on items', () => {
