@@ -20,9 +20,11 @@ import {ChevronLeftIcon, ChevronRightIcon, EllipsisIcon,} from "lucide-react"
 import {cn} from "@/lib/utils"
 import {Button, buttonVariants} from "@/components/ui/button"
 
-function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
+const Pagination = React.forwardRef<HTMLElement, React.ComponentProps<"nav">>(
+  function Pagination({ className, ...props }, ref) {
   return (
     <nav
+      ref={ref}
       role="navigation"
       aria-label="pagination"
       data-slot="pagination"
@@ -30,38 +32,43 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
       {...props}
     />
   )
-}
+})
 
-function PaginationContent({
+const PaginationContent = React.forwardRef<HTMLUListElement, React.ComponentProps<"ul">>(
+  function PaginationContent({
   className,
   ...props
-}: React.ComponentProps<"ul">) {
+}, ref) {
   return (
     <ul
+      ref={ref}
       data-slot="pagination-content"
       className={cn("flex flex-row items-center gap-1", className)}
       {...props}
     />
   )
-}
+})
 
-function PaginationItem({ ...props }: React.ComponentProps<"li">) {
-  return <li data-slot="pagination-item" {...props} />
-}
+const PaginationItem = React.forwardRef<HTMLLIElement, React.ComponentProps<"li">>(
+  function PaginationItem({ ...props }, ref) {
+  return <li ref={ref} data-slot="pagination-item" {...props} />
+})
 
 type PaginationLinkProps = {
   isActive?: boolean
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
   React.ComponentProps<"a">
 
-function PaginationLink({
+const PaginationLink = React.forwardRef<HTMLAnchorElement, PaginationLinkProps>(
+  function PaginationLink({
   className,
   isActive,
   size = "icon",
   ...props
-}: PaginationLinkProps) {
+}, ref) {
   return (
     <a
+      ref={ref}
       aria-current={isActive ? "page" : undefined}
       data-slot="pagination-link"
       data-active={isActive}
@@ -75,7 +82,7 @@ function PaginationLink({
       {...props}
     />
   )
-}
+})
 
 function PaginationPrevious({
   className,
@@ -111,12 +118,14 @@ function PaginationNext({
   )
 }
 
-function PaginationEllipsis({
+const PaginationEllipsis = React.forwardRef<HTMLSpanElement, React.ComponentProps<"span">>(
+  function PaginationEllipsis({
   className,
   ...props
-}: React.ComponentProps<"span">) {
+}, ref) {
   return (
     <span
+      ref={ref}
       aria-hidden
       data-slot="pagination-ellipsis"
       className={cn("flex size-9 items-center justify-center", className)}
@@ -126,7 +135,7 @@ function PaginationEllipsis({
       <span className="sr-only">More pages</span>
     </span>
   )
-}
+})
 
 type DataPaginationProps = {
   totalPages: number

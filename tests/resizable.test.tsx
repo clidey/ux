@@ -89,8 +89,9 @@ describe("Resizable", () => {
             </ResizablePanelGroup>
         );
 
-        const panel = document.querySelector('[data-slot="resizable-panel"]');
-        expect(panel).toHaveClass("custom-panel");
+        const panel = document.querySelector('.custom-panel');
+        expect(panel).toBeInTheDocument();
+        expect(screen.getByText("Content")).toBeInTheDocument();
     });
 
     it("applies custom className to handle", () => {

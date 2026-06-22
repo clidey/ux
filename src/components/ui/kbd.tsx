@@ -17,9 +17,11 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
+const Kbd = React.forwardRef<HTMLElement, React.ComponentProps<"kbd">>(
+  function Kbd({ className, ...props }, ref) {
   return (
     <kbd
+      ref={ref}
       data-slot="kbd"
       className={cn(
         "inline-flex items-center justify-center min-w-[1.5rem] h-6 px-1.5 text-xs font-medium bg-muted border text-muted-foreground rounded shadow-sm",
@@ -28,6 +30,6 @@ function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
       {...props}
     />
   )
-}
+})
 
 export { Kbd }

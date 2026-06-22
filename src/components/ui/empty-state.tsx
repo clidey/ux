@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
+import * as React from "react"
+
 import {cn} from "@/lib/utils"
 
-export const EmptyState = ({
+export const EmptyState = React.forwardRef<
+  HTMLDivElement,
+  {
+    className?: string
+    title: string
+    description: string
+    icon: React.ReactNode
+    children?: React.ReactNode
+  }
+>(function EmptyState({
   className,
   title,
   description,
   icon,
   children,
-}: {
-  className?: string
-  title: string
-  description: string
-  icon: React.ReactNode
-  children?: React.ReactNode
-}) => {
+}, ref) {
   return (
-    <div className={cn("flex justify-center items-center w-full h-full grow", className)} data-slot="empty-state" data-testid="empty-state">
+    <div ref={ref} className={cn("flex justify-center items-center w-full h-full grow", className)} data-slot="empty-state" data-testid="empty-state">
       <div
         className={cn(
           "flex flex-col gap-4 items-center w-full max-w-[400px] p-8"
@@ -42,4 +47,4 @@ export const EmptyState = ({
       </div>
     </div>
   )
-}
+})

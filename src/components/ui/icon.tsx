@@ -29,14 +29,16 @@ export interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
   size?: number
 }
 
-export function Icon({
+export const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
+  function Icon({
   icon,
   size = 24,
   className,
   ...props
-}: IconProps) {
+}, ref) {
   return (
     <span
+      ref={ref}
       data-slot="icon"
       className={cn(
         "inline-flex items-center justify-center rounded-md bg-icon dark:bg-icon p-2",
@@ -56,4 +58,4 @@ export function Icon({
       })}
     </span>
   )
-}
+})

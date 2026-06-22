@@ -23,7 +23,8 @@ interface InputProps extends React.ComponentProps<"input"> {
   showPasswordToggle?: boolean;
 }
 
-function Input({ className, type, showPasswordToggle, ...props }: InputProps) {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  function Input({ className, type, showPasswordToggle, ...props }, ref) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   // Render password input with toggle
@@ -39,6 +40,7 @@ function Input({ className, type, showPasswordToggle, ...props }: InputProps) {
         data-slot="password-input-wrapper"
       >
         <input
+          ref={ref}
           data-testid="password-input"
           data-slot="input"
           type={showPassword ? "text" : "password"}
@@ -67,6 +69,7 @@ function Input({ className, type, showPasswordToggle, ...props }: InputProps) {
   // Render normal input
   return (
     <input
+      ref={ref}
       data-testid="input"
       type={type}
       data-slot="input"
@@ -79,11 +82,13 @@ function Input({ className, type, showPasswordToggle, ...props }: InputProps) {
       {...props}
     />
   )
-}
+})
 
-function TextArea({ className, ...props }: React.ComponentProps<"textarea">) {
+const TextArea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<"textarea">>(
+  function TextArea({ className, ...props }, ref) {
   return (
     <textarea
+      ref={ref}
       data-slot="textarea"
       className={cn(
         "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
@@ -94,12 +99,13 @@ function TextArea({ className, ...props }: React.ComponentProps<"textarea">) {
       {...props}
     />
   )
-}
+})
 
-function SearchInput({
+const SearchInput = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
+  function SearchInput({
   className,
   ...props
-}: React.ComponentProps<"input">) {
+}, ref) {
   return (
     <div
       className={cn(
@@ -112,6 +118,7 @@ function SearchInput({
     >
       <Search className="size-4 text-muted-foreground mr-2" />
       <input
+        ref={ref}
         data-slot="search-input"
         className={cn(
           "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground bg-transparent flex-1 min-w-0 border-0 outline-none px-0 py-1 text-base file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
@@ -120,6 +127,6 @@ function SearchInput({
       />
     </div>
   )
-}
+})
 
 export { Input, TextArea, SearchInput }

@@ -38,18 +38,22 @@ const alertVariants = cva(
   }
 )
 
-function Alert({
+const Alert = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & VariantProps<typeof alertVariants> & {
+    dismissible?: boolean
+    onClose?: () => void
+  } & { [key: `data-${string}`]: unknown }
+>(function Alert({
   className,
   variant,
   dismissible,
   onClose,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants> & {
-  dismissible?: boolean
-  onClose?: () => void
-} & { [key: `data-${string}`]: unknown }) {
+}, ref) {
   return (
     <div
+      ref={ref}
       data-variant={variant || 'default'}
       data-slot="alert"
       role="alert"
@@ -69,11 +73,13 @@ function Alert({
       )}
     </div>
   )
-}
+})
 
-function AlertTitle({ className, ...props }: React.ComponentProps<"p">) {
+const AlertTitle = React.forwardRef<HTMLParagraphElement, React.ComponentProps<"p">>(
+  function AlertTitle({ className, ...props }, ref) {
   return (
     <p
+      ref={ref}
       data-slot="alert-title"
       className={cn(
         "col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
@@ -82,14 +88,16 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"p">) {
       {...props}
     />
   )
-}
+})
 
-function AlertDescription({
+const AlertDescription = React.forwardRef<HTMLParagraphElement, React.ComponentProps<"p">>(
+  function AlertDescription({
   className,
   ...props
-}: React.ComponentProps<"p">) {
+}, ref) {
   return (
     <p
+      ref={ref}
       data-slot="alert-description"
       className={cn(
         "text-muted-foreground col-start-2 text-sm [&_p]:leading-relaxed",
@@ -98,19 +106,21 @@ function AlertDescription({
       {...props}
     />
   )
-}
+})
 
-function AlertAction({
+const AlertAction = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+  function AlertAction({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}, ref) {
   return (
     <div
+      ref={ref}
       data-slot="alert-action"
       className={cn("col-start-2 mt-2", className)}
       {...props}
     />
   )
-}
+})
 
 export { Alert, AlertTitle, AlertDescription, AlertAction, alertVariants }

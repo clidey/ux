@@ -48,8 +48,11 @@ export interface SpinnerProps
   size?: VariantProps<typeof spinnerVariants>['size'] | number;
 }
 
-const Spinner = ({ className, variant, size = 'default' }: SpinnerProps) => (
+const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
+  function Spinner({ className, variant, size = 'default' }, ref) {
+  return (
   <div
+    ref={ref}
     data-slot="spinner"
     role="status"
     aria-label="Loading"
@@ -75,6 +78,7 @@ const Spinner = ({ className, variant, size = 'default' }: SpinnerProps) => (
     ))}
     <span className="sr-only">Loading...</span>
   </div>
-);
+  );
+});
 
 export { Spinner, spinnerVariants };

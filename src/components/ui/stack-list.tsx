@@ -34,7 +34,8 @@ type StackListItemProps = {
   itemClassName?: string;
 };
 
-export function StackListItem({
+export const StackListItem = React.forwardRef<HTMLDivElement, StackListItemProps>(
+  function StackListItem({
   item,
   children,
   className,
@@ -42,26 +43,27 @@ export function StackListItem({
   valueClassName,
   rowClassName,
   itemClassName,
-}: StackListItemProps) {
+}, ref) {
   return (
-    <div data-slot="stack-list-item" className={cn("flex flex-col", itemClassName, className)}>
+    <div ref={ref} data-slot="stack-list-item" className={cn("flex flex-col", itemClassName, className)}>
       <p className={cn("flex flex-row items-center text-lg py-3 min-w-0", rowClassName)}>
         <span className={cn("font-semibold min-w-1/2 truncate", keyClassName)}>{item}</span>
         <span className={cn("ml-4 truncate min-w-0", valueClassName)}>{children}</span>
       </p>
     </div>
   );
-}
+});
 
-export function StackList({
+export const StackList = React.forwardRef<HTMLDivElement, StackListProps>(
+  function StackList({
   children,
   className,
   separatorClassName = "w-full",
-}: StackListProps) {
+}, ref) {
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <div data-slot="stack-list" className={cn("flex flex-col", className)}>
+    <div ref={ref} data-slot="stack-list" className={cn("flex flex-col", className)}>
       {childrenArray.map((child, idx) => (
         <React.Fragment key={idx}>
           {child}
@@ -72,4 +74,4 @@ export function StackList({
       ))}
     </div>
   );
-}
+});

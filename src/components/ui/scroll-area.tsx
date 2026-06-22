@@ -19,13 +19,13 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 
 import {cn} from "@/lib/utils"
 
-function ScrollArea({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+const ScrollArea = React.forwardRef<
+  React.ComponentRef<typeof ScrollAreaPrimitive.Root>,
+  React.ComponentProps<typeof ScrollAreaPrimitive.Root>
+>(function ScrollArea({ className, children, ...props }, ref) {
   return (
     <ScrollAreaPrimitive.Root
+      ref={ref}
       data-slot="scroll-area"
       className={cn("relative", className)}
       {...props}
@@ -40,15 +40,15 @@ function ScrollArea({
       <ScrollAreaPrimitive.Corner />
     </ScrollAreaPrimitive.Root>
   )
-}
+})
 
-function ScrollBar({
-  className,
-  orientation = "vertical",
-  ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) {
+const ScrollBar = React.forwardRef<
+  React.ComponentRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
+  React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
+>(function ScrollBar({ className, orientation = "vertical", ...props }, ref) {
   return (
     <ScrollAreaPrimitive.ScrollAreaScrollbar
+      ref={ref}
       data-slot="scroll-area-scrollbar"
       orientation={orientation}
       className={cn(
@@ -67,6 +67,6 @@ function ScrollBar({
       />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
   )
-}
+})
 
 export { ScrollArea, ScrollBar }

@@ -24,7 +24,7 @@ describe('Popover Component', () => {
     it('should open and close the popover', async () => {
         render(
             <Popover>
-                <PopoverTrigger>
+                <PopoverTrigger asChild>
                     <Button>Open Popover</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -46,7 +46,7 @@ describe('Popover Component', () => {
     it('should close the popover with the Escape key', async () => {
         render(
             <Popover>
-                <PopoverTrigger>
+                <PopoverTrigger asChild>
                     <Button>Open Popover</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -66,7 +66,7 @@ describe('Popover Component', () => {
     it('should return focus to the trigger when the popover is closed', async () => {
         render(
             <Popover>
-                <PopoverTrigger>
+                <PopoverTrigger asChild>
                     <Button>Open Popover</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -89,7 +89,7 @@ describe('Popover Component', () => {
 
         render(
             <Popover open={false} onOpenChange={handleOpenChange}>
-                <PopoverTrigger>
+                <PopoverTrigger asChild>
                     <Button>Open</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -136,7 +136,7 @@ describe('Popover Component', () => {
                 <PopoverAnchor>
                     <div>Anchor element</div>
                 </PopoverAnchor>
-                <PopoverTrigger>
+                <PopoverTrigger asChild>
                     <Button>Trigger</Button>
                 </PopoverTrigger>
                 <PopoverContent>
@@ -156,7 +156,7 @@ describe('Popover Component', () => {
             <>
                 <div data-testid="outside">Outside element</div>
                 <Popover>
-                    <PopoverTrigger>
+                    <PopoverTrigger asChild>
                         <Button>Open</Button>
                     </PopoverTrigger>
                     <PopoverContent>
@@ -244,7 +244,7 @@ describe('Popover Component', () => {
     it('should handle defaultOpen prop', () => {
         render(
             <Popover defaultOpen>
-                <PopoverTrigger>
+                <PopoverTrigger asChild>
                     <Button>Trigger</Button>
                 </PopoverTrigger>
                 <PopoverContent>

@@ -51,17 +51,21 @@ type ProgressProps = React.ComponentProps<typeof ProgressPrimitive.Root> &
     showValue?: boolean
   }
 
-function Progress({
-  className,
-  value,
-  variant,
-  size,
-  indeterminate = false,
-  showValue = false,
-  ...props
-}: ProgressProps) {
+const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
+  function Progress(
+    {
+      className,
+      value,
+      variant,
+      size,
+      indeterminate = false,
+      showValue = false,
+      ...props
+    },
+    ref
+  ) {
   return (
-    <div className="flex items-center gap-3 w-full">
+    <div ref={ref} className="flex items-center gap-3 w-full">
       <ProgressPrimitive.Root
         data-slot="progress"
         data-indeterminate={indeterminate || undefined}
@@ -84,6 +88,7 @@ function Progress({
       )}
     </div>
   )
-}
+  }
+)
 
 export { Progress, progressVariants }
