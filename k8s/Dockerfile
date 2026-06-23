@@ -1,6 +1,6 @@
 FROM node:lts-alpine AS builder
 WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 COPY . .

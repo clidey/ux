@@ -10,6 +10,7 @@ import MapGL, {
   type ViewState,
 } from "react-map-gl/maplibre"
 import type { LayerSpecification } from "maplibre-gl"
+import type * as GeoJSON from "geojson"
 import { cn } from "@/lib/utils"
 import { ComponentErrorBoundary } from "@/lib/error-boundary"
 
