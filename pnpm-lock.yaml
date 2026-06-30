@@ -127,8 +127,8 @@ importers:
         specifier: 4.1.7
         version: 4.1.7(vitest@4.1.7)
       happy-dom:
-        specifier: 20.9.0
-        version: 20.9.0
+        specifier: 20.10.6
+        version: 20.10.6
       oxfmt:
         specifier: 0.51.0
         version: 0.51.0
@@ -158,7 +158,7 @@ importers:
         version: 5.0.1(rolldown@1.0.2)(typescript@6.0.3)(vite@8.0.14(@types/node@24.1.0)(jiti@2.7.0))
       vitest:
         specifier: 4.1.7
-        version: 4.1.7(@types/node@24.1.0)(@vitest/coverage-v8@4.1.7)(happy-dom@20.9.0)(vite@8.0.14(@types/node@24.1.0)(jiti@2.7.0))
+        version: 4.1.7(@types/node@24.1.0)(@vitest/coverage-v8@4.1.7)(happy-dom@20.10.6)(vite@8.0.14(@types/node@24.1.0)(jiti@2.7.0))
 
 packages:
 
@@ -1444,6 +1444,10 @@ packages:
   ast-v8-to-istanbul@1.0.4:
     resolution: {integrity: sha512-0bC0/4bTSrnwdhU3IsZDwEdojvuPrSg59OYZfKsLRtJZ0u8VBx9DebfqqG8bRdCC0I7vjgxmPi41P0lpkhJHtA==}
 
+  buffer-image-size@0.6.4:
+    resolution: {integrity: sha512-nEh+kZOPY1w+gcCMobZ6ETUp9WfibndnosbpwB1iJk/8Gt5ZF2bhS6+B6bPYz424KtwsR6Rflc3tCz1/ghX2dQ==}
+    engines: {node: '>=4.0'}
+
   bytewise-core@1.2.3:
     resolution: {integrity: sha512-nZD//kc78OOxeYtRlVk8/zXqTB4gf/nlguL1ggWA8FuchMyOxcyHR4QPQZMUmA7czC+YnaBrPUCubqAWe50DaA==}
 
@@ -1627,8 +1631,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  happy-dom@20.9.0:
-    resolution: {integrity: sha512-GZZ9mKe8r646NUAf/zemnGbjYh4Bt8/MqASJY+pSm5ZDtc3YQox+4gsLI7yi1hba6o+eCsGxpHn5+iEVn31/FQ==}
+  happy-dom@20.10.6:
+    resolution: {integrity: sha512-6QD0ilzDDt93tX44y8tbmZdAcdTRYDhUP+Asgi6pC8Pp5IA3cvaZGyoVN/EGtlq9ziT65iPuBBn3ASLr6hCgVw==}
     engines: {node: '>=20.0.0'}
 
   has-flag@4.0.0:
@@ -3339,7 +3343,7 @@ snapshots:
       obug: 2.1.3
       std-env: 4.1.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.7(@types/node@24.1.0)(@vitest/coverage-v8@4.1.7)(happy-dom@20.9.0)(vite@8.0.14(@types/node@24.1.0)(jiti@2.7.0))
+      vitest: 4.1.7(@types/node@24.1.0)(@vitest/coverage-v8@4.1.7)(happy-dom@20.10.6)(vite@8.0.14(@types/node@24.1.0)(jiti@2.7.0))
 
   '@vitest/expect@4.1.7':
     dependencies:
@@ -3421,6 +3425,10 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       estree-walker: 3.0.3
       js-tokens: 10.0.0
+
+  buffer-image-size@0.6.4:
+    dependencies:
+      '@types/node': 24.1.0
 
   bytewise-core@1.2.3:
     dependencies:
@@ -3566,11 +3574,12 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  happy-dom@20.9.0:
+  happy-dom@20.10.6:
     dependencies:
       '@types/node': 24.1.0
       '@types/whatwg-mimetype': 3.0.2
       '@types/ws': 8.18.1
+      buffer-image-size: 0.6.4
       entities: 7.0.1
       whatwg-mimetype: 3.0.0
       ws: 8.21.0
@@ -4153,7 +4162,7 @@ snapshots:
       fsevents: 2.3.3
       jiti: 2.7.0
 
-  vitest@4.1.7(@types/node@24.1.0)(@vitest/coverage-v8@4.1.7)(happy-dom@20.9.0)(vite@8.0.14(@types/node@24.1.0)(jiti@2.7.0)):
+  vitest@4.1.7(@types/node@24.1.0)(@vitest/coverage-v8@4.1.7)(happy-dom@20.10.6)(vite@8.0.14(@types/node@24.1.0)(jiti@2.7.0)):
     dependencies:
       '@vitest/expect': 4.1.7
       '@vitest/mocker': 4.1.7(vite@8.0.14(@types/node@24.1.0)(jiti@2.7.0))
@@ -4178,7 +4187,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.1.0
       '@vitest/coverage-v8': 4.1.7(vitest@4.1.7)
-      happy-dom: 20.9.0
+      happy-dom: 20.10.6
     transitivePeerDependencies:
       - msw
 
