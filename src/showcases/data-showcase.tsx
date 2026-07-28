@@ -49,7 +49,6 @@ import {
     TableHeader,
     TableHeadRow,
     TableRow,
-    VirtualizedTableBody,
     type TableColumn,
 } from "@/components/ui/table"
 import {Tree, type TreeDataItem} from "@/components/ui/tree"
@@ -709,7 +708,7 @@ function VirtualizedTableExample() {
                 </div>
             </div>
             <div className="border rounded-lg">
-                <Table className="w-full">
+                <Table className="w-full" maxHeight={height}>
                     {!disableHeader && (
                         <TableHeader>
                             <TableHeadRow style={{ height: headerHeight }}>
@@ -721,31 +720,24 @@ function VirtualizedTableExample() {
                             </TableHeadRow>
                         </TableHeader>
                     )}
-                    <VirtualizedTableBody
-                        rowCount={data.length}
+                    <TableBody
                         rowHeight={
                             useDynamicRowHeight
-                                ? (args: { index: number }) => 30 + (args.index % 3) * 10
+                                ? (index: number) => 30 + (index % 3) * 10
                                 : rowHeight
                         }
-                        height={height}
                         overscan={overscanRowCount}
                     >
-                        {(rowIdx: number, rowStyle: React.CSSProperties) => {
-                            const rowData = data[rowIdx]
-                            return (
-                                <TableRow key={rowIdx} style={rowStyle}>
-                                    {columns.map((col) => {
-                                        return (
-                                            <TableCell key={col.dataKey}>
-                                                {rowData[col.dataKey as keyof typeof rowData]}
-                                            </TableCell>
-                                        )
-                                    })}
-                                </TableRow>
-                            )
-                        }}
-                    </VirtualizedTableBody>
+                        {data.map((rowData, rowIdx) => (
+                            <TableRow key={rowIdx}>
+                                {columns.map((col) => (
+                                    <TableCell key={col.dataKey}>
+                                        {rowData[col.dataKey as keyof typeof rowData]}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableBody>
                 </Table>
             </div>
         </div>
