@@ -1,0 +1,11 @@
+preferFrozenLockfile: true
+strictSsl: true
+strictPeerDependencies: true
+autoInstallPeers: false
+saveExact: true
+auditLevel: high
+ignoreScripts: true
+verifyStoreIntegrity: true
+minimumReleaseAge: 10080
+trustPolicyExclude:
+  - 'reselect@5.1.1'

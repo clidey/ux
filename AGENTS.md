@@ -2,6 +2,10 @@
 
 This file is the single source of truth for AI coding assistants (Claude Code, Copilot, Cursor, etc.) working in this repository.
 
+## Git Commits — Hard Rule
+
+**Never commit to `main` (or any branch) without the user explicitly saying "please commit this for me" (or unambiguously equivalent wording) in that turn.** This applies regardless of task framing — "merge it into main locally" or "just write the code changes in main" means apply the file changes on that branch, not create a commit. If committing seems necessary to accomplish what was asked (e.g. to merge a branch), stop and ask first instead of assuming consent.
+
 ## Commands
 
 ```bash
