@@ -40,6 +40,7 @@ interface TableContextValue {
   // Known viewport height, used as the initial estimate before the real
   // container is measured (ResizeObserver hasn't fired on first render yet).
   scrollContainerHeight: number | null
+  scrollTop: number
 }
 
 const TableContext = React.createContext<TableContextValue | null>(null)
@@ -67,9 +68,10 @@ interface TableProviderProps {
   children: React.ReactNode
   scrollContainerRef?: React.RefObject<HTMLDivElement | null>
   scrollContainerHeight?: number
+  scrollTop?: number
 }
 
-function TableProvider({ children, scrollContainerRef, scrollContainerHeight }: TableProviderProps) {
+function TableProvider({ children, scrollContainerRef, scrollContainerHeight, scrollTop = 0 }: TableProviderProps) {
   // Drawer state
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
   const [drawerContent, setDrawerContent] = React.useState<string | React.ReactNode>("")
@@ -87,6 +89,7 @@ function TableProvider({ children, scrollContainerRef, scrollContainerHeight }: 
     openDrawer,
     scrollContainerRef: scrollContainerRef ?? null,
     scrollContainerHeight: scrollContainerHeight ?? null,
+    scrollTop,
   }
 
   return (
@@ -233,17 +236,20 @@ function TableDrawer() {
 function Table({ className, style, maxHeight, ...props }: React.ComponentProps<"table"> & { maxHeight?: number }) {
   const tableRef = React.useRef<HTMLTableElement | null>(null)
   const scrollContainerRef = React.useRef<HTMLDivElement | null>(null)
+  const [scrollTop, setScrollTop] = React.useState(0)
 
   return (
     <TableProvider
       scrollContainerRef={maxHeight != null ? scrollContainerRef : undefined}
       scrollContainerHeight={maxHeight}
+      scrollTop={scrollTop}
     >
       <div
         ref={scrollContainerRef}
         data-slot="table-container"
         className="max-w-full overflow-auto"
         style={maxHeight != null ? { maxHeight } : undefined}
+        onScroll={maxHeight != null ? (event) => { setScrollTop(event.currentTarget.scrollTop) } : undefined}
       >
         <table
           ref={tableRef}
@@ -294,9 +300,14 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
     const context = React.useContext(TableContext)
     const scrollContainerRef = context?.scrollContainerRef ?? null
     const scrollContainerHeight = context?.scrollContainerHeight ?? null
+    const scrollTop = context?.scrollTop ?? 0
 
     const rows = React.useMemo(() => React.Children.toArray(children), [children])
     const rowCount = rows.length
+    const columnCount = React.useMemo(() => {
+      const firstRow = rows.find((row): row is React.ReactElement<{ children?: React.ReactNode }> => React.isValidElement(row))
+      return Math.max(1, firstRow ? React.Children.count(firstRow.props.children) : 1)
+    }, [rows])
 
     const localRef = React.useRef<HTMLTableSectionElement | null>(null)
     const setRef = React.useCallback((node: HTMLTableSectionElement | null) => {
@@ -305,7 +316,6 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
       else if (forwardedRef) (forwardedRef as React.RefObject<HTMLTableSectionElement | null>).current = node
     }, [forwardedRef])
 
-    const [scrollTop, setScrollTop] = React.useState(0)
     // Seed from the Table's own maxHeight so the first render already windows
     // rows correctly, before ResizeObserver has a chance to measure the real
     // container (which may report 0 briefly, e.g. in tests or on first paint).
@@ -329,28 +339,18 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
       if (!container) return
 
       const updateViewport = () => {
-        // Fall back to the configured maxHeight if the container hasn't been
-        // laid out yet (clientHeight briefly reads 0 in that case).
-        setViewportHeight(container.clientHeight || scrollContainerHeight || 0)
+        // `maxHeight` is the declared virtual viewport. Once rows are windowed,
+        // the container can temporarily shrink to the rendered rows; using that
+        // measured height feeds back into the window calculation and removes
+        // progressively more rows.
+        setViewportHeight(scrollContainerHeight ?? container.clientHeight)
       }
       updateViewport()
-
-      let ticking = false
-      const onScroll = () => {
-        if (ticking) return
-        ticking = true
-        requestAnimationFrame(() => {
-          setScrollTop(container.scrollTop)
-          ticking = false
-        })
-      }
-      container.addEventListener("scroll", onScroll, { passive: true })
 
       const resizeObserver = new ResizeObserver(updateViewport)
       resizeObserver.observe(container)
 
       return () => {
-        container.removeEventListener("scroll", onScroll)
         resizeObserver.disconnect()
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -434,7 +434,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
         >
           {isVirtualized && topSpacerHeight > 0 && (
             <tr aria-hidden style={{ height: topSpacerHeight }}>
-              <td colSpan={9999} style={{ padding: 0, border: 0 }} />
+              <td colSpan={columnCount} style={{ padding: 0, border: 0 }} />
             </tr>
           )}
 
@@ -450,7 +450,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
 
           {isVirtualized && bottomSpacerHeight > 0 && (
             <tr aria-hidden style={{ height: bottomSpacerHeight }}>
-              <td colSpan={9999} style={{ padding: 0, border: 0 }} />
+              <td colSpan={columnCount} style={{ padding: 0, border: 0 }} />
             </tr>
           )}
         </tbody>

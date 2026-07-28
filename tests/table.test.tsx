@@ -25,7 +25,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 
 describe('Table Component', () => {
     it('should render a basic table', () => {
@@ -432,6 +432,48 @@ describe('TableBody virtualization', () => {
         expect(screen.queryByText('Row 50')).not.toBeInTheDocument();
     });
 
+    it('should keep using maxHeight when the rendered rows make the container shorter', () => {
+        const originalClientHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientHeight');
+        Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
+            configurable: true,
+            get: () => 80,
+        });
+        vi.stubGlobal('ResizeObserver', class {
+            constructor(private readonly callback: ResizeObserverCallback) {}
+
+            observe(_target: Element) {
+                this.callback([], this as unknown as ResizeObserver);
+            }
+
+            unobserve() {}
+            disconnect() {}
+        });
+
+        try {
+            render(
+                <Table maxHeight={400}>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Name</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody rowHeight={40} overscan={3}>
+                        {renderRows(100)}
+                    </TableBody>
+                </Table>
+            );
+
+            expect(screen.getByText('Row 12')).toBeInTheDocument();
+        } finally {
+            if (originalClientHeight) {
+                Object.defineProperty(HTMLElement.prototype, 'clientHeight', originalClientHeight);
+            } else {
+                delete (HTMLElement.prototype as { clientHeight?: number }).clientHeight;
+            }
+            vi.unstubAllGlobals();
+        }
+    });
+
     it('should render rows with variable row heights', () => {
         const variableHeight = (index: number) => (index % 2 === 0 ? 40 : 60);
 
@@ -473,6 +515,31 @@ describe('TableBody virtualization', () => {
         // There should be a bottom spacer since we have many rows
         const hiddenRows = container.querySelectorAll('tr[aria-hidden]');
         expect(hiddenRows.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('should span only the table columns in virtualized spacer rows', () => {
+        const {container} = render(
+            <Table maxHeight={200}>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Name</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody rowHeight={48}>
+                    {Array.from({length: 1000}, (_, index) => (
+                        <TableRow key={index}>
+                            <TableCell>{index}</TableCell>
+                            <TableCell>Row {index}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        );
+
+        const spacerCells = container.querySelectorAll('tr[aria-hidden] > td');
+        expect(spacerCells.length).toBeGreaterThanOrEqual(1);
+        spacerCells.forEach(cell => expect(cell).toHaveAttribute('colspan', '2'));
     });
 
     it('should keep the tbody in native table layout (not display: block)', () => {
@@ -548,7 +615,7 @@ describe('TableBody virtualization', () => {
         expect(tbody).toBeInTheDocument();
     });
 
-    it('should handle scroll events on the Table container', () => {
+    it('should update the rendered row window when the Table container scrolls', () => {
         const {container} = render(
             <Table maxHeight={200}>
                 <TableHeader>
@@ -565,8 +632,10 @@ describe('TableBody virtualization', () => {
         const scrollContainer = container.querySelector('[data-slot="table-container"]');
         expect(scrollContainer).toBeInTheDocument();
 
-        // Fire a scroll event - this should not throw
         fireEvent.scroll(scrollContainer!, {target: {scrollTop: 500}});
+
+        expect(screen.getByText('Row 10')).toBeInTheDocument();
+        expect(screen.queryByText('Row 0')).not.toBeInTheDocument();
     });
 
     it('should respect overscan parameter', () => {
