@@ -24,7 +24,6 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-    VirtualizedTableBody,
 } from '@/components/ui/table';
 import {describe, expect, it} from 'vitest';
 
@@ -388,8 +387,16 @@ describe('Table Component', () => {
     });
 });
 
-describe('VirtualizedTableBody', () => {
-    it('should render visible rows with constant row height', () => {
+describe('TableBody virtualization', () => {
+    function renderRows(count: number) {
+        return Array.from({length: count}, (_, index) => (
+            <TableRow key={index}>
+                <TableCell>Row {index}</TableCell>
+            </TableRow>
+        ));
+    }
+
+    it('should render all rows when the Table has no maxHeight', () => {
         render(
             <Table>
                 <TableHeader>
@@ -397,47 +404,51 @@ describe('VirtualizedTableBody', () => {
                         <TableHead>Name</TableHead>
                     </TableRow>
                 </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={100}
-                    rowHeight={48}
-                    height={200}
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
-                            <TableCell>Row {index}</TableCell>
-                        </TableRow>
-                    )}
-                </VirtualizedTableBody>
+                <TableBody>
+                    {renderRows(100)}
+                </TableBody>
             </Table>
         );
 
-        // Should render some rows (visible ones plus overscan)
         expect(screen.getByText('Row 0')).toBeInTheDocument();
-        // Should not render rows far beyond the viewport
+        expect(screen.getByText('Row 99')).toBeInTheDocument();
+    });
+
+    it('should render visible rows and skip rows far beyond the viewport when virtualized', () => {
+        render(
+            <Table maxHeight={200}>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Name</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody rowHeight={48}>
+                    {renderRows(100)}
+                </TableBody>
+            </Table>
+        );
+
+        expect(screen.getByText('Row 0')).toBeInTheDocument();
         expect(screen.queryByText('Row 50')).not.toBeInTheDocument();
     });
 
     it('should render rows with variable row heights', () => {
-        const variableHeight = ({index}: {index: number}) => (index % 2 === 0 ? 40 : 60);
+        const variableHeight = (index: number) => (index % 2 === 0 ? 40 : 60);
 
         render(
-            <Table>
+            <Table maxHeight={200}>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
                     </TableRow>
                 </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={50}
-                    rowHeight={variableHeight}
-                    height={200}
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
+                <TableBody rowHeight={variableHeight}>
+                    {Array.from({length: 50}, (_, index) => (
+                        <TableRow key={index}>
                             <TableCell>Variable Row {index}</TableCell>
                         </TableRow>
-                    )}
-                </VirtualizedTableBody>
+                    ))}
+                </TableBody>
             </Table>
         );
 
@@ -447,52 +458,53 @@ describe('VirtualizedTableBody', () => {
 
     it('should render spacer rows for virtualization', () => {
         const {container} = render(
-            <Table>
+            <Table maxHeight={200}>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
                     </TableRow>
                 </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={1000}
-                    rowHeight={48}
-                    height={200}
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
-                            <TableCell>Row {index}</TableCell>
-                        </TableRow>
-                    )}
-                </VirtualizedTableBody>
+                <TableBody rowHeight={48}>
+                    {renderRows(1000)}
+                </TableBody>
             </Table>
         );
 
         // There should be a bottom spacer since we have many rows
         const hiddenRows = container.querySelectorAll('tr[aria-hidden]');
-        // bottom spacer should exist (top spacer may or may not depending on scroll position)
         expect(hiddenRows.length).toBeGreaterThanOrEqual(1);
     });
 
-    it('should accept custom className', () => {
+    it('should keep the tbody in native table layout (not display: block)', () => {
         const {container} = render(
-            <Table>
+            <Table maxHeight={200}>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
                     </TableRow>
                 </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={10}
-                    rowHeight={48}
-                    height={200}
-                    className="custom-virtualized"
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
-                            <TableCell>Row {index}</TableCell>
-                        </TableRow>
-                    )}
-                </VirtualizedTableBody>
+                <TableBody rowHeight={48}>
+                    {renderRows(100)}
+                </TableBody>
+            </Table>
+        );
+
+        const tbody = container.querySelector('[data-slot="table-body"]');
+        expect(tbody).toBeInTheDocument();
+        expect(tbody).not.toHaveClass('block');
+    });
+
+    it('should accept custom className', () => {
+        const {container} = render(
+            <Table maxHeight={200}>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Name</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody rowHeight={48} className="custom-virtualized">
+                    {renderRows(10)}
+                </TableBody>
             </Table>
         );
 
@@ -500,148 +512,79 @@ describe('VirtualizedTableBody', () => {
         expect(tbody).toBeInTheDocument();
     });
 
-    it('should accept custom style prop', () => {
+    it('should handle zero rows gracefully', () => {
         const {container} = render(
-            <Table>
+            <Table maxHeight={200}>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
                     </TableRow>
                 </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={10}
-                    rowHeight={48}
-                    height={300}
-                    style={{border: '1px solid red'}}
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
-                            <TableCell>Row {index}</TableCell>
-                        </TableRow>
-                    )}
-                </VirtualizedTableBody>
+                <TableBody rowHeight={48} />
             </Table>
         );
 
-        const tbody = container.querySelector('[data-slot="table-body"]');
-        expect(tbody).toHaveStyle({height: '300px', border: '1px solid red'});
-    });
-
-    it('should handle zero rowCount gracefully', () => {
-        const {container} = render(
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Name</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={0}
-                    rowHeight={48}
-                    height={200}
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
-                            <TableCell>Row {index}</TableCell>
-                        </TableRow>
-                    )}
-                </VirtualizedTableBody>
-            </Table>
-        );
-
-        // Should not render any content rows
         expect(screen.queryByText(/^Row \d+$/)).not.toBeInTheDocument();
-        // The tbody should exist
         const tbody = container.querySelector('[data-slot="table-body"]');
         expect(tbody).toBeInTheDocument();
     });
 
     it('should wrap content in ComponentErrorBoundary', () => {
-        // Render with normal content - the error boundary wraps everything
         const {container} = render(
-            <Table>
+            <Table maxHeight={300}>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
                     </TableRow>
                 </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={5}
-                    rowHeight={48}
-                    height={300}
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
-                            <TableCell>Row {index}</TableCell>
-                        </TableRow>
-                    )}
-                </VirtualizedTableBody>
+                <TableBody rowHeight={48}>
+                    {renderRows(5)}
+                </TableBody>
             </Table>
         );
 
-        // Verify normal rendering works within the error boundary
         expect(screen.getByText('Row 0')).toBeInTheDocument();
         const tbody = container.querySelector('[data-slot="table-body"]');
         expect(tbody).toBeInTheDocument();
     });
 
-    it('should handle scroll events', () => {
+    it('should handle scroll events on the Table container', () => {
         const {container} = render(
-            <Table>
+            <Table maxHeight={200}>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
                     </TableRow>
                 </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={100}
-                    rowHeight={48}
-                    height={200}
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
-                            <TableCell>Row {index}</TableCell>
-                        </TableRow>
-                    )}
-                </VirtualizedTableBody>
+                <TableBody rowHeight={48}>
+                    {renderRows(100)}
+                </TableBody>
             </Table>
         );
 
-        // Find the tbody (the scroll container)
-        const tbody = container.querySelector('[data-slot="table-body"]');
-        expect(tbody).toBeInTheDocument();
+        const scrollContainer = container.querySelector('[data-slot="table-container"]');
+        expect(scrollContainer).toBeInTheDocument();
 
         // Fire a scroll event - this should not throw
-        fireEvent.scroll(tbody!, {target: {scrollTop: 500}});
+        fireEvent.scroll(scrollContainer!, {target: {scrollTop: 500}});
     });
 
     it('should respect overscan parameter', () => {
         render(
-            <Table>
+            <Table maxHeight={96}>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
                     </TableRow>
                 </TableHeader>
-                <VirtualizedTableBody
-                    rowCount={100}
-                    rowHeight={48}
-                    height={96}
-                    overscan={5}
-                >
-                    {(index, style) => (
-                        <TableRow key={index} style={style}>
-                            <TableCell>Row {index}</TableCell>
-                        </TableRow>
-                    )}
-                </VirtualizedTableBody>
+                <TableBody rowHeight={48} overscan={5}>
+                    {renderRows(100)}
+                </TableBody>
             </Table>
         );
 
-        // With height=96 and rowHeight=48, 2 rows are visible
-        // With overscan=5, up to 2+5=7 rows should be rendered at most (from endIndex)
-        // startIndex is max(0, floor(0/48) - 5) = 0, endIndex = min(99, floor(96/48) + 5) = 7
-        // So rows 0 through 7 should be rendered (8 rows)
+        // With maxHeight=96 and rowHeight=48, 2 rows are visible.
+        // With overscan=5, rows 0 through 7 should be rendered (8 rows).
         expect(screen.getByText('Row 0')).toBeInTheDocument();
         expect(screen.getByText('Row 7')).toBeInTheDocument();
         expect(screen.queryByText('Row 8')).not.toBeInTheDocument();

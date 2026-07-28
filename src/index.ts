@@ -28,7 +28,7 @@ export { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 export { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover'
 export { Skeleton } from './components/ui/skeleton'
 export { Toaster, toast } from './components/ui/sonner'
-export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableHeadRow, TableRow, VirtualizedTableBody, type TableColumn } from './components/ui/table'
+export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableHeadRow, TableRow, type TableColumn } from './components/ui/table'
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip'
 export { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './components/ui/breadcrumb'

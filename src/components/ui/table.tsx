@@ -34,6 +34,12 @@ interface TableContextValue {
   drawerContent: string | React.ReactNode
   setDrawerContent: (content: string | React.ReactNode) => void
   openDrawer: (content: string | React.ReactNode) => void
+  // Scroll container shared with TableBody for virtualization.
+  // Null when the table has no maxHeight (i.e. isn't scrollable/virtualized).
+  scrollContainerRef: React.RefObject<HTMLDivElement | null> | null
+  // Known viewport height, used as the initial estimate before the real
+  // container is measured (ResizeObserver hasn't fired on first render yet).
+  scrollContainerHeight: number | null
 }
 
 const TableContext = React.createContext<TableContextValue | null>(null)
@@ -54,198 +60,16 @@ export type TableColumn = {
   flexGrow?: number
 }
 
-type VirtualizedTableBodyProps = {
-  rowCount: number
-  rowHeight?: number | ((args: { index: number }) => number)
-  height?: number
-  className?: string
-  style?: React.CSSProperties
-  overscan?: number
-  children: (index: number, style: React.CSSProperties) => React.ReactNode
-}
-
-/**
- * Highly optimized VirtualizedTableBody
- * - O(1) lookup for constant row height
- * - O(log n) lookup for variable row height (via binary search on prefix sum cache)
- * - requestAnimationFrame batching for scroll updates
- */
-function VirtualizedTableBody({
-  rowCount,
-  rowHeight = 48,
-  height = 400,
-  className,
-  style,
-  overscan = 3,
-  children,
-}: VirtualizedTableBodyProps) {
-  const containerRef = React.useRef<HTMLTableSectionElement | null>(null)
-  const [scrollTop, setScrollTop] = React.useState(0)
-  const [innerHeight, setInnerHeight] = React.useState<number>(height)
-
-  const isConstant = typeof rowHeight === "number"
-
-  // prefix sum cache for variable row heights
-  const offsetsRef = React.useRef<number[] | null>(null)
-
-  // ensure container height responds to prop changes
-  React.useEffect(() => setInnerHeight(height), [height])
-  
-  // scroll handler (raf throttled)
-  React.useLayoutEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    let ticking = false
-    function onScroll(this: HTMLElement) {
-      if (!ticking) {
-        ticking = true
-        requestAnimationFrame(() => {
-          setScrollTop(this.scrollTop)
-          ticking = false
-        })
-      }
-    }
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll)
-  }, [])
-
-  const getRowHeight = React.useCallback(
-    (index: number): number =>
-      typeof rowHeight === "function" ? rowHeight({ index }) : rowHeight,
-    [rowHeight]
-  )
-
-  const ensureOffsets = React.useCallback(() => {
-    if (isConstant) return
-    if (!offsetsRef.current || offsetsRef.current.length !== rowCount + 1) {
-      const arr = new Array(rowCount + 1)
-      arr[0] = 0
-      for (let i = 0; i < rowCount; i++) {
-        arr[i + 1] = arr[i] + getRowHeight(i)
-      }
-      offsetsRef.current = arr
-    }
-  }, [rowCount, getRowHeight, isConstant])
-
-  const getRowPosition = React.useCallback(
-    (index: number): number => {
-      if (isConstant) {
-        return (rowHeight as number) * index
-      } else {
-        ensureOffsets()
-        return offsetsRef.current![index]
-      }
-    },
-    [rowHeight, ensureOffsets, isConstant]
-  )
-
-  const getTotalHeight = React.useCallback((): number => {
-    if (isConstant) {
-      return (rowHeight as number) * rowCount
-    } else {
-      ensureOffsets()
-      return offsetsRef.current![rowCount]
-    }
-  }, [rowHeight, rowCount, ensureOffsets, isConstant])
-
-  const findStartIndex = React.useCallback((): number => {
-    if (isConstant) {
-      return Math.max(0, Math.floor(scrollTop / (rowHeight as number)) - overscan)
-    } else {
-      ensureOffsets()
-      const offsets = offsetsRef.current!
-      let low = 0,
-        high = rowCount - 1,
-        mid
-      while (low <= high) {
-        mid = (low + high) >> 1
-        if (offsets[mid + 1] < scrollTop) {
-          low = mid + 1
-        } else {
-          high = mid - 1
-        }
-      }
-      return Math.max(0, low - overscan)
-    }
-  }, [scrollTop, rowCount, rowHeight, overscan, ensureOffsets, isConstant])
-
-  const findEndIndex = React.useCallback(
-    (startIndex: number): number => {
-      if (isConstant) {
-        const perRow = rowHeight as number
-        return Math.min(
-          rowCount - 1,
-          Math.floor((scrollTop + innerHeight) / perRow) + overscan
-        )
-      } else {
-        ensureOffsets()
-        const offsets = offsetsRef.current!
-        let low = startIndex,
-          high = rowCount - 1,
-          mid
-        while (low <= high) {
-          mid = (low + high) >> 1
-          if (offsets[mid] < scrollTop + innerHeight) {
-            low = mid + 1
-          } else {
-            high = mid - 1
-          }
-        }
-        return Math.min(rowCount - 1, low + overscan)
-      }
-    },
-    [scrollTop, innerHeight, rowCount, rowHeight, overscan, ensureOffsets, isConstant]
-  )
-
-  const totalHeight = getTotalHeight()
-  const startIndex = findStartIndex()
-  const endIndex = findEndIndex(startIndex)
-
-  const topSpacerHeight = getRowPosition(startIndex)
-  const bottomSpacerHeight = Math.max(0, totalHeight - getRowPosition(endIndex + 1))
-
-  return (
-    <ComponentErrorBoundary>
-      <TableBody
-        data-slot="table-body"
-        ref={containerRef}
-        style={{
-          height: innerHeight,
-          ...style,
-        }}
-        className={cn("block [&_tr:last-child]:border-0 overflow-hidden overflow-y-visible w-full", className)}
-      >
-        {topSpacerHeight > 0 && (
-          <TableRow aria-hidden style={{ height: topSpacerHeight }}>
-            <TableCell colSpan={9999} />
-          </TableRow>
-        )}
-
-        {Array.from({ length: endIndex - startIndex + 1 }, (_, i) => {
-          const index = startIndex + i
-          const currentRowHeight = getRowHeight(index)
-          const rowStyle: React.CSSProperties = { height: currentRowHeight }
-          return children(index, rowStyle)
-        })}
-
-        {bottomSpacerHeight > 0 && (
-          <TableRow aria-hidden style={{ height: bottomSpacerHeight }}>
-            <TableCell colSpan={9999} />
-          </TableRow>
-        )}
-      </TableBody>
-    </ComponentErrorBoundary>
-  )
-}
-
 /* --------------------------
 Table Provider
 -------------------------- */
 interface TableProviderProps {
   children: React.ReactNode
+  scrollContainerRef?: React.RefObject<HTMLDivElement | null>
+  scrollContainerHeight?: number
 }
 
-function TableProvider({ children }: TableProviderProps) {
+function TableProvider({ children, scrollContainerRef, scrollContainerHeight }: TableProviderProps) {
   // Drawer state
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
   const [drawerContent, setDrawerContent] = React.useState<string | React.ReactNode>("")
@@ -261,6 +85,8 @@ function TableProvider({ children }: TableProviderProps) {
     drawerContent,
     setDrawerContent,
     openDrawer,
+    scrollContainerRef: scrollContainerRef ?? null,
+    scrollContainerHeight: scrollContainerHeight ?? null,
   }
 
   return (
@@ -273,10 +99,10 @@ function TableProvider({ children }: TableProviderProps) {
 // Helper function to check if content is valid JSON
 function isJsonContent(content: string | React.ReactNode): boolean {
   if (typeof content !== 'string') return false
-  
+
   const trimmed = content.trim()
   if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) return false
-  
+
   try {
     JSON.parse(trimmed)
     return true
@@ -375,19 +201,19 @@ Table primitives
 -------------------------- */
 function TableDrawer() {
   const context = useTableContext()
-  
+
   const renderContent = () => {
     if (typeof context.drawerContent === 'string' && isJsonContent(context.drawerContent)) {
       return formatJson(context.drawerContent)
     }
-    
+
     return (
       <div className="whitespace-pre-wrap break-words">
         {context.drawerContent}
       </div>
     )
   }
-  
+
   if (!context.isDrawerOpen) return null
 
   return (
@@ -404,96 +230,20 @@ function TableDrawer() {
   )
 }
 
-function Table({ className, style, ...props }: React.ComponentProps<"table">) {
+function Table({ className, style, maxHeight, ...props }: React.ComponentProps<"table"> & { maxHeight?: number }) {
   const tableRef = React.useRef<HTMLTableElement | null>(null)
-  const isVirtualizedRef = React.useRef(false)
-  const widthSyncedRef = React.useRef(false)
-
-  React.useEffect(() => {
-    const table = tableRef.current
-    if (!table) return
-
-    const getCells = () => {
-      const thead = table.querySelector("thead")
-      const tbody = table.querySelector("tbody")
-      if (!thead || !tbody) return { headCells: [] as HTMLElement[], bodyCells: [] as HTMLElement[] }
-      const headRow = thead.querySelector("tr")
-      const firstBodyRow = tbody.querySelector("tr")
-      if (!headRow || !firstBodyRow) return { headCells: [] as HTMLElement[], bodyCells: [] as HTMLElement[] }
-      const headCells = Array.from(headRow.children) as HTMLElement[]
-      const bodyCells = Array.from(firstBodyRow.children) as HTMLElement[]
-      return { headCells, bodyCells }
-    }
-
-    const syncWidths = () => {
-      // Skip width sync for virtualized tables after initial setup
-      if (isVirtualizedRef.current && widthSyncedRef.current) {
-        return
-      }
-
-      const { headCells, bodyCells } = getCells();
-      const count = Math.min(headCells.length, bodyCells.length)
-      for (let i = 0; i < count; i++) {
-        const width = bodyCells[i].getBoundingClientRect().width
-        if (width > 0 && i !== count - 1) {
-          headCells[i].style.width = `${width}px`
-          headCells[i].style.minWidth = `${width}px`
-          headCells[i].style.maxWidth = `${width}px`
-        }
-      }
-
-      // Mark as synced for virtualized tables
-      if (isVirtualizedRef.current) {
-        widthSyncedRef.current = true
-      }
-    }
-
-    // Check if this is a virtualized table by looking for VirtualizedTableBody
-    const checkIfVirtualized = () => {
-      const tbody = table.querySelector("tbody")
-      const isVirtualized = Boolean(tbody?.hasAttribute("data-slot") && tbody.getAttribute("data-slot") === "table-body")
-      isVirtualizedRef.current = isVirtualized
-      return isVirtualized
-    }
-
-    const rafId = requestAnimationFrame(() => {
-      checkIfVirtualized()
-      syncWidths()
-    })
-
-    const resizeObserver = new ResizeObserver(() => {
-      // Only sync widths for non-virtualized tables or before initial sync for virtualized tables
-      if (!isVirtualizedRef.current || !widthSyncedRef.current) {
-        syncWidths()
-      }
-    })
-
-    const tbody = table.querySelector("tbody")
-    const firstRow = tbody?.querySelector("tr")
-    if (firstRow) resizeObserver.observe(firstRow as Element)
-
-    const { bodyCells } = getCells()
-    bodyCells.forEach((cell) => resizeObserver.observe(cell))
-
-    const onResize = () => {
-      // Reset sync flag on window resize to allow re-sync
-      widthSyncedRef.current = false
-      syncWidths()
-    }
-    window.addEventListener("resize", onResize)
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      resizeObserver.disconnect()
-      window.removeEventListener("resize", onResize)
-    }
-  }, [])
+  const scrollContainerRef = React.useRef<HTMLDivElement | null>(null)
 
   return (
-    <TableProvider>
+    <TableProvider
+      scrollContainerRef={maxHeight != null ? scrollContainerRef : undefined}
+      scrollContainerHeight={maxHeight}
+    >
       <div
+        ref={scrollContainerRef}
         data-slot="table-container"
-        className="max-w-full overflow-x-auto overflow-y-auto"
+        className="max-w-full overflow-auto"
+        style={maxHeight != null ? { maxHeight } : undefined}
       >
         <table
           ref={tableRef}
@@ -517,19 +267,223 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   )
 }
 
-const TableBody = React.forwardRef<HTMLTableSectionElement, React.ComponentProps<"tbody">>(
-  ({ className, ...props }, ref) => {
+type TableBodyProps = Omit<React.ComponentProps<"tbody">, "children"> & {
+  children?: React.ReactNode
+  /**
+   * Height of each row in pixels, used to estimate which rows are near the
+   * viewport before their real height is measured. Only relevant when the
+   * enclosing Table has `maxHeight` set. Pass a function for variable heights.
+   */
+  rowHeight?: number | ((index: number) => number)
+  /** Extra rows to render above/below the visible window. */
+  overscan?: number
+}
+
+const DEFAULT_ROW_HEIGHT = 40
+const DEFAULT_OVERSCAN = 3
+
+/**
+ * TableBody that virtualizes its rows automatically when it lives inside a
+ * Table with `maxHeight` set, and behaves as a plain tbody otherwise.
+ * Rows stay in native table-row-group/table-row layout at all times, so the
+ * browser computes column widths the same way for every row and the header
+ * always lines up with the body — no JS width-syncing required.
+ */
+const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
+  ({ className, children, rowHeight = DEFAULT_ROW_HEIGHT, overscan = DEFAULT_OVERSCAN, ...props }, forwardedRef) => {
+    const context = React.useContext(TableContext)
+    const scrollContainerRef = context?.scrollContainerRef ?? null
+    const scrollContainerHeight = context?.scrollContainerHeight ?? null
+
+    const rows = React.useMemo(() => React.Children.toArray(children), [children])
+    const rowCount = rows.length
+
+    const localRef = React.useRef<HTMLTableSectionElement | null>(null)
+    const setRef = React.useCallback((node: HTMLTableSectionElement | null) => {
+      localRef.current = node
+      if (typeof forwardedRef === "function") forwardedRef(node)
+      else if (forwardedRef) (forwardedRef as React.RefObject<HTMLTableSectionElement | null>).current = node
+    }, [forwardedRef])
+
+    const [scrollTop, setScrollTop] = React.useState(0)
+    // Seed from the Table's own maxHeight so the first render already windows
+    // rows correctly, before ResizeObserver has a chance to measure the real
+    // container (which may report 0 briefly, e.g. in tests or on first paint).
+    const [viewportHeight, setViewportHeight] = React.useState(scrollContainerHeight ?? 0)
+
+    // measured row heights, keyed by row index, filled in as rows are observed
+    const measuredHeights = React.useRef<Map<number, number>>(new Map())
+    const [, forceRemeasure] = React.useState(0)
+
+    const isVirtualized = scrollContainerRef != null && rowCount > 0
+
+    const getEstimatedRowHeight = React.useCallback((index: number): number => {
+      const measured = measuredHeights.current.get(index)
+      if (measured != null) return measured
+      return typeof rowHeight === "function" ? rowHeight(index) : rowHeight
+    }, [rowHeight])
+
+    React.useLayoutEffect(() => {
+      if (!isVirtualized) return
+      const container = scrollContainerRef!.current
+      if (!container) return
+
+      const updateViewport = () => {
+        // Fall back to the configured maxHeight if the container hasn't been
+        // laid out yet (clientHeight briefly reads 0 in that case).
+        setViewportHeight(container.clientHeight || scrollContainerHeight || 0)
+      }
+      updateViewport()
+
+      let ticking = false
+      const onScroll = () => {
+        if (ticking) return
+        ticking = true
+        requestAnimationFrame(() => {
+          setScrollTop(container.scrollTop)
+          ticking = false
+        })
+      }
+      container.addEventListener("scroll", onScroll, { passive: true })
+
+      const resizeObserver = new ResizeObserver(updateViewport)
+      resizeObserver.observe(container)
+
+      return () => {
+        container.removeEventListener("scroll", onScroll)
+        resizeObserver.disconnect()
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isVirtualized, scrollContainerRef])
+
+    // prefix-sum offsets for the estimated heights, recomputed whenever row
+    // count or measured heights change
+    const offsets = React.useMemo(() => {
+      const arr = new Array(rowCount + 1)
+      arr[0] = 0
+      for (let i = 0; i < rowCount; i++) {
+        arr[i + 1] = arr[i] + getEstimatedRowHeight(i)
+      }
+      return arr
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [rowCount, getEstimatedRowHeight])
+
+    const totalHeight = offsets[rowCount] ?? 0
+
+    const findStartIndex = (): number => {
+      let low = 0, high = rowCount - 1, mid
+      while (low <= high) {
+        mid = (low + high) >> 1
+        if (offsets[mid + 1] < scrollTop) low = mid + 1
+        else high = mid - 1
+      }
+      return Math.max(0, low - overscan)
+    }
+
+    const findEndIndex = (startIndex: number): number => {
+      let low = startIndex, high = rowCount - 1, mid
+      while (low <= high) {
+        mid = (low + high) >> 1
+        if (offsets[mid] < scrollTop + viewportHeight) low = mid + 1
+        else high = mid - 1
+      }
+      return Math.min(rowCount - 1, low + overscan)
+    }
+
+    const startIndex = isVirtualized ? findStartIndex() : 0
+    const endIndex = isVirtualized ? findEndIndex(startIndex) : rowCount - 1
+
+    const topSpacerHeight = isVirtualized ? offsets[startIndex] : 0
+    const bottomSpacerHeight = isVirtualized ? Math.max(0, totalHeight - offsets[endIndex + 1]) : 0
+
+    // measure the real height of rendered rows so estimates converge to
+    // reality (matters most for variable-height content)
+    const rowRefs = React.useRef<Map<number, HTMLElement>>(new Map())
+    const registerRowRef = React.useCallback((index: number, node: HTMLElement | null) => {
+      if (node) rowRefs.current.set(index, node)
+      else rowRefs.current.delete(index)
+    }, [])
+
+    React.useEffect(() => {
+      if (!isVirtualized) return
+      const observer = new ResizeObserver((entries) => {
+        let changed = false
+        for (const entry of entries) {
+          const index = Number((entry.target as HTMLElement).dataset.virtRowIdx)
+          const height = entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height
+          if (height > 0 && measuredHeights.current.get(index) !== height) {
+            measuredHeights.current.set(index, height)
+            changed = true
+          }
+        }
+        if (changed) forceRemeasure((n) => n + 1)
+      })
+      rowRefs.current.forEach((node) => observer.observe(node))
+      return () => observer.disconnect()
+    }, [isVirtualized, startIndex, endIndex])
+
+    const visibleRows = isVirtualized ? rows.slice(startIndex, endIndex + 1) : rows
+
     return (
-      <tbody 
-        ref={ref}
-        data-slot="table-body" 
-        className={cn("[&_tr:last-child]:border-0", className)} 
-        {...props} 
-      />
+      <ComponentErrorBoundary>
+        <tbody
+          ref={setRef}
+          data-slot="table-body"
+          className={cn("[&_tr:last-child]:border-0", className)}
+          {...props}
+        >
+          {isVirtualized && topSpacerHeight > 0 && (
+            <tr aria-hidden style={{ height: topSpacerHeight }}>
+              <td colSpan={9999} style={{ padding: 0, border: 0 }} />
+            </tr>
+          )}
+
+          {visibleRows.map((row, i) => {
+            const index = startIndex + i
+            if (!isVirtualized) return row
+            return (
+              <VirtualizedRow key={(row as React.ReactElement).key ?? index} index={index} registerRowRef={registerRowRef}>
+                {row}
+              </VirtualizedRow>
+            )
+          })}
+
+          {isVirtualized && bottomSpacerHeight > 0 && (
+            <tr aria-hidden style={{ height: bottomSpacerHeight }}>
+              <td colSpan={9999} style={{ padding: 0, border: 0 }} />
+            </tr>
+          )}
+        </tbody>
+      </ComponentErrorBoundary>
     )
   }
 )
 TableBody.displayName = "TableBody"
+
+/**
+ * Attaches a ref + row index to a TableRow child so its real rendered height
+ * can be measured. Assumes the child is a TableRow (forwards refs to a <tr>).
+ */
+function VirtualizedRow({
+  index,
+  registerRowRef,
+  children,
+}: {
+  index: number
+  registerRowRef: (index: number, node: HTMLElement | null) => void
+  children: React.ReactNode
+}) {
+  const ref = React.useCallback((node: HTMLElement | null) => {
+    registerRowRef(index, node)
+  }, [index, registerRowRef])
+
+  if (!React.isValidElement(children)) return <>{children}</>
+
+  return React.cloneElement(children as React.ReactElement<{ ref?: React.Ref<HTMLElement>; "data-virt-row-idx"?: number }>, {
+    ref,
+    "data-virt-row-idx": index,
+  })
+}
 
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   return (
@@ -555,19 +509,23 @@ function TableHeadRow({ className, style, ...props }: React.ComponentProps<"tr">
   )
 }
 
-function TableRow({ className, style, ...props }: React.ComponentProps<"tr">) {
-  return (
-    <tr
-      data-slot="table-row"
-      className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
-        className
-      )}
-      style={style}
-      {...props}
-    />
-  )
-}
+const TableRow = React.forwardRef<HTMLTableRowElement, React.ComponentProps<"tr">>(
+  ({ className, style, ...props }, ref) => {
+    return (
+      <tr
+        ref={ref}
+        data-slot="table-row"
+        className={cn(
+          "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
+          className
+        )}
+        style={style}
+        {...props}
+      />
+    )
+  }
+)
+TableRow.displayName = "TableRow"
 
 function TableHead({
   className,
@@ -641,15 +599,15 @@ function TableCell({ className, children, ...props }: React.ComponentProps<"td">
         "min-w-[150px] max-w-[500px] overflow-hidden whitespace-nowrap text-ellipsis",
         className
       )}
-      style={{ 
-        ...props.style 
+      style={{
+        ...props.style
       }}
       {...props}
     >
       <div ref={contentRef} className="truncate min-w-0 pr-8">
         {children}
       </div>
-      
+
       {isOverflowing && (
         <Button
           onClick={handleEyeClick}
@@ -683,5 +641,4 @@ export {
   TableProvider,
   TableHeadRow,
   TableRow,
-  VirtualizedTableBody,
 }

@@ -1,11 +1,11 @@
 ---
 title: 'Table'
-description: 'Full-featured data table with virtualization for large datasets.'
+description: 'Full-featured data table with automatic virtualization for large datasets.'
 ---
 
 # Table
 
-The `table.tsx` module provides a composable table with two rendering modes: a standard `<table>` element for smaller datasets, and `VirtualizedTableBody` for efficiently rendering thousands of rows without DOM overflow.
+The `table.tsx` module provides a composable table. `TableBody` renders its rows normally by default; give the enclosing `Table` a `maxHeight` and `TableBody` automatically windows its rows so thousands of rows can be rendered without DOM overflow — no separate virtualized component required, and no risk of the header and body columns drifting out of alignment, since rows always stay in native table layout.
 
 ## Import
 
@@ -21,7 +21,6 @@ import {
   TableCaption,
   TableProvider,
   TableHeadRow,
-  VirtualizedTableBody,
 } from '@clidey/ux';
 ```
 
@@ -99,39 +98,34 @@ import {
 
 ## Virtualized table (large datasets)
 
-Use `VirtualizedTableBody` when rendering more than a few hundred rows. It only renders the visible rows using `react-window`:
+Pass `maxHeight` to `Table` to make it scrollable. `TableBody` then automatically renders only the rows near the visible area, plus lightweight spacer rows for the rest:
 
 ```tsx
 const COLUMNS = ['ID', 'Name', 'Email', 'Status'];
 const rows = generateLargeDataset(10000); // e.g. 10,000 rows
 
-<TableProvider columnCount={COLUMNS.length}>
-  <Table>
-    <TableHeader>
-      <TableHeadRow>
-        {COLUMNS.map((col) => (
-          <TableHead key={col}>{col}</TableHead>
-        ))}
-      </TableHeadRow>
-    </TableHeader>
-    <VirtualizedTableBody
-      rowCount={rows.length}
-      rowHeight={48}
-      height={400}
-      overscan={5}
-    >
-      {({ index, style }) => (
-        <TableRow style={style}>
-          <TableCell>{rows[index].id}</TableCell>
-          <TableCell>{rows[index].name}</TableCell>
-          <TableCell>{rows[index].email}</TableCell>
-          <TableCell><Badge>{rows[index].status}</Badge></TableCell>
-        </TableRow>
-      )}
-    </VirtualizedTableBody>
-  </Table>
-</TableProvider>
+<Table maxHeight={400}>
+  <TableHeader>
+    <TableHeadRow>
+      {COLUMNS.map((col) => (
+        <TableHead key={col}>{col}</TableHead>
+      ))}
+    </TableHeadRow>
+  </TableHeader>
+  <TableBody rowHeight={48} overscan={5}>
+    {rows.map((row) => (
+      <TableRow key={row.id}>
+        <TableCell>{row.id}</TableCell>
+        <TableCell>{row.name}</TableCell>
+        <TableCell>{row.email}</TableCell>
+        <TableCell><Badge>{row.status}</Badge></TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
 ```
+
+`rowHeight` is only an estimate used to compute which rows are near the viewport before their real height is measured — it accepts a `number` or a `(index: number) => number` function for variable-height rows. Actual rendered row heights are measured automatically and used once available, so `rowHeight` doesn't need to be exact.
 
 ## Cell with JSON preview
 
@@ -149,30 +143,27 @@ Overflow detection is automatic — if the content exceeds the cell width, a pre
 
 | Component | Description |
 | --- | --- |
-| `Table` | Root `<table>` element. |
+| `Table` | Root `<table>` element. Accepts `maxHeight` to make the table scrollable and enable virtualization in `TableBody`. |
 | `TableHeader` | `<thead>` section. |
-| `TableBody` | `<tbody>` section. |
+| `TableBody` | `<tbody>` section. Renders all children normally, or virtualizes them when the enclosing `Table` has `maxHeight` set. |
 | `TableFooter` | `<tfoot>` section. |
 | `TableRow` | `<tr>` row element. |
 | `TableHead` | `<th>` header cell. |
 | `TableCell` | `<td>` data cell. Has overflow detection. |
 | `TableCaption` | `<caption>` for the table. |
-| `TableProvider` | Context provider required for virtualized table. |
-| `TableHeadRow` | Header row for virtualized layout. |
-| `VirtualizedTableBody` | Virtualized body using react-window. |
+| `TableProvider` | Context provider used internally by `Table`. |
+| `TableHeadRow` | Header row styled to match `TableRow`. |
 
-### VirtualizedTableBody Props
+### Table Props
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `rowCount` | `number` | — | Total number of data rows. |
-| `rowHeight` | `number \| ((args: { index: number }) => number)` | `48` | Height of each row in pixels. Pass a function for variable heights. |
-| `height` | `number` | `400` | Visible area height in pixels. |
-| `overscan` | `number` | `3` | Number of rows to render above and below the visible area. |
-| `children` | `(args: { index: number; style: CSSProperties }) => ReactNode` | — | Render function called for each visible row. |
+| `maxHeight` | `number` | — | Caps the table's height and makes it scrollable. Required for `TableBody` to virtualize its rows. |
 
-### TableProvider Props
+### TableBody Props
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `columnCount` | `number` | Number of columns — used to set `colspan` on the virtualized body. |
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `rowHeight` | `number \| ((index: number) => number)` | `40` | Estimated height of each row in pixels, used before the real height is measured. Only relevant when the enclosing `Table` has `maxHeight` set. |
+| `overscan` | `number` | `3` | Number of rows to render above and below the visible area. Only relevant when virtualized. |
+| `children` | `ReactNode` | — | `TableRow` elements, same as a plain table body. |
