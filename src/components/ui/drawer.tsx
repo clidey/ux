@@ -54,7 +54,7 @@ const DrawerOverlay = React.forwardRef<
       ref={ref}
       data-slot="drawer-overlay"
       className={cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 absolute inset-0 z-50 bg-backdrop",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-backdrop",
         className
       )}
       {...props}
@@ -67,13 +67,13 @@ const DrawerContent = React.forwardRef<
   React.ComponentProps<typeof DrawerPrimitive.Content>
 >(function DrawerContent({ className, children, ...props }, ref) {
   return (
-    <>
+    <DrawerPortal>
       <DrawerOverlay />
       <DrawerPrimitive.Content
         ref={ref}
         data-slot="drawer-content"
         className={cn(
-          "group/drawer-content bg-background absolute z-50 flex h-auto flex-col",
+          "group/drawer-content bg-background fixed z-50 flex h-auto flex-col",
           "data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-b-lg data-[vaul-drawer-direction=top]:border-b",
           "data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80vh] data-[vaul-drawer-direction=bottom]:rounded-t-lg data-[vaul-drawer-direction=bottom]:border-t",
           "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=right]:sm:max-w-sm",
@@ -85,7 +85,7 @@ const DrawerContent = React.forwardRef<
         <div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
         {children}
       </DrawerPrimitive.Content>
-    </>
+    </DrawerPortal>
   )
 })
 

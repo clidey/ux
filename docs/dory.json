@@ -1,12 +1,12 @@
 {
   "name": "Clidey UX",
-  "title": "Clidey UX — React Component Library",
+  "title": "Clidey UX \u2014 React Component Library",
   "description": "A beautiful, accessible React component library built on Radix UI and Tailwind CSS v4.",
   "favicon": "./logo/logo.png",
   "colors": {
-    "primary": "#6366f1",
-    "light": "#818cf8",
-    "dark": "#4f46e5"
+    "primary": "#2C6BD4",
+    "light": "#2C6BD4",
+    "dark": "#4787F3"
   },
   "logo": {
     "light": "./logo/logo.png",
@@ -19,7 +19,9 @@
         "groups": [
           {
             "group": "Introduction",
-            "pages": ["introduction"]
+            "pages": [
+              "introduction"
+            ]
           },
           {
             "group": "Setup",
@@ -42,7 +44,9 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["components/overview"]
+            "pages": [
+              "components/overview"
+            ]
           },
           {
             "group": "Actions",

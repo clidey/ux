@@ -16,7 +16,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -92,14 +92,12 @@ function ConfirmDialog({
 
         <AlertDialogFooter>
           <AlertDialogCancel>{cancelLabel}</AlertDialogCancel>
-          <AlertDialogAction>
-            <Button
-              variant={confirmVariant}
-              onClick={onConfirm}
-              disabled={disabled || blocked}
-            >
-              {confirmLabel}
-            </Button>
+          <AlertDialogAction
+            className={cn(buttonVariants({ variant: confirmVariant }))}
+            onClick={onConfirm}
+            disabled={disabled || blocked}
+          >
+            {confirmLabel}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

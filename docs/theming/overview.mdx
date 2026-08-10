@@ -96,7 +96,7 @@ The stylesheet exposes CSS custom properties using OKLCH color values. Override 
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-  --primary: oklch(0.32 0.06 282.5);
+  --primary: oklch(0.546 0.174 260.1); /* Signal Blue #2C6BD4 */
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -114,11 +114,22 @@ The stylesheet exposes CSS custom properties using OKLCH color values. Override 
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary: oklch(0.636 0.175 260.2); /* Signal Blue, lifted one step */
+  --primary-foreground: oklch(0.145 0 0);
   /* ... dark mode overrides ... */
 }
 ```
+
+### Clidey brand preset
+
+For Clidey-branded applications, import the ready-made brand token sheet after the base styles instead of writing overrides by hand:
+
+```css
+@import '@clidey/ux/styles.css';
+@import '@clidey/ux/brand.css';
+```
+
+`brand.css` applies the full Clidey palette (Paper/Ink surfaces, Signal Blue primary, Beacon Yellow highlight) in both light and dark modes, with every foreground/background pair WCAG-verified. Company surfaces (rather than product surfaces) can additionally set `class="brand-company"` on `<html>` to let orange lead primary actions.
 
 ### Backdrop token
 

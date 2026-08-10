@@ -58,22 +58,26 @@ const revenueData = [
   { month: "Jun", revenue: 2390, profit: 3800 },
 ]
 
+// Lead category takes the single orange highlight; the rest walk the blue ramp
+// with skipped steps for separation.
 const pieData = [
-  { name: "Desktop", value: 400, color: "var(--chart-1)" },
-  { name: "Mobile", value: 300, color: "var(--chart-2)" },
+  { name: "Desktop", value: 400, color: "var(--chart-highlight)" },
+  { name: "Mobile", value: 300, color: "var(--chart-1)" },
   { name: "Tablet", value: 200, color: "var(--chart-3)" },
-  { name: "Other", value: 100, color: "var(--chart-4)" },
+  { name: "Other", value: 100, color: "var(--chart-5)" },
 ]
 
 // Chart configurations
+// Lead series takes the single orange highlight; the rest skip ramp steps
+// (1 → 3) so side-by-side bars stay distinguishable.
 const salesConfig = {
   desktop: {
     label: "Desktop",
-    color: "var(--chart-1)",
+    color: "var(--chart-highlight)",
   },
   mobile: {
     label: "Mobile",
-    color: "var(--chart-2)",
+    color: "var(--chart-1)",
   },
   tablet: {
     label: "Tablet",
@@ -81,6 +85,7 @@ const salesConfig = {
   },
 } satisfies ChartConfig
 
+// Two overlapping series: the emphasized one takes the single orange highlight.
 const revenueConfig = {
   revenue: {
     label: "Revenue",
@@ -88,18 +93,18 @@ const revenueConfig = {
   },
   profit: {
     label: "Profit",
-    color: "var(--chart-2)",
+    color: "var(--chart-highlight)",
   },
 } satisfies ChartConfig
 
 const pieConfig = {
   desktop: {
     label: "Desktop",
-    color: "var(--chart-1)",
+    color: "var(--chart-highlight)",
   },
   mobile: {
     label: "Mobile",
-    color: "var(--chart-2)",
+    color: "var(--chart-1)",
   },
   tablet: {
     label: "Tablet",
@@ -107,7 +112,7 @@ const pieConfig = {
   },
   other: {
     label: "Other",
-    color: "var(--chart-4)",
+    color: "var(--chart-5)",
   },
 } satisfies ChartConfig
 

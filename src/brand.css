@@ -1,0 +1,217 @@
+/**
+ * Usage:
+ *   Product surfaces (WhoDB, Dory, whodb.com):  import this file. Done.
+ *   Company surfaces (clidey.com, decks):       import this file, then add
+ *                                               class="brand-company" on <html>.
+ *
+ * Rules (do not invent hexes — see PDF p.03):
+ *   01 surfaces move lightness only            04 state = ΔL 0.03 hover / 0.05 active
+ *   02 yellow never changes; Ink text on it    05 dark elevation = L-step, no shadow
+ *   03 orange survives dark; blue lifts once   06 one accent/surface; orange=company, blue=product
+ */
+
+:root {
+  /* anchors */
+  --clidey-orange: #F4781C;
+  --clidey-blue: #2C6BD4;
+  --clidey-yellow: #FFC233;
+  --clidey-ink: #0E2240;
+  --clidey-paper: #FAF5EC;
+
+  /* surfaces & text — Paper world */
+  --background: #FAF5EC;
+  --foreground: #0E2240;
+  --card: #FFFFFF;
+  --card-foreground: #0E2240;
+  --popover: #FFFFFF;
+  --popover-foreground: #0E2240;
+  --muted: #F0EBE2;
+  --muted-foreground: #5C6778;            /* 5.27:1 on background */
+  --secondary: #F0EBE2;
+  --secondary-foreground: #0E2240;
+  --border: #D9D4CB;
+  --input: #D9D4CB;
+
+  /* product accent (Signal Blue) */
+  --primary: #2C6BD4;                     /* 4.65:1 on Paper as text */
+  --primary-foreground: #FFFFFF;          /* 5.05:1 on primary */
+  --primary-hover: #2362CA;               /* −0.03 L */
+  --primary-active: #1C5BC3;              /* −0.05 L */
+
+  /* company accent (Clidey Orange) */
+  --accent: #F4781C;
+  --accent-foreground: #0E2240;           /* 5.71:1 — never white on orange (2.78:1) */
+  --accent-hover: #E96E04;
+  --accent-active: #E06A06;
+  --accent-readable: #B65401;             /* orange as body-size text on light: 4.54:1 */
+
+  /* highlight (Beacon Yellow — Rule 02: identical in dark) */
+  --highlight: #FFC233;
+  --highlight-foreground: #0E2240;        /* 9.85:1 */
+  --highlight-hover: #F5B822;
+
+  /* functional */
+  --destructive: #E30117;                 /* 4.51:1 on Paper */
+  --destructive-foreground: #FFFFFF;
+  --success: #1C4527;
+  --success-muted: #DDEBDD;
+  --warning: #FFC233;                     /* = highlight; icon + copy disambiguate */
+  --warning-foreground: #0E2240;
+
+  /* interaction */
+  --ring: #2C6BD4;
+  --selection: rgb(44 107 212 / 0.25);    /* ≈#C6D3E6 composited; Ink stays 11.4:1 */
+  --backdrop: rgb(14 34 64 / 0.5);
+  --shadow-card: 0 1px 3px rgb(14 34 64 / 0.08);  /* always Ink-tinted, never black */
+
+  /* charts — blue ramp + ONE orange answer (never >1 orange series) */
+  --chart-1: #26529C;
+  --chart-2: #4270BD;
+  --chart-3: #5F8FDE;
+  --chart-4: #7EAEFF;
+  --chart-5: #B2CFFF;
+  --chart-highlight: #F4781C;
+
+  /* syntax / editor (bg = --card) */
+  --syntax-bg: #FFFFFF;
+  --syntax-plain: #0E2240;                /* 15.89:1 */
+  --syntax-keyword: #2C6BD4;              /* 5.05:1 */
+  --syntax-string: #B65401;               /* 4.93:1 */
+  --syntax-number: #26529C;               /* 7.58:1 */
+  --syntax-comment: #5C6778;              /* 5.73:1 */
+  --syntax-selection: rgb(44 107 212 / 0.25);
+  --syntax-cursor: #F4781C;
+
+  /* sidebar (maps 1:1 to @clidey/ux --sidebar-* group) */
+  --sidebar: #FAF5EC;
+  --sidebar-foreground: #0E2240;
+  --sidebar-primary: #2C6BD4;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FFFFFF;              /* active item = white card + --shadow-card */
+  --sidebar-accent-foreground: #0E2240;
+  --sidebar-border: #D9D4CB;
+  --sidebar-ring: #2C6BD4;
+
+  /* @clidey/ux library-specific tokens */
+  --brand: #F4781C;
+  --brand-foreground: #0E2240;         /* Ink on orange — white fails (2.78:1) */
+  --icon: #2C6BD4;
+  --icon-foreground: #FFFFFF;
+
+  --radius: 0.625rem;
+}
+
+.dark {
+  /* surfaces & text — Ink world (elevation = L-step: bg → +0.035 → +0.06) */
+  --background: #0E2240;
+  --foreground: #FAF5EC;
+  --card: #162B4A;                        /* Ink+1; fg 13.08:1 */
+  --card-foreground: #FAF5EC;
+  --popover: #1D3151;                     /* Ink+2 */
+  --popover-foreground: #FAF5EC;
+  --muted: #1D3151;
+  --muted-foreground: #86909F;            /* 4.92:1 on background */
+  --secondary: #1D3151;
+  --secondary-foreground: #FAF5EC;
+  --border: #314667;
+  --input: #314667;
+
+  /* product accent — blue lifted one step (Rule 03) */
+  --primary: #4787F3;                     /* 4.56:1 on Ink */
+  --primary-foreground: #0E2240;          /* Ink text on lifted blue */
+  --primary-hover: #5091FD;               /* +0.03 L */
+  --primary-active: #5B98FF;              /* +0.05 L */
+
+  /* company accent — unchanged (5.71:1 on Ink) */
+  --accent: #F4781C;
+  --accent-foreground: #0E2240;
+  --accent-hover: #FF822B;
+  --accent-active: #FF8D46;
+  --accent-readable: #F4781C;             /* passes on Ink as-is */
+
+  /* highlight — byte-identical (Rule 02) */
+  --highlight: #FFC233;
+  --highlight-foreground: #0E2240;
+  --highlight-hover: #F5B822;
+
+  /* functional */
+  --destructive: #FF6668;                 /* 5.56:1 on Ink; Ink text on it as fill */
+  --destructive-foreground: #0E2240;
+  --success: #A8D5B0;
+  --success-muted: #1E3A28;
+  --warning: #FFC233;
+  --warning-foreground: #0E2240;
+
+  /* interaction */
+  --ring: #4787F3;
+  --selection: rgb(71 135 243 / 0.25);    /* ≈#1C3B6D composited; Paper stays 10.4:1 */
+  --backdrop: rgb(0 0 0 / 0.6);
+  --shadow-card: none;                    /* Rule 05: elevation is the L-step */
+
+  /* charts — ramp lifted one step, orange identical */
+  --chart-1: #4A71B1;
+  --chart-2: #678FD2;
+  --chart-3: #85AFF4;
+  --chart-4: #B2CFFF;
+  --chart-5: #D6E6FF;
+  --chart-highlight: #F4781C;
+
+  /* syntax / editor (bg = --card #162B4A) */
+  --syntax-bg: #162B4A;
+  --syntax-plain: #FAF5EC;                /* 13.08:1 */
+  --syntax-keyword: #85AFF4;              /* 6.38:1 */
+  --syntax-string: #FFC233;               /* 8.80:1 */
+  --syntax-number: #B2CFFF;               /* 8.97:1 */
+  --syntax-comment: #8E98A7;              /* 4.87:1 */
+  --syntax-selection: rgb(71 135 243 / 0.25);
+  --syntax-cursor: #F4781C;
+
+  /* sidebar */
+  --sidebar: #0E2240;
+  --sidebar-foreground: #FAF5EC;
+  --sidebar-primary: #4787F3;
+  --sidebar-primary-foreground: #0E2240;
+  --sidebar-accent: #162B4A;              /* active item = Ink+1, no shadow */
+  --sidebar-accent-foreground: #FAF5EC;
+  --sidebar-border: #314667;
+  --sidebar-ring: #4787F3;
+
+  /* @clidey/ux library-specific tokens */
+  --brand: #F4781C;                       /* orange survives dark (5.71:1 on Ink) */
+  --brand-foreground: #0E2240;
+  --icon: #4787F3;                        /* Signal Blue lifted one step */
+  --icon-foreground: #0E2240;
+}
+
+/**
+ * Company preset (Rule 06) — clidey.com, decks, company collateral.
+ * Orange leads: primary actions become orange with Ink text; blue steps back
+ * to the secondary-action slot; yellow remains the single highlight.
+ * Apply on <html class="brand-company"> (combine with .dark freely).
+ */
+.brand-company {
+  --primary: #F4781C;
+  --primary-foreground: #0E2240;
+  --primary-hover: #E96E04;
+  --primary-active: #E06A06;
+  --accent: #2C6BD4;
+  --accent-foreground: #FFFFFF;
+  --accent-hover: #2362CA;
+  --accent-active: #1C5BC3;
+  --ring: #B65401;                        /* 4.54:1 vs Paper (≥3 non-text required) */
+  --sidebar-primary: #F4781C;
+  --sidebar-primary-foreground: #0E2240;
+  --chart-highlight: #F4781C;             /* unchanged — the answer is always orange */
+}
+.brand-company.dark,
+.dark .brand-company {
+  --primary: #F4781C;                     /* orange needs no dark lift (Rule 03) */
+  --primary-foreground: #0E2240;
+  --primary-hover: #FF822B;
+  --primary-active: #FF8D46;
+  --accent: #4787F3;
+  --accent-foreground: #0E2240;
+  --accent-hover: #5091FD;
+  --accent-active: #5B98FF;
+  --ring: #F4781C;                        /* 5.71:1 vs Ink */
+}

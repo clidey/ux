@@ -2,9 +2,11 @@
 name: Clidey UX
 description: Production-ready React components built on Radix UI and Tailwind CSS v4.
 colors:
-  primary-violet: "#3b1f7a"
+  primary-blue: "#2c6bd4"
   primary-foreground: "#fcfcfc"
-  icon-teal: "#2eb8a8"
+  icon-blue: "#2c6bd4"
+  brand-orange: "#f4781c"
+  highlight-yellow: "#ffc233"
   destructive-red: "#d4402b"
   background-light: "#ffffff"
   foreground-ink: "#1a1a1a"
@@ -37,13 +39,13 @@ spacing:
   xl: "32px"
 components:
   button-primary:
-    backgroundColor: "{colors.primary-violet}"
+    backgroundColor: "{colors.primary-blue}"
     textColor: "{colors.primary-foreground}"
     rounded: "{rounded.md}"
     padding: "8px 16px"
     height: "36px"
   button-primary-hover:
-    backgroundColor: "{colors.primary-violet}"
+    backgroundColor: "{colors.primary-blue}"
   button-outline:
     backgroundColor: "{colors.background-light}"
     textColor: "{colors.foreground-ink}"
@@ -89,13 +91,14 @@ This system explicitly rejects the visual weight of Material UI, the generic sam
 
 ## 2. Colors
 
-The palette is deliberately achromatic with surgical applications of chromatic color. Neutrals do the structural work; the violet primary marks interactive affordances; the teal icon color provides navigational anchoring.
+The palette is deliberately achromatic with surgical applications of chromatic color. Neutrals do the structural work; Signal Blue marks interactive affordances and icon wayfinding; Clidey Orange is reserved for the brand mark slot; Beacon Yellow is the single highlight.
 
 ### Primary
-- **Deep Instrument Violet** (oklch(0.32 0.06 282.5) / #3b1f7a): Interactive elements in light mode only. Buttons, focused rings, active indicators. Low chroma keeps it serious rather than playful.
+- **Signal Blue** (oklch(0.546 0.174 260.1) / #2c6bd4): Interactive elements in light mode. Buttons, focus rings, active indicators, icons. In dark mode it lifts one lightness step to oklch(0.636 0.175 260.2) / #4787f3 with dark foreground text (4.56:1 on dark surfaces).
 
-### Secondary
-- **Signal Teal** (oklch(0.715 0.164 191.7) / #2eb8a8): Icon color across both modes. Provides a cool-temperature wayfinding signal distinct from the warm-adjacent violet. Never used as a background.
+### Brand accents
+- **Clidey Orange** (oklch(0.705 0.178 50) / #f4781c): The `--brand` token. Company mark color; components never use it directly. Always carries Ink-dark foreground — white on orange fails WCAG at 2.78:1.
+- **Beacon Yellow** (oklch(0.847 0.161 83.4) / #ffc233): The `--highlight`/`--chart-highlight` tokens. Identical in both modes; always carries dark foreground (9.85:1).
 
 ### Tertiary
 - **Alert Red** (oklch(0.577 0.245 27.325) / #d4402b): Destructive actions only. High chroma, reserved for genuine danger states.
@@ -146,7 +149,7 @@ The system uses flat-by-default surfaces with minimal shadow vocabulary. Depth i
 
 ### Buttons
 - **Shape:** Gently curved edges (8px / rounded-md). Consistent across all variants.
-- **Primary:** Deep Instrument Violet background, white text. 36px height, 16px horizontal padding. Subtle xs shadow.
+- **Primary:** Signal Blue background, white text (light mode); lifted blue with dark text (dark mode). 36px height, 16px horizontal padding. Subtle xs shadow.
 - **Hover:** 90% opacity of primary background. No color shift, no scale change.
 - **Focus:** 3px ring in ring color (50% opacity), border shifts to ring color. Keyboard-only via focus-visible.
 - **Secondary:** Muted surface background, dark text. Same dimensions as primary.
@@ -188,7 +191,7 @@ The system uses flat-by-default surfaces with minimal shadow vocabulary. Depth i
 - **Do** use the semantic token names (primary, muted, accent, destructive) in all component styling. Never hardcode color values that bypass the token system.
 - **Do** maintain the 36px interactive element height for all touchable controls (buttons, inputs, selects). Consistency in hit targets is a11y-critical.
 - **Do** use focus-visible (not focus) for focus rings. Keyboard users see them; mouse users don't.
-- **Do** test every component in both light and dark modes. The dark mode inversion is structural (primary flips from violet to near-white); verify that hierarchy survives the flip.
+- **Do** test every component in both light and dark modes. The dark mode inversion is structural (primary lifts one lightness step and its foreground flips to dark); verify that hierarchy survives the flip.
 - **Do** use the achromatic neutral tokens (zero chroma) for all non-interactive surfaces. Consumer brand colors layer on top; the library's neutrals never fight them.
 - **Do** include data-slot attributes on every component root element for DOM identification and testing.
 

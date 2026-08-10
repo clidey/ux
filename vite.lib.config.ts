@@ -36,6 +36,7 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
         'styles.css': resolve(__dirname, 'src/index.css'),
+        'brand.css': resolve(__dirname, 'src/brand.css'),
       },
       name: '@clidey/ux',
       formats: ['es'],
