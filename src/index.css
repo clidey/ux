@@ -116,6 +116,7 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.546 0.174 260.1);
   --backdrop: oklch(0 0 0 / 50%);
+  --backdrop-blur: 4px;
   /* Signal Blue ramp + one orange answer — never more than one highlight series */
   --chart-1: oklch(0.449 0.13 260.2); /* #26529C */
   --chart-2: oklch(0.55 0.131 260.1); /* #4270BD */
@@ -159,6 +160,7 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.636 0.175 260.2);
   --backdrop: oklch(0 0 0 / 60%);
+  --backdrop-blur: 6px;
   /* ramp lifted one step; orange highlight identical */
   --chart-1: oklch(0.549 0.11 259.9); /* #4A71B1 */
   --chart-2: oklch(0.649 0.11 260.3); /* #678FD2 */

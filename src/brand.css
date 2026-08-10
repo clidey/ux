@@ -38,12 +38,17 @@
   --primary-hover: #2362CA;               /* −0.03 L */
   --primary-active: #1C5BC3;              /* −0.05 L */
 
-  /* company accent (Clidey Orange) */
-  --accent: #F4781C;
-  --accent-foreground: #0E2240;           /* 5.71:1 — never white on orange (2.78:1) */
-  --accent-hover: #E96E04;
-  --accent-active: #E06A06;
-  --accent-readable: #B65401;             /* orange as body-size text on light: 4.54:1 */
+  /* accent = quiet interaction surface (shadcn semantics: hover/selection fills,
+     NOT the brand accent). Blue-tinted so selection reads as brand, never loud. */
+  --accent: #EAF0FB;                      /* Signal Blue @ 10% over white */
+  --accent-foreground: #0E2240;           /* 13.89:1 */
+  --accent-hover: #DDE7F8;                /* @ 16% */
+
+  /* Clidey Orange — the brand accent for CTAs/emphasis, never for selection */
+  --brand-hover: #E96E04;
+  --brand-active: #E06A06;
+  --brand-readable: #B65401;              /* orange as body-size text on light: 4.54:1 */
+  --accent-readable: var(--brand-readable); /* deprecated alias (pre-1.2.1 name) */
 
   /* highlight (Beacon Yellow — Rule 02: identical in dark) */
   --highlight: #FFC233;
@@ -62,6 +67,7 @@
   --ring: #2C6BD4;
   --selection: rgb(44 107 212 / 0.25);    /* ≈#C6D3E6 composited; Ink stays 11.4:1 */
   --backdrop: rgb(14 34 64 / 0.5);
+  --backdrop-blur: 4px;                   /* overlay depth cue behind dialogs/sheets */
   --shadow-card: 0 1px 3px rgb(14 34 64 / 0.08);  /* always Ink-tinted, never black */
 
   /* charts — blue ramp + ONE orange answer (never >1 orange series) */
@@ -82,15 +88,18 @@
   --syntax-selection: rgb(44 107 212 / 0.25);
   --syntax-cursor: #F4781C;
 
-  /* sidebar (maps 1:1 to @clidey/ux --sidebar-* group) */
-  --sidebar: #FAF5EC;
-  --sidebar-foreground: #0E2240;
-  --sidebar-primary: #2C6BD4;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #FFFFFF;              /* active item = white card + --shadow-card */
-  --sidebar-accent-foreground: #0E2240;
-  --sidebar-border: #D9D4CB;
-  --sidebar-ring: #2C6BD4;
+  /* sidebar (maps 1:1 to @clidey/ux --sidebar-* group)
+     Chrome is ALWAYS dark, in both modes (EE behavior adopted brand-wide):
+     near-black blue with white-alpha fills, so app chrome recedes and the
+     content canvas carries the mode. */
+  --sidebar: #060C18;
+  --sidebar-foreground: rgb(255 255 255 / 0.85);
+  --sidebar-primary: #4787F3;
+  --sidebar-primary-foreground: #0E2240;
+  --sidebar-accent: rgb(255 255 255 / 0.08);
+  --sidebar-accent-foreground: rgb(255 255 255 / 0.9);
+  --sidebar-border: rgb(255 255 255 / 0.08);
+  --sidebar-ring: #4787F3;
 
   /* @clidey/ux library-specific tokens */
   --brand: #F4781C;
@@ -122,12 +131,16 @@
   --primary-hover: #5091FD;               /* +0.03 L */
   --primary-active: #5B98FF;              /* +0.05 L */
 
-  /* company accent — unchanged (5.71:1 on Ink) */
-  --accent: #F4781C;
-  --accent-foreground: #0E2240;
-  --accent-hover: #FF822B;
-  --accent-active: #FF8D46;
-  --accent-readable: #F4781C;             /* passes on Ink as-is */
+  /* accent = quiet interaction surface, lifted-blue tinted */
+  --accent: #233E69;                      /* lifted blue @ 15% over Ink+2 */
+  --accent-foreground: #FAF5EC;           /* 9.84:1 */
+  --accent-hover: #264475;                /* @ 22% */
+
+  /* Clidey Orange — unchanged in dark (5.71:1 on Ink) */
+  --brand-hover: #FF822B;
+  --brand-active: #FF8D46;
+  --brand-readable: #F4781C;              /* passes on Ink as-is */
+  --accent-readable: var(--brand-readable); /* deprecated alias */
 
   /* highlight — byte-identical (Rule 02) */
   --highlight: #FFC233;
@@ -146,6 +159,7 @@
   --ring: #4787F3;
   --selection: rgb(71 135 243 / 0.25);    /* ≈#1C3B6D composited; Paper stays 10.4:1 */
   --backdrop: rgb(0 0 0 / 0.6);
+  --backdrop-blur: 6px;
   --shadow-card: none;                    /* Rule 05: elevation is the L-step */
 
   /* charts — ramp lifted one step, orange identical */
@@ -166,14 +180,15 @@
   --syntax-selection: rgb(71 135 243 / 0.25);
   --syntax-cursor: #F4781C;
 
-  /* sidebar */
-  --sidebar: #0E2240;
-  --sidebar-foreground: #FAF5EC;
+  /* sidebar — EE chrome adopted verbatim: near-black blue (rgba(6,12,24)),
+     white-alpha fills for active/border, so CE and EE sidebars match exactly */
+  --sidebar: #060C18;
+  --sidebar-foreground: rgb(255 255 255 / 0.85);
   --sidebar-primary: #4787F3;
   --sidebar-primary-foreground: #0E2240;
-  --sidebar-accent: #162B4A;              /* active item = Ink+1, no shadow */
-  --sidebar-accent-foreground: #FAF5EC;
-  --sidebar-border: #314667;
+  --sidebar-accent: rgb(255 255 255 / 0.08);
+  --sidebar-accent-foreground: rgb(255 255 255 / 0.9);
+  --sidebar-border: rgb(255 255 255 / 0.08);
   --sidebar-ring: #4787F3;
 
   /* @clidey/ux library-specific tokens */
@@ -194,14 +209,11 @@
   --primary-foreground: #0E2240;
   --primary-hover: #E96E04;
   --primary-active: #E06A06;
-  --accent: #2C6BD4;
-  --accent-foreground: #FFFFFF;
-  --accent-hover: #2362CA;
-  --accent-active: #1C5BC3;
   --ring: #B65401;                        /* 4.54:1 vs Paper (≥3 non-text required) */
   --sidebar-primary: #F4781C;
   --sidebar-primary-foreground: #0E2240;
   --chart-highlight: #F4781C;             /* unchanged — the answer is always orange */
+  /* --accent stays the quiet interaction surface; blue lives in charts/links */
 }
 .brand-company.dark,
 .dark .brand-company {
@@ -209,9 +221,5 @@
   --primary-foreground: #0E2240;
   --primary-hover: #FF822B;
   --primary-active: #FF8D46;
-  --accent: #4787F3;
-  --accent-foreground: #0E2240;
-  --accent-hover: #5091FD;
-  --accent-active: #5B98FF;
   --ring: #F4781C;                        /* 5.71:1 vs Ink */
 }
