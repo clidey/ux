@@ -212,7 +212,6 @@ describe("Tree", () => {
             );
         };
 
-        const React = await import("react");
         render(<Component/>);
 
         // Select Root 2
