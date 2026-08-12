@@ -168,8 +168,8 @@
   --warning-foreground: #0E2240;
 
   /* interaction */
-  --ring: #4787F3;
-  --selection: rgb(71 135 243 / 0.25);    /* ≈#1C3B6D composited; Paper stays 10.4:1 */
+  --ring: #5091FD;
+  --selection: rgb(80 145 253 / 0.25);    /* ≈#1C3B6D composited; Paper stays 10.4:1 */
   --backdrop: rgb(0 0 0 / 0.6);
   --backdrop-blur: 6px;
   --shadow-card: none;                    /* Rule 05: elevation is the L-step */
@@ -189,7 +189,7 @@
   --syntax-string: #FFC233;               /* 8.80:1 */
   --syntax-number: #B2CFFF;               /* 8.97:1 */
   --syntax-comment: #8E98A7;              /* 4.87:1 */
-  --syntax-selection: rgb(71 135 243 / 0.25);
+  --syntax-selection: rgb(80 145 253 / 0.25);
   --syntax-cursor: #F4781C;
 
   /* sidebar — EE chrome adopted verbatim: near-black blue (rgba(6,12,24)),
@@ -206,7 +206,7 @@
   /* @clidey/ux library-specific tokens */
   --brand: #F4781C;                       /* orange survives dark (5.71:1 on Ink) */
   --brand-foreground: #0E2240;
-  --icon: #4787F3;                        /* Signal Blue lifted one step */
+  --icon: #5091FD;                        /* Signal Blue lifted one step */
   --icon-foreground: #0E2240;
 }
 
