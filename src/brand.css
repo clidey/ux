@@ -129,17 +129,19 @@
   --popover: #1D3151;                     /* Ink+2 */
   --popover-foreground: #FAF5EC;
   --muted: #1D3151;
-  --muted-foreground: #86909F;            /* 4.92:1 on background */
+  --muted-foreground: #9BA5B3;            /* 6.13:1 on background, 5.70:1 on card — was 4.92/4.40, too tight against card */
   --secondary: #1D3151;
   --secondary-foreground: #FAF5EC;
   --border: #314667;
   --input: #314667;
 
-  /* product accent — blue lifted one step (Rule 03) */
-  --primary: #4787F3;                     /* 4.56:1 on Ink */
+  /* product accent — blue lifted (Rule 03). Base moved up to the old
+     hover step so the resting fill clears 4.5:1 with Ink text; hover/active
+     shift up accordingly to keep three distinct states. */
+  --primary: #5091FD;                     /* 4.96:1 on Ink — was 4.56:1, failed with Ink text on the button fill */
   --primary-foreground: #0E2240;          /* Ink text on lifted blue */
-  --primary-hover: #5091FD;               /* +0.03 L */
-  --primary-active: #5B98FF;              /* +0.05 L */
+  --primary-hover: #5B98FF;               /* 5.37:1 on Ink */
+  --primary-active: #66A3FF;              /* 5.8:1 on Ink */
 
   /* accent = quiet interaction surface, lifted-blue tinted */
   --accent: #233E69;                      /* lifted blue @ 15% over Ink+2 */
