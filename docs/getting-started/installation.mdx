@@ -76,13 +76,16 @@ function App() {
 
 ## Configure Tailwind CSS
 
-If you use Tailwind CSS in your own project, import Clidey UX's stylesheet before your Tailwind directives so class utilities don't conflict:
+If you use Tailwind CSS in your own project, import Clidey UX's stylesheet and add the package as a Tailwind source:
 
 ```css
 /* your global CSS */
-@import '@clidey/ux/styles.css';
 @import 'tailwindcss';
+@import '@clidey/ux/styles.css';
+@source '../node_modules/@clidey/ux/dist';
 ```
+
+`@clidey/ux/styles.css` is a full Tailwind build, nested under the `components` cascade layer so your own utilities always take precedence. The `@source` line makes your build emit every utility the components use, which keeps their responsive variants (for example the sidebar's `hidden md:block`) ordered correctly against your utilities.
 
 ## Add toast notifications
 

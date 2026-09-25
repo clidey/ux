@@ -1,0 +1,58 @@
+---
+title: 'Master Detail Panels'
+description: 'List/detail split that collapses to one panel at a time on mobile.'
+---
+
+# Master Detail Panels
+
+`MasterDetailPanels` renders a list panel next to a detail panel. On desktop it is a horizontal [Resizable](/components/resizable) split. Below the mobile breakpoint (768px, the same one the [Sidebar](/components/sidebar) uses) it shows one panel at a time: the list until `detailOpen` is true, then the detail with a back button.
+
+## Import
+
+```tsx
+import { MasterDetailPanels } from '@clidey/ux';
+```
+
+## Usage
+
+The consumer owns the selection state. Set `detailOpen` when something is selected and clear the selection in `onBack`.
+
+```tsx
+const [selectedId, setSelectedId] = useState<string | null>(null);
+
+<MasterDetailPanels
+  detailOpen={selectedId !== null}
+  onBack={() => setSelectedId(null)}
+  backLabel="Back"
+  list={
+    <ul>
+      {items.map(item => (
+        <li key={item.id} onClick={() => setSelectedId(item.id)}>{item.name}</li>
+      ))}
+    </ul>
+  }
+  detail={selectedId ? <ItemDetail id={selectedId} /> : <p>Select an item</p>}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `list` | `ReactNode` | — | Content of the list panel. |
+| `detail` | `ReactNode` | — | Content of the detail panel. |
+| `detailOpen` | `boolean` | — | On mobile, show the detail instead of the list. |
+| `onBack` | `() => void` | — | On mobile, called by the back button above the detail. |
+| `backLabel` | `string` | — | Text of the mobile back button. Pass a localized string. |
+| `listDefaultSize` | `number` | `25` | Desktop list panel size, as a percentage. The detail panel gets the rest. |
+| `listMinSize` | `number` | `18` | Desktop list panel minimum size, as a percentage. |
+| `listMaxSize` | `number` | `40` | Desktop list panel maximum size, as a percentage. |
+| `listClassName` | `string` | — | Class applied to the desktop list panel. |
+| `handleClassName` | `string` | — | Class applied to the desktop resize handle. |
+| `detailClassName` | `string` | — | Class applied to the desktop detail panel. |
+| `className` | `string` | — | Class applied to the outer container in both modes. |
+
+## Notes
+
+- The mobile container is `flex flex-col grow min-h-0`, so panel content using `h-full` fills it.
+- `useIsMobile` is exported as well if you need the same breakpoint elsewhere.

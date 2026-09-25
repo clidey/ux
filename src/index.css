@@ -1,5 +1,12 @@
-@import "tailwindcss";
-@import "tailwindcss/utilities";
+/*
+ * This stylesheet is a full Tailwind build. Consumers usually run Tailwind too,
+ * and CSS layers with the same name merge across stylesheets, so our
+ * utilities would otherwise land after theirs and override their responsive
+ * variants. Nesting everything under `components` keeps the consumer's
+ * top-level `utilities` layer in charge.
+ */
+@import "tailwindcss" layer(components);
+@import "tailwindcss/utilities" layer(components);
 @import "tw-animate-css";
 @import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -180,7 +187,8 @@
   --sidebar-ring: oklch(0.636 0.175 260.2);
 }
 
-@layer base {
+/* Nested under `components` for the same reason as the Tailwind imports above. */
+@layer components.base {
   * {
     @apply border-border outline-ring/50;
   }

@@ -111,6 +111,7 @@
             "pages": [
               "components/accordion",
               "components/resizable",
+              "components/master-detail-panels",
               "components/scroll-area",
               "components/stack-list"
             ]

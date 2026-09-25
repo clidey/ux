@@ -173,6 +173,7 @@ export default function Example() {
 | --- | --- |
 | `Accordion` | Collapsible sections with animated expand/collapse |
 | `ResizablePanelGroup` | Drag-to-resize split views |
+| `MasterDetailPanels` | List/detail split; one panel at a time below 768px |
 | `ScrollArea` | Custom scrollbar with styled track and thumb |
 | `StackList` | Key-value metadata list with separators |
 

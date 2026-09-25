@@ -14,16 +14,55 @@
  * limitations under the License.
  */
 
+import {useState} from "react"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
+import {MasterDetailPanels} from "@/components/ui/master-detail-panels"
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable"
 import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area"
 import {Separator} from "@/components/ui/separator"
 
 const tags = Array.from({length: 50}).map((_, i) => `Tag ${i + 1}`)
+const items = ["Orders", "Customers", "Invoices", "Shipments"]
 
 export function LayoutShowcase() {
+    const [selectedItem, setSelectedItem] = useState<string | null>(null)
     return (
         <>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Master Detail Panels</CardTitle>
+                    <CardDescription>Resizable split on desktop, one panel at a time below 768px</CardDescription>
+                </CardHeader>
+                <CardContent className="p-0">
+                    <div className="flex h-[320px] w-full flex-col p-4">
+                        <MasterDetailPanels
+                            detailOpen={selectedItem !== null}
+                            onBack={() => setSelectedItem(null)}
+                            backLabel="Back"
+                            list={
+                                <ul className="flex h-full flex-col gap-1 pr-4">
+                                    {items.map(item => (
+                                        <li key={item}>
+                                            <button
+                                                type="button"
+                                                onClick={() => setSelectedItem(item)}
+                                                className={`w-full rounded-md px-3 py-2 text-left text-sm hover:bg-accent ${selectedItem === item ? "bg-accent" : ""}`}
+                                            >
+                                                {item}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            }
+                            detail={
+                                <div className="flex h-full items-center justify-center pl-4 text-sm text-muted-foreground">
+                                    {selectedItem ? `${selectedItem} detail` : "Select an item"}
+                                </div>
+                            }
+                        />
+                    </div>
+                </CardContent>
+            </Card>
             <Card>
                 <CardHeader>
                     <CardTitle>Resizable Panels</CardTitle>
