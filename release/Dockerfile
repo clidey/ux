@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:18.12.1-alpine AS build-stage
+FROM --platform=linux/amd64 node:26.10.0-alpine AS build-stage
 
 WORKDIR /app/
 RUN npm i -g pnpm
