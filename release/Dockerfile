@@ -5,7 +5,7 @@ RUN npm i -g pnpm
 COPY . .
 RUN pnpm install --frozen-lockfile && pnpm build
 
-FROM nginx:1.25.3-alpine
+FROM nginx:1.31.0-alpine
 COPY --from=build-stage /app/release/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage /app/dist/ /usr/share/nginx/html
 EXPOSE 80
