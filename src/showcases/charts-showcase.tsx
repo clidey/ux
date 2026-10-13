@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-    ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
-    ChartTooltip,
-    ChartTooltipContent,
-    ThemedCartesianGrid,
-    ThemedXAxis,
-    ThemedYAxis,
-    type ChartConfig,
-} from "@/components/ui/chart"
-import { Separator } from "@/components/ui/separator"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, ThemedCartesianGrid, ThemedXAxis, ThemedYAxis, Separator} from "@clidey/ux"
+import type {ChartConfig} from "@clidey/ux"
 import {
     Area,
     AreaChart,

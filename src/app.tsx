@@ -15,13 +15,7 @@
  */
 
 import {lazy, Suspense, useState, useEffect, useCallback} from "react"
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
-import {CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command"
-import {TooltipProvider} from "@/components/ui/tooltip"
-import {Toaster} from "@/components/ui/sonner"
-import {ModeToggle} from "@/components/theme/toggle"
-import {Spinner} from "@/components/ui/spinner"
-import {Button} from "@/components/ui/button"
+import {Tabs, TabsContent, TabsList, TabsTrigger, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, TooltipProvider, Toaster, ModeToggle, Spinner, Button} from "@clidey/ux"
 import {Search} from "lucide-react"
 
 // Lazy load showcase components

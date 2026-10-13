@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
-import {Badge} from "@/components/ui/badge"
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {EmptyState} from "@/components/ui/empty-state"
-import {Progress} from "@/components/ui/progress"
-import {Separator} from "@/components/ui/separator"
-import {Skeleton} from "@/components/ui/skeleton"
-import {Spinner} from "@/components/ui/spinner"
+import {Alert, AlertDescription, AlertTitle, Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, EmptyState, Progress, Separator, Skeleton, Spinner} from "@clidey/ux"
 import {toast} from "sonner"
 import {CircleAlert, TriangleAlert, CircleCheck, FileX, Info, Package, Search, Users} from "lucide-react"
 

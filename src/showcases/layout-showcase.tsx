@@ -15,11 +15,7 @@
  */
 
 import {useState} from "react"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {MasterDetailPanels} from "@/components/ui/master-detail-panels"
-import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable"
-import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area"
-import {Separator} from "@/components/ui/separator"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle, MasterDetailPanels, ResizableHandle, ResizablePanel, ResizablePanelGroup, ScrollArea, ScrollBar, Separator} from "@clidey/ux"
 
 const tags = Array.from({length: 50}).map((_, i) => `Tag ${i + 1}`)
 const items = ["Orders", "Customers", "Invoices", "Shipments"]

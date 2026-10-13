@@ -15,48 +15,8 @@
  */
 
 import {useState} from "react"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {
-    Command,
-    CommandDialog,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
-    CommandShortcut
-} from "@/components/ui/command"
-import {
-    DataPagination,
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious
-} from "@/components/ui/pagination"
-import {Separator} from "@/components/ui/separator"
-import {StackList, StackListItem} from "@/components/ui/stack-list"
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableHeadRow,
-    TableRow,
-    type TableColumn,
-} from "@/components/ui/table"
-import {Tree, type TreeDataItem} from "@/components/ui/tree"
-import {Button} from "@/components/ui/button"
-import {Badge} from "@/components/ui/badge"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Switch} from "@/components/ui/switch"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle, Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut, DataPagination, Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Separator, StackList, StackListItem, Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableHeadRow, TableRow, Tree, Button, Badge, Input, Label, Switch} from "@clidey/ux"
+import type {TableColumn, TreeDataItem} from "@clidey/ux"
 import {
     Archive,
     Calculator,

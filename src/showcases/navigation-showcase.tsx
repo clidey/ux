@@ -15,31 +15,7 @@
  */
 
 import React from "react"
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion"
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator
-} from "@/components/ui/breadcrumb"
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarProvider,
-    SidebarTrigger
-} from "@/components/ui/sidebar"
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger, Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, Tabs, TabsContent, TabsList, TabsTrigger} from "@clidey/ux"
 import {Calendar, CreditCard, FileText, Folder, House, Mail, PanelLeftIcon, PanelRightIcon, Settings, User} from "lucide-react"
 
 export function NavigationShowcase() {

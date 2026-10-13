@@ -96,7 +96,7 @@ const [open, setOpen] = useState(false);
 | Component | Description |
 | --- | --- |
 | `Popover` | Root component. Manages open state. |
-| `PopoverTrigger` | Toggles the popover on click. Use `asChild`. |
+| `PopoverTrigger` | Toggles the popover on click. Renders as its child automatically for ux components (`Button`, `Badge`, ...) and intrinsic elements, so no `asChild` is needed; pass `asChild` only for other ref-forwarding elements. See [Triggers and asChild](/triggers-and-aschild). |
 | `PopoverContent` | Floating panel content. |
 | `PopoverAnchor` | Custom positioning anchor (advanced). |
 

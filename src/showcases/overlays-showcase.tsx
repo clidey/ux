@@ -15,78 +15,7 @@
  */
 
 import React from "react"
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger
-} from "@/components/ui/alert-dialog"
-import {Button} from "@/components/ui/button"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {ConfirmDialog} from "@/components/ui/confirm-dialog"
-import {
-    ContextMenu,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuSeparator,
-    ContextMenuShortcut,
-    ContextMenuSub,
-    ContextMenuSubContent,
-    ContextMenuSubTrigger,
-    ContextMenuTrigger
-} from "@/components/ui/context-menu"
-import {FormSheet} from "@/components/ui/form-sheet"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog"
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger
-} from "@/components/ui/drawer"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
-import {
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger
-} from "@/components/ui/sheet"
-import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip"
+import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, ConfirmDialog, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger, FormSheet, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, Input, Label, Popover, PopoverContent, PopoverTrigger, Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger, Tooltip, TooltipContent, TooltipTrigger} from "@clidey/ux"
 import {
     ChevronDown,
     Cloud,
@@ -115,7 +44,7 @@ export function OverlaysShowcase() {
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4">
                     <Dialog>
-                        <DialogTrigger asChild>
+                        <DialogTrigger>
                             <Button variant="outline">Open Dialog</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
@@ -146,7 +75,7 @@ export function OverlaysShowcase() {
                     </Dialog>
 
                     <AlertDialog>
-                        <AlertDialogTrigger asChild>
+                        <AlertDialogTrigger>
                             <Button variant="destructive">Delete Account</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
@@ -173,7 +102,7 @@ export function OverlaysShowcase() {
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4">
                     <Sheet>
-                        <SheetTrigger asChild>
+                        <SheetTrigger>
                             <Button variant="outline">Open Sheet</Button>
                         </SheetTrigger>
                         <SheetContent footer={
@@ -207,7 +136,7 @@ export function OverlaysShowcase() {
                     </Sheet>
 
                     <Sheet>
-                        <SheetTrigger asChild>
+                        <SheetTrigger>
                             <Button variant="outline">Open Sheet (Overflow)</Button>
                         </SheetTrigger>
                         <SheetContent footer={
@@ -235,7 +164,7 @@ export function OverlaysShowcase() {
                     </Sheet>
 
                     <Drawer>
-                        <DrawerTrigger asChild>
+                        <DrawerTrigger>
                             <Button variant="outline">Open Drawer</Button>
                         </DrawerTrigger>
                         <DrawerContent>
@@ -281,7 +210,7 @@ export function OverlaysShowcase() {
                 </CardHeader>
                 <CardContent>
                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                        <DropdownMenuTrigger>
                             <Button variant="outline">
                                 Open Menu <ChevronDown className="ml-2 h-4 w-4"/>
                             </Button>
@@ -429,7 +358,7 @@ export function OverlaysShowcase() {
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4">
                     <Popover>
-                        <PopoverTrigger asChild>
+                        <PopoverTrigger>
                             <Button variant="outline">Open Popover</Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-80">
@@ -464,7 +393,7 @@ export function OverlaysShowcase() {
 
                     <div className="flex gap-4">
                         <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger>
                                 <Button variant="outline">Hover for Tooltip</Button>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -473,7 +402,7 @@ export function OverlaysShowcase() {
                         </Tooltip>
 
                         <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger>
                                 <Button variant="outline" size="icon">
                                     <Settings className="h-4 w-4"/>
                                 </Button>
@@ -484,7 +413,7 @@ export function OverlaysShowcase() {
                         </Tooltip>
 
                         <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger>
                                 <Button variant="outline" disabled>
                                     Disabled with Tooltip
                                 </Button>
@@ -493,6 +422,24 @@ export function OverlaysShowcase() {
                                 <p>Sign in to enable this action</p>
                             </TooltipContent>
                         </Tooltip>
+
+                        {/* Nested triggers: each ux trigger slots the next, so this is one button. */}
+                        <DropdownMenu>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <DropdownMenuTrigger>
+                                        <Button variant="outline">Tooltip + Menu</Button>
+                                    </DropdownMenuTrigger>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Opens a menu; still a single button</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem>First action</DropdownMenuItem>
+                                <DropdownMenuItem>Second action</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 </CardContent>
             </Card>

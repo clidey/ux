@@ -1,6 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { MapContainer, MapMarker, MapLine, MapArc, MapPolygon, MapCircleLayer, MapHeatmap, type MapConfig } from "@/components/ui/map"
-import { Separator } from "@/components/ui/separator"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle, MapContainer, MapMarker, MapLine, MapArc, MapPolygon, MapCircleLayer, MapHeatmap, Separator} from "@clidey/ux"
+import type {MapConfig} from "@clidey/ux"
 
 const citiesConfig = {
   primary: { label: "Major City", color: "#ef4444" },

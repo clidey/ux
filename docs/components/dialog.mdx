@@ -132,7 +132,7 @@ Pass `showCloseButton={false}` to hide the default X button in the corner:
 | Component | Description |
 | --- | --- |
 | `Dialog` | Root component. Manages open state. |
-| `DialogTrigger` | Button or element that opens the dialog. Use `asChild` to render as your own element. |
+| `DialogTrigger` | Button or element that opens the dialog. Renders as its child automatically for ux components (`Button`, `Badge`, ...) and intrinsic elements, so no `asChild` is needed; pass `asChild` only for other ref-forwarding elements. See [Triggers and asChild](/triggers-and-aschild). |
 | `DialogPortal` | Renders dialog outside the DOM tree. Used internally. |
 | `DialogOverlay` | Semi-transparent backdrop using the `--backdrop` CSS token. Used internally. |
 | `DialogContent` | The dialog panel itself. Contains all visible content. |

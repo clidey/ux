@@ -22,9 +22,16 @@ import {defineConfig} from "vite"
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  optimizeDeps: {
+    // maplibre-gl >= 6.12 loads its worker from a sibling file via import.meta.url;
+    // the dev pre-bundle copies the module but not the worker, so serve it unbundled.
+    exclude: ["maplibre-gl"],
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      // The showcase consumes the public entry point like an app would.
+      "@clidey/ux": path.resolve(__dirname, "./src/index.ts"),
     },
   },
 })

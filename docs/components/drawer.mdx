@@ -115,7 +115,7 @@ The default bottom-positioned drawer works great as a mobile action sheet:
 | Component | Description |
 | --- | --- |
 | `Drawer` | Root. Accepts `direction`, `open`, `onOpenChange`. |
-| `DrawerTrigger` | Opens the drawer. Use `asChild`. |
+| `DrawerTrigger` | Opens the drawer. Renders as its child automatically for ux components (`Button`, `Badge`, ...) and intrinsic elements, so no `asChild` is needed; pass `asChild` only for other ref-forwarding elements. See [Triggers and asChild](/triggers-and-aschild). |
 | `DrawerPortal` | Renders drawer outside the DOM tree. Used internally. |
 | `DrawerOverlay` | Backdrop layer using the `--backdrop` CSS token. Used internally. |
 | `DrawerContent` | The sliding panel. |

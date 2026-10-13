@@ -14,24 +14,7 @@
  * limitations under the License.
  */
 
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {Checkbox} from "@/components/ui/checkbox"
-import {Input, SearchInput, TextArea} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {MultiSearchSelect} from "@/components/ui/multi-search-select"
-import {
-    SearchSelect,
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectSeparator,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select"
-import {Separator} from "@/components/ui/separator"
-import {Switch} from "@/components/ui/switch"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle, Checkbox, Input, SearchInput, TextArea, Label, MultiSearchSelect, SearchSelect, Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue, Separator, Switch} from "@clidey/ux"
 import {Globe, Laptop, Search, Smartphone, Tablet} from "lucide-react"
 
 export function FormsShowcase() {

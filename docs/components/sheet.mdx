@@ -131,7 +131,7 @@ import {
 | Component | Description |
 | --- | --- |
 | `Sheet` | Root. Manages open state. |
-| `SheetTrigger` | Opens the sheet. Use `asChild`. |
+| `SheetTrigger` | Opens the sheet. Renders as its child automatically for ux components (`Button`, `Badge`, ...) and intrinsic elements, so no `asChild` is needed; pass `asChild` only for other ref-forwarding elements. See [Triggers and asChild](/triggers-and-aschild). |
 | `SheetContent` | The sliding panel. |
 | `SheetHeader` | Top section. |
 | `SheetTitle` | Accessible heading (required). |

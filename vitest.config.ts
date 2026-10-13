@@ -34,6 +34,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
+            '@clidey/ux': path.resolve(__dirname, './src/index.ts'),
         },
     },
 })

@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-import {Button} from "@/components/ui/button"
-import {ButtonGroup, ButtonGroupSeparator, ButtonGroupText} from "@/components/ui/button-group"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
-import {CopyButton} from "@/components/ui/copy-button"
-import {Icon} from "@/components/ui/icon"
-import {Kbd} from "@/components/ui/kbd"
-import {Separator} from "@/components/ui/separator"
+import {Button, ButtonGroup, ButtonGroupSeparator, ButtonGroupText, Card, CardContent, CardDescription, CardHeader, CardTitle, CopyButton, Icon, Kbd, Separator} from "@clidey/ux"
 import {TextAlignCenter, TextAlignStart, TextAlignEnd, Bell, Bold, Calendar, Copy, Download, House, Italic, Mail, Scissors, Settings, Trash2, Underline, Upload, User} from "lucide-react"
 
 export function ButtonsShowcase() {
