@@ -25,7 +25,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import React from 'react';
 
 describe('Sheet Component', () => {
@@ -138,11 +138,13 @@ describe('Sheet Component', () => {
     });
 
     it('should handle controlled state', () => {
-        let isOpen = false;
+        const onOpenState = vi.fn();
 
         const ControlledSheet = () => {
             const [open, setOpen] = React.useState(false);
-            isOpen = open;
+            React.useEffect(() => {
+                onOpenState(open);
+            }, [open]);
 
             return (
                 <Sheet open={open} onOpenChange={setOpen}>
@@ -156,7 +158,7 @@ describe('Sheet Component', () => {
 
         const {rerender} = render(<ControlledSheet/>);
 
-        expect(isOpen).toBe(false);
+        expect(onOpenState).toHaveBeenLastCalledWith(false);
         expect(screen.queryByText('Controlled Sheet')).not.toBeInTheDocument();
 
         // Trigger open
@@ -164,6 +166,6 @@ describe('Sheet Component', () => {
         button.click();
 
         rerender(<ControlledSheet/>);
-        expect(isOpen).toBe(true);
+        expect(onOpenState).toHaveBeenLastCalledWith(true);
     });
 });
