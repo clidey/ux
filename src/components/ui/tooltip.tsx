@@ -18,6 +18,7 @@ import * as React from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
 import {cn} from "@/lib/utils"
+import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 
 function TooltipProvider({
   delayDuration = 0,
@@ -44,10 +45,35 @@ function Tooltip({
 
 const TooltipTrigger = React.forwardRef<
   React.ComponentRef<typeof TooltipPrimitive.Trigger>,
-  React.ComponentProps<typeof TooltipPrimitive.Trigger>
->(function TooltipTrigger(props, ref) {
-  return <TooltipPrimitive.Trigger ref={ref} data-slot="tooltip-trigger" {...props} />
+  TriggerChildProps<React.ComponentProps<typeof TooltipPrimitive.Trigger>>
+>(function TooltipTrigger({ asChild, children, ...props }, ref) {
+  const resolved = resolveTriggerChild(children, asChild, "TooltipTrigger")
+  let child = resolved.child
+  // A disabled element does not emit pointer events, so the tooltip would
+  // never open. Slot a focusable span around it and let the span be the trigger.
+  if (
+    resolved.asChild &&
+    React.isValidElement<{ disabled?: boolean }>(child) &&
+    child.props.disabled === true
+  ) {
+    child = (
+      <span data-slot="tooltip-disabled-wrapper" className="inline-flex" tabIndex={0}>
+        {child}
+      </span>
+    )
+  }
+  return (
+    <TooltipPrimitive.Trigger
+      ref={ref}
+      data-slot="tooltip-trigger"
+      asChild={resolved.asChild}
+      {...props}
+    >
+      {child}
+    </TooltipPrimitive.Trigger>
+  )
 })
+markSlottable(TooltipTrigger)
 
 const TooltipContent = React.forwardRef<
   React.ComponentRef<typeof TooltipPrimitive.Content>,

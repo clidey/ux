@@ -13,6 +13,7 @@ import type { LayerSpecification } from "maplibre-gl"
 import type * as GeoJSON from "geojson"
 import { cn } from "@/lib/utils"
 import { ComponentErrorBoundary } from "@/lib/error-boundary"
+import {markNotSlottable} from "@/lib/slot"
 
 export type MapConfig = {
   [k in string]: {
@@ -456,6 +457,8 @@ function MapArc({
     </Source>
   )
 }
+
+markNotSlottable(MapContainer)
 
 export {
   MapContainer,

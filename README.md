@@ -201,6 +201,16 @@ export default function Example() {
 
 ## Usage examples
 
+### Triggers and `asChild`
+
+Wrap interactive children in `DropdownMenuTrigger`, `TooltipTrigger`, `PopoverTrigger`, `DialogTrigger` and friends **without** `asChild`; the trigger renders as the child when it is slot-safe (`Button`, `Badge`, `SidebarMenuButton`, intrinsic `button`/`a`/`span`/`div`, ...) and as its own button otherwise. Pass `asChild` only for non-ux elements that forward refs. See [docs/triggers-and-aschild.md](./docs/triggers-and-aschild.md) for the rule, the safe/unsafe table and the traps.
+
+```tsx
+<DropdownMenuTrigger>
+  <Button variant="ghost" size="icon"><MoreHorizontal /></Button>
+</DropdownMenuTrigger>
+```
+
 ### Confirmation dialog
 
 ```tsx

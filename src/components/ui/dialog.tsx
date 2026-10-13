@@ -21,6 +21,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import {XIcon} from "lucide-react"
 
 import {cn} from "@/lib/utils"
+import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 
 function Dialog({
   ...props
@@ -30,10 +31,21 @@ function Dialog({
 
 const DialogTrigger = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Trigger>,
-  React.ComponentProps<typeof DialogPrimitive.Trigger>
->(function DialogTrigger(props, ref) {
-  return <DialogPrimitive.Trigger ref={ref} data-slot="dialog-trigger" {...props} />
+  TriggerChildProps<React.ComponentProps<typeof DialogPrimitive.Trigger>>
+>(function DialogTrigger({ asChild, children, ...props }, ref) {
+  const resolved = resolveTriggerChild(children, asChild, "DialogTrigger")
+  return (
+    <DialogPrimitive.Trigger
+      ref={ref}
+      data-slot="dialog-trigger"
+      asChild={resolved.asChild}
+      {...props}
+    >
+      {resolved.child}
+    </DialogPrimitive.Trigger>
+  )
 })
+markSlottable(DialogTrigger)
 
 function DialogPortal({
   ...props

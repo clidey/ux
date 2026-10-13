@@ -18,6 +18,7 @@ import * as React from "react"
 import {Drawer as DrawerPrimitive} from "vaul"
 
 import {cn} from "@/lib/utils"
+import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 
 function Drawer({
   ...props
@@ -27,10 +28,21 @@ function Drawer({
 
 const DrawerTrigger = React.forwardRef<
   React.ComponentRef<typeof DrawerPrimitive.Trigger>,
-  React.ComponentProps<typeof DrawerPrimitive.Trigger>
->(function DrawerTrigger(props, ref) {
-  return <DrawerPrimitive.Trigger ref={ref} data-slot="drawer-trigger" {...props} />
+  TriggerChildProps<React.ComponentProps<typeof DrawerPrimitive.Trigger>>
+>(function DrawerTrigger({ asChild, children, ...props }, ref) {
+  const resolved = resolveTriggerChild(children, asChild, "DrawerTrigger")
+  return (
+    <DrawerPrimitive.Trigger
+      ref={ref}
+      data-slot="drawer-trigger"
+      asChild={resolved.asChild}
+      {...props}
+    >
+      {resolved.child}
+    </DrawerPrimitive.Trigger>
+  )
 })
+markSlottable(DrawerTrigger)
 
 function DrawerPortal({
   ...props

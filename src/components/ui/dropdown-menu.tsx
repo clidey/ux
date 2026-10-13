@@ -19,6 +19,7 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import {CheckIcon, ChevronRightIcon, CircleIcon} from "lucide-react"
 
 import {cn} from "@/lib/utils"
+import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 
 function DropdownMenu({
   ...props
@@ -36,16 +37,21 @@ function DropdownMenuPortal({
 
 const DropdownMenuTrigger = React.forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.Trigger>,
-  React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>
->(function DropdownMenuTrigger(props, ref) {
+  TriggerChildProps<React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>>
+>(function DropdownMenuTrigger({ asChild, children, ...props }, ref) {
+  const resolved = resolveTriggerChild(children, asChild, "DropdownMenuTrigger")
   return (
     <DropdownMenuPrimitive.Trigger
       ref={ref}
       data-slot="dropdown-menu-trigger"
+      asChild={resolved.asChild}
       {...props}
-    />
+    >
+      {resolved.child}
+    </DropdownMenuPrimitive.Trigger>
   )
 })
+markSlottable(DropdownMenuTrigger)
 
 const DropdownMenuContent = React.forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.Content>,

@@ -19,6 +19,7 @@ import {GripVerticalIcon} from "lucide-react"
 import * as ResizablePrimitive from "react-resizable-panels"
 
 import {cn} from "@/lib/utils"
+import {markNotSlottable} from "@/lib/slot"
 
 const DirectionContext = React.createContext<"horizontal" | "vertical">("horizontal")
 
@@ -99,5 +100,9 @@ function ResizableHandle({
     </ResizablePrimitive.Separator>
   )
 }
+
+markNotSlottable(ResizablePanelGroup)
+markNotSlottable(ResizablePanel)
+markNotSlottable(ResizableHandle)
 
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle }

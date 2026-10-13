@@ -21,6 +21,7 @@ import {Button} from "@/components/ui/button"
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable"
 import {useIsMobile} from "@/hooks/use-mobile"
 import {cn} from "@/lib/utils"
+import {markNotSlottable} from "@/lib/slot"
 
 export type MasterDetailPanelsProps = {
   /** Content of the list (master) panel. */
@@ -108,5 +109,7 @@ function MasterDetailPanels({
     </ResizablePanelGroup>
   )
 }
+
+markNotSlottable(MasterDetailPanels)
 
 export {MasterDetailPanels}

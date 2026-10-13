@@ -27,6 +27,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import {markNotSlottable} from "@/lib/slot"
 
 type ConfirmDialogProps = {
   open: boolean
@@ -104,5 +105,7 @@ function ConfirmDialog({
     </AlertDialog>
   )
 }
+
+markNotSlottable(ConfirmDialog)
 
 export { ConfirmDialog }

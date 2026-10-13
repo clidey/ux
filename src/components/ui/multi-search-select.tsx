@@ -27,6 +27,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import {markNotSlottable} from "@/lib/slot"
 
 export type MultiSearchSelectOption = {
   value: string
@@ -173,5 +174,7 @@ function MultiSearchSelect({
     </Popover>
   )
 }
+
+markNotSlottable(MultiSearchSelect)
 
 export { MultiSearchSelect }

@@ -19,6 +19,7 @@ import {Slot} from "@radix-ui/react-slot"
 import {ChevronRight, Ellipsis} from "lucide-react"
 
 import {cn} from "@/lib/utils"
+import {markSlottable} from "@/lib/slot"
 
 const Breadcrumb = React.forwardRef<HTMLElement, React.ComponentProps<"nav">>(
   function Breadcrumb({ ...props }, ref) {
@@ -128,6 +129,8 @@ const BreadcrumbEllipsis = React.forwardRef<HTMLSpanElement, React.ComponentProp
     </span>
   )
 })
+
+markSlottable(BreadcrumbLink)
 
 export {
   Breadcrumb,

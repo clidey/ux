@@ -20,6 +20,7 @@ import * as React from "react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 
 import {cn} from "@/lib/utils"
+import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 
 function Popover({
   ...props
@@ -29,10 +30,21 @@ function Popover({
 
 const PopoverTrigger = React.forwardRef<
   React.ComponentRef<typeof PopoverPrimitive.Trigger>,
-  React.ComponentProps<typeof PopoverPrimitive.Trigger>
->(function PopoverTrigger(props, ref) {
-  return <PopoverPrimitive.Trigger ref={ref} data-slot="popover-trigger" {...props} />
+  TriggerChildProps<React.ComponentProps<typeof PopoverPrimitive.Trigger>>
+>(function PopoverTrigger({ asChild, children, ...props }, ref) {
+  const resolved = resolveTriggerChild(children, asChild, "PopoverTrigger")
+  return (
+    <PopoverPrimitive.Trigger
+      ref={ref}
+      data-slot="popover-trigger"
+      asChild={resolved.asChild}
+      {...props}
+    >
+      {resolved.child}
+    </PopoverPrimitive.Trigger>
+  )
 })
+markSlottable(PopoverTrigger)
 
 const PopoverContent = React.forwardRef<
   React.ComponentRef<typeof PopoverPrimitive.Content>,

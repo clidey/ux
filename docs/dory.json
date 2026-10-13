@@ -36,6 +36,12 @@
               "theming/overview",
               "theming/dark-mode"
             ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "triggers-and-aschild"
+            ]
           }
         ]
       },

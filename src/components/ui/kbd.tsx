@@ -16,6 +16,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import {markSlottable} from "@/lib/slot"
 
 const Kbd = React.forwardRef<HTMLElement, React.ComponentProps<"kbd">>(
   function Kbd({ className, ...props }, ref) {
@@ -31,5 +32,7 @@ const Kbd = React.forwardRef<HTMLElement, React.ComponentProps<"kbd">>(
     />
   )
 })
+
+markSlottable(Kbd)
 
 export { Kbd }

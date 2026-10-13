@@ -22,6 +22,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import useResizeObserver from "@/lib/use-resize-observer";
 import { cn } from "@/lib/utils";
+import {markNotSlottable} from "@/lib/slot"
 
 export interface TreeDataItem {
   id: string;
@@ -434,5 +435,7 @@ function TreeContent({
     </AccordionPrimitive.Content>
   );
 }
+
+markNotSlottable(Tree)
 
 export { Tree };

@@ -19,6 +19,7 @@ import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
 import {CheckIcon, ChevronRightIcon, CircleIcon} from "lucide-react"
 
 import {cn} from "@/lib/utils"
+import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 
 function ContextMenu({
   ...props
@@ -28,12 +29,21 @@ function ContextMenu({
 
 const ContextMenuTrigger = React.forwardRef<
   React.ComponentRef<typeof ContextMenuPrimitive.Trigger>,
-  React.ComponentProps<typeof ContextMenuPrimitive.Trigger>
->(function ContextMenuTrigger(props, ref) {
+  TriggerChildProps<React.ComponentProps<typeof ContextMenuPrimitive.Trigger>>
+>(function ContextMenuTrigger({ asChild, children, ...props }, ref) {
+  const resolved = resolveTriggerChild(children, asChild, "ContextMenuTrigger")
   return (
-    <ContextMenuPrimitive.Trigger ref={ref} data-slot="context-menu-trigger" {...props} />
+    <ContextMenuPrimitive.Trigger
+      ref={ref}
+      data-slot="context-menu-trigger"
+      asChild={resolved.asChild}
+      {...props}
+    >
+      {resolved.child}
+    </ContextMenuPrimitive.Trigger>
   )
 })
+markSlottable(ContextMenuTrigger)
 
 const ContextMenuGroup = React.forwardRef<
   React.ComponentRef<typeof ContextMenuPrimitive.Group>,

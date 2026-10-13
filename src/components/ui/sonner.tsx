@@ -17,6 +17,7 @@
 import {useTheme} from "@/components/theme/provider"
 import {toast, Toaster as Sonner, type ToasterProps} from "sonner"
 import {cn} from "@/lib/utils"
+import {markNotSlottable} from "@/lib/slot"
 
 const Toaster = ({className, ...props}: ToasterProps) => {
   const { theme = "system" } = useTheme()
@@ -39,5 +40,7 @@ const Toaster = ({className, ...props}: ToasterProps) => {
       </div>
   )
 }
+
+markNotSlottable(Toaster)
 
 export {Toaster, toast}

@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils"
 import { copyToClipboard } from "@/lib/clipboard"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import {markNotSlottable} from "@/lib/slot"
 
 type CopyButtonProps = Omit<React.ComponentProps<typeof Button>, "onClick" | "children"> & {
   text: string
@@ -71,5 +72,7 @@ function CopyButton({
     </Tooltip>
   )
 }
+
+markNotSlottable(CopyButton)
 
 export { CopyButton }

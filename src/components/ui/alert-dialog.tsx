@@ -18,6 +18,7 @@ import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 
 import {cn} from "@/lib/utils"
+import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 import {buttonVariants} from "@/components/ui/button"
 
 function AlertDialog({
@@ -28,12 +29,21 @@ function AlertDialog({
 
 const AlertDialogTrigger = React.forwardRef<
   React.ComponentRef<typeof AlertDialogPrimitive.Trigger>,
-  React.ComponentProps<typeof AlertDialogPrimitive.Trigger>
->(function AlertDialogTrigger(props, ref) {
+  TriggerChildProps<React.ComponentProps<typeof AlertDialogPrimitive.Trigger>>
+>(function AlertDialogTrigger({ asChild, children, ...props }, ref) {
+  const resolved = resolveTriggerChild(children, asChild, "AlertDialogTrigger")
   return (
-    <AlertDialogPrimitive.Trigger ref={ref} data-slot="alert-dialog-trigger" {...props} />
+    <AlertDialogPrimitive.Trigger
+      ref={ref}
+      data-slot="alert-dialog-trigger"
+      asChild={resolved.asChild}
+      {...props}
+    >
+      {resolved.child}
+    </AlertDialogPrimitive.Trigger>
   )
 })
+markSlottable(AlertDialogTrigger)
 
 function AlertDialogPortal({
   ...props

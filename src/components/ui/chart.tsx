@@ -4,6 +4,7 @@ import type { TooltipPayloadEntry } from "recharts"
 
 import { cn } from "@/lib/utils"
 import { ComponentErrorBoundary } from "@/lib/error-boundary"
+import {markNotSlottable} from "@/lib/slot"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
@@ -396,6 +397,8 @@ function ThemedPolarGrid(props: React.ComponentProps<typeof RechartsPrimitive.Po
     />
   )
 }
+
+markNotSlottable(ChartContainer)
 
 export {
   ChartContainer,

@@ -22,6 +22,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
+import {markNotSlottable} from "@/lib/slot"
 
 type FormSheetProps = {
   open: boolean
@@ -61,5 +62,7 @@ function FormSheet({
     </Sheet>
   )
 }
+
+markNotSlottable(FormSheet)
 
 export { FormSheet }

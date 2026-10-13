@@ -19,6 +19,7 @@ import * as SheetPrimitive from "@radix-ui/react-dialog"
 import {XIcon} from "lucide-react"
 
 import {cn} from "@/lib/utils"
+import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
@@ -26,10 +27,21 @@ function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
 
 const SheetTrigger = React.forwardRef<
   React.ComponentRef<typeof SheetPrimitive.Trigger>,
-  React.ComponentProps<typeof SheetPrimitive.Trigger>
->(function SheetTrigger(props, ref) {
-  return <SheetPrimitive.Trigger ref={ref} data-slot="sheet-trigger" {...props} />
+  TriggerChildProps<React.ComponentProps<typeof SheetPrimitive.Trigger>>
+>(function SheetTrigger({ asChild, children, ...props }, ref) {
+  const resolved = resolveTriggerChild(children, asChild, "SheetTrigger")
+  return (
+    <SheetPrimitive.Trigger
+      ref={ref}
+      data-slot="sheet-trigger"
+      asChild={resolved.asChild}
+      {...props}
+    >
+      {resolved.child}
+    </SheetPrimitive.Trigger>
+  )
 })
+markSlottable(SheetTrigger)
 
 const SheetClose = React.forwardRef<
   React.ComponentRef<typeof SheetPrimitive.Close>,
