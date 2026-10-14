@@ -259,6 +259,12 @@ function SearchSelect({
   // Use controlled or uncontrolled value
   const selectedValue = value != null ? value : internalValue;
 
+  // A combobox does not take its accessible name from its contents, so fall back to the
+  // label or placeholder when the caller did not pass an explicit aria-label.
+  const accessibleName =
+    buttonProps?.["aria-label"] ??
+    (buttonProps?.["aria-labelledby"] ? undefined : (typeof label === "string" && label ? label : placeholder));
+
   // Filter options based on search
   const [search, setSearch] = React.useState("");
   const filteredOptions = React.useMemo(
@@ -294,6 +300,7 @@ function SearchSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
+          aria-label={accessibleName}
           className={cn(
             "w-full justify-between overflow-hidden",
             buttonClassName,

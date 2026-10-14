@@ -435,4 +435,18 @@ describe('SearchSelect Component', () => {
         const trigger = screen.getByRole('combobox');
         expect(trigger).toHaveClass('custom-search-select');
     });
+
+    it('names the combobox from the placeholder when no aria-label is given', () => {
+        render(<SearchSelect options={[{value: 'a', label: 'Alpha'}]} placeholder="Pick a letter"/>);
+        expect(screen.getByRole('combobox')).toHaveAccessibleName('Pick a letter');
+    });
+
+    it('prefers the label prop and an explicit aria-label for the combobox name', () => {
+        const {unmount} = render(<SearchSelect options={[{value: 'a', label: 'Alpha'}]} label="Letter" placeholder="Pick a letter"/>);
+        expect(screen.getByRole('combobox')).toHaveAccessibleName('Letter');
+        unmount();
+
+        render(<SearchSelect options={[{value: 'a', label: 'Alpha'}]} label="Letter" buttonProps={{'aria-label': 'Choose letter'}}/>);
+        expect(screen.getByRole('combobox')).toHaveAccessibleName('Choose letter');
+    });
 });
