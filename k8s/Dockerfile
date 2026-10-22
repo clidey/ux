@@ -8,7 +8,7 @@ RUN pnpm build
 
 FROM node:26.12.0-alpine AS docs-builder
 WORKDIR /app
-RUN npm install -g @clidey/dory@1.0.6
+RUN npm install -g @clidey/dory@1.0.8
 COPY docs/ ./
 # docs/dory.json sets basePath "/docs", so the build is already rooted there.
 RUN dory build
