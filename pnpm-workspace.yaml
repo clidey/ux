@@ -9,3 +9,5 @@ verifyStoreIntegrity: true
 minimumReleaseAge: 10080
 trustPolicyExclude:
   - 'reselect@5.1.1'
+minimumReleaseAgeExclude:
+  - vite@8.3.5
