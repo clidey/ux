@@ -1,7 +1,8 @@
 FROM node:26.12.0-alpine AS builder
 WORKDIR /app
-RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# node:26 images no longer bundle corepack; install the pnpm version pinned in package.json's packageManager
+RUN npm install -g "pnpm@$(node -p "require('./package.json').packageManager.split('@')[1]")"
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build
