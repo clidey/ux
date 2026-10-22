@@ -1,4 +1,4 @@
-FROM node:26.11.1-alpine AS builder
+FROM node:26.12.0-alpine AS builder
 WORKDIR /app
 RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
@@ -6,7 +6,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build
 
-FROM node:26.11.1-alpine AS docs-builder
+FROM node:26.12.0-alpine AS docs-builder
 WORKDIR /app
 RUN npm install -g @clidey/dory@1.0.6
 COPY docs/ ./
