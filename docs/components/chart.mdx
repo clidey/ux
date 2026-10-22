@@ -169,6 +169,8 @@ type ChartConfig = {
 };
 ```
 
+Keys and colors are written into a `<style>` element, so they are validated before use. A key must be a plain identifier (`[A-Za-z0-9_-]`), and a color may only contain the characters CSS color syntaxes need: hex, `rgb()`, `hsl()`, `oklch()`, `var(--name)`, and keywords all work. Entries that fail validation are dropped from the stylesheet instead of rendered. Keep this in mind when building a config from API data or user-defined dashboards.
+
 ## Themed axis and grid components
 
 The library exports pre-styled wrappers for Recharts grid and axis primitives. These automatically apply theme-aware colors so charts look correct in both light and dark mode without manual styling.

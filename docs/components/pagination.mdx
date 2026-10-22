@@ -142,4 +142,6 @@ function DataTable() {
 | `isActive` | `boolean` | `false` | Highlights the link as the current page. |
 | `size` | `"icon"` | `"icon"` | Renders as an icon-sized button. |
 | `href` | `string` | — | Navigation URL. |
+
+> **Security note:** `href` is rendered directly on an `<a>` element. React neutralizes `javascript:` URLs, but if the value comes from user or server data, validate it yourself (allow only relative paths or `https:`), since `data:` and `blob:` URLs are not blocked by the component.
 | `className` | `string` | — | Additional CSS classes. |

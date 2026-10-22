@@ -2,6 +2,8 @@
   "name": "Clidey UX",
   "title": "Clidey UX \u2014 React Component Library",
   "description": "A beautiful, accessible React component library built on Radix UI and Tailwind CSS v4.",
+  "url": "https://ux.clidey.com",
+  "basePath": "/docs",
   "favicon": "./logo/logo.png",
   "colors": {
     "primary": "#2C6BD4",

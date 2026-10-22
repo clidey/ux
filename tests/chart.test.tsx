@@ -97,6 +97,73 @@ describe('ChartStyle', () => {
     });
 });
 
+describe('ChartStyle input validation', () => {
+    const payload = '</style><img src=x onerror="alert(1)"><style>';
+
+    it('drops colors containing stylesheet delimiters', () => {
+        const config: ChartConfig = {
+            safe: {label: 'Safe', color: '#ff0000'},
+            evil: {label: 'Evil', color: `red} ${payload}`},
+            breakout: {label: 'Breakout', color: 'red; } * { position: fixed'},
+        };
+        const {container} = render(<ChartStyle id="test-chart" config={config} />);
+        const style = container.querySelector('style');
+        expect(style).toBeInTheDocument();
+        expect(style?.children.length).toBe(0);
+        expect(style?.textContent).toContain('--color-safe: #ff0000');
+        expect(style?.textContent).not.toContain('--color-evil');
+        expect(style?.textContent).not.toContain('--color-breakout');
+        expect(style?.textContent).not.toContain('</style>');
+        expect(container.querySelector('img')).not.toBeInTheDocument();
+    });
+
+    it('drops config keys that are not plain identifiers', () => {
+        const config: ChartConfig = {
+            safe: {label: 'Safe', color: '#ff0000'},
+            [payload]: {label: 'Evil', color: '#00ff00'},
+            'a;b': {label: 'Semi', color: '#0000ff'},
+        };
+        const {container} = render(<ChartStyle id="test-chart" config={config} />);
+        const style = container.querySelector('style');
+        expect(style?.textContent).toContain('--color-safe: #ff0000');
+        expect(style?.textContent).not.toContain('#00ff00');
+        expect(style?.textContent).not.toContain('#0000ff');
+        expect(style?.textContent).not.toContain('<');
+    });
+
+    it('accepts the common CSS color syntaxes', () => {
+        const config: ChartConfig = {
+            hex: {color: '#abc'},
+            rgb: {color: 'rgb(1 2 3 / 50%)'},
+            hsl: {color: 'hsl(var(--chart-1))'},
+            oklch: {color: 'oklch(0.7 0.1 200)'},
+            keyword: {color: 'rebeccapurple'},
+            variable: {color: 'var(--chart-2)'},
+        };
+        const {container} = render(<ChartStyle id="test-chart" config={config} />);
+        const text = container.querySelector('style')?.textContent ?? '';
+        for (const key of Object.keys(config)) {
+            expect(text).toContain(`--color-${key}: ${config[key].color};`);
+        }
+    });
+
+    it('renders nothing for an id that could escape the selector', () => {
+        const {container} = render(<ChartStyle id="x] * { color: red } [data-chart=y" config={testConfig} />);
+        expect(container.querySelector('style')).not.toBeInTheDocument();
+    });
+
+    it('sanitizes a consumer-supplied id on ChartContainer', () => {
+        const {container} = render(
+            <ChartContainer id="my chart]{" config={testConfig}>
+                <svg><rect /></svg>
+            </ChartContainer>
+        );
+        const chart = container.querySelector('[data-chart]');
+        expect(chart?.getAttribute('data-chart')).toBe('chart-mychart');
+        expect(container.querySelector('style')?.textContent).toContain('[data-chart=chart-mychart]');
+    });
+});
+
 describe('ChartTooltipContent', () => {
     it('returns null when not active', () => {
         const {container} = render(

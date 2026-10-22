@@ -404,3 +404,27 @@ describe("Sidebar", () => {
         expect(group).toHaveAttribute("data-collapsible", "true");
     });
 });
+describe('SidebarProvider cookie', () => {
+    it('persists the open state with SameSite=Lax', async () => {
+        const user = userEvent.setup();
+        const written: string[] = [];
+        const spy = vi.spyOn(document, 'cookie', 'set').mockImplementation((value: string) => {
+            written.push(value);
+        });
+        try {
+            render(
+                <SidebarProvider defaultOpen>
+                    <Sidebar>
+                        <SidebarContent>content</SidebarContent>
+                    </Sidebar>
+                    <SidebarTrigger />
+                </SidebarProvider>
+            );
+            await user.click(screen.getByRole('button', {name: /toggle sidebar/i}));
+        } finally {
+            spy.mockRestore();
+        }
+        expect(written).toHaveLength(1);
+        expect(written[0]).toMatch(/^sidebar_state=false; path=\/; max-age=\d+; SameSite=Lax$/);
+    });
+});

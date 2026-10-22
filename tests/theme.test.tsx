@@ -143,6 +143,53 @@ describe('ThemeProvider', () => {
     });
 });
 
+describe('ThemeProvider stored value validation', () => {
+    const storageKey = 'test-theme-validation';
+    const ThemeDisplay = () => {
+        const {theme} = useTheme();
+        return <div data-testid="theme-display">{theme}</div>;
+    };
+
+    beforeEach(() => {
+        localStorage.clear();
+        document.documentElement.className = '';
+    });
+
+    it('uses a valid stored theme', () => {
+        localStorage.setItem(storageKey, 'dark');
+        render(
+            <ThemeProvider defaultTheme="light" storageKey={storageKey}>
+                <ThemeDisplay/>
+            </ThemeProvider>
+        );
+        expect(screen.getByTestId('theme-display')).toHaveTextContent('dark');
+        expect(document.documentElement.classList.contains('dark')).toBe(true);
+    });
+
+    it('falls back to the default when the stored value is not a known theme', () => {
+        localStorage.setItem(storageKey, 'injected-class');
+        render(
+            <ThemeProvider defaultTheme="light" storageKey={storageKey}>
+                <ThemeDisplay/>
+            </ThemeProvider>
+        );
+        expect(screen.getByTestId('theme-display')).toHaveTextContent('light');
+        expect(document.documentElement.classList.contains('injected-class')).toBe(false);
+        expect(document.documentElement.classList.contains('light')).toBe(true);
+    });
+
+    it('does not throw when the stored value contains whitespace', () => {
+        localStorage.setItem(storageKey, 'dark evil-class');
+        expect(() => render(
+            <ThemeProvider defaultTheme="light" storageKey={storageKey}>
+                <ThemeDisplay/>
+            </ThemeProvider>
+        )).not.toThrow();
+        expect(screen.getByTestId('theme-display')).toHaveTextContent('light');
+        expect(document.documentElement.className).toBe('light');
+    });
+});
+
 describe('ModeToggle', () => {
     it('should render theme toggle component', () => {
         const {container} = render(

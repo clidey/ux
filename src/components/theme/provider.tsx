@@ -18,6 +18,14 @@ import {createContext, useContext, useEffect, useState} from "react"
 
 type Theme = "dark" | "light" | "system"
 
+const THEMES: readonly Theme[] = ["dark", "light", "system"]
+
+// localStorage is writable by any same-origin script, so the stored value is
+// untrusted: anything outside the known set falls back to the default.
+function isTheme(value: unknown): value is Theme {
+  return typeof value === "string" && (THEMES as readonly string[]).includes(value)
+}
+
 type ThemeProviderProps = {
   children: React.ReactNode
   defaultTheme?: Theme
@@ -42,9 +50,11 @@ export function ThemeProvider({
   storageKey = "@clidey/ux/theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (typeof window !== 'undefined' ? localStorage.getItem(storageKey) as Theme : null) || defaultTheme
-  )
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === 'undefined') return defaultTheme
+    const stored = localStorage.getItem(storageKey)
+    return isTheme(stored) ? stored : defaultTheme
+  })
 
   useEffect(() => {
     const root = window.document.documentElement

@@ -17,7 +17,6 @@ updates:
   - package-ecosystem: "docker"
     directories:
       - "/k8s"
-      - "/release"
     schedule:
       interval: "weekly"
       day: "monday"

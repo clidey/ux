@@ -9,6 +9,17 @@ import {markNotSlottable} from "@/lib/slot"
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
 
+// Config keys, colors and the chart id are interpolated into a stylesheet.
+// Keys/ids must be plain identifier tokens; colors may only use the characters
+// CSS color syntaxes need (hex, rgb()/hsl()/oklch(), var(--x), keywords), which
+// excludes the ; { } < > characters that could close the declaration or block.
+const SAFE_TOKEN = /^[A-Za-z0-9_-]+$/
+const SAFE_COLOR = /^[A-Za-z0-9#%.,\s/()+_-]+$/
+
+function isSafeColor(color: unknown): color is string {
+  return typeof color === "string" && SAFE_COLOR.test(color)
+}
+
 export type ChartConfig = {
   [k in string]: {
     label?: React.ReactNode
@@ -50,7 +61,7 @@ function ChartContainer({
   >["children"]
 }) {
   const uniqueId = React.useId()
-  const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
+  const chartId = `chart-${(id || uniqueId).replace(/[^A-Za-z0-9_-]/g, "")}`
 
   return (
     <ComponentErrorBoundary>
@@ -76,35 +87,35 @@ function ChartContainer({
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
-    ([, itemConfig]) => itemConfig.theme || itemConfig.color
+    ([key, itemConfig]) =>
+      SAFE_TOKEN.test(key) && (itemConfig.theme || itemConfig.color)
   )
 
-  if (!colorConfig.length) {
+  if (!colorConfig.length || !SAFE_TOKEN.test(id)) {
     return null
   }
 
-  return (
-    <style
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
+  const css = Object.entries(THEMES)
+    .map(
+      ([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
 ${colorConfig
   .map(([key, itemConfig]) => {
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
+    return isSafeColor(color) ? `  --color-${key}: ${color};` : null
   })
+  .filter(Boolean)
   .join("\n")}
 }
 `
-          )
-          .join("\n"),
-      }}
-    />
-  )
+    )
+    .join("\n")
+
+  // Rendered as a text child (not innerHTML) so the markup parser can never
+  // see the content as tags, including in server-rendered output.
+  return <style>{css}</style>
 }
 
 const ChartTooltip = RechartsPrimitive.Tooltip
