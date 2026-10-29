@@ -29,7 +29,7 @@
     "build:lib": "vite build --config vite.lib.config.ts",
     "lint": "oxlint",
     "fmt": "oxfmt --write src/",
-    "docker:push": "docker buildx build --platform linux/amd64,linux/arm64 -t clidey/ux-dashboard:latest -f k8s/Dockerfile . --push",
+    "docker:push": "docker buildx build --platform linux/amd64,linux/arm64 -t clidey/ux-docs:${UX_DOCS_VERSION:?set UX_DOCS_VERSION} -f k8s/Dockerfile . --push",
     "preview": "vite preview",
     "test": "vitest --coverage",
     "test:coverage": "vitest run --coverage",
