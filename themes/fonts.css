@@ -1,0 +1,164 @@
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('./fonts/brand/BricolageGrotesque-normal-latin.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('./fonts/brand/HankenGrotesk-normal-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Geist;
+  src: url('./fonts/Geist.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('./fonts/IBMPlexSans.woff2') format('woff2');
+  font-weight: 100 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Lexend;
+  src: url('./fonts/Lexend.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Libre Franklin';
+  src: url('./fonts/LibreFranklin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sora;
+  src: url('./fonts/Sora.woff2') format('woff2');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  src: url('./fonts/SourceSerif4.woff2') format('woff2');
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Zen Kaku Gothic New';
+  src: url('./fonts/ZenKakuGothicNew-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Zen Kaku Gothic New';
+  src: url('./fonts/ZenKakuGothicNew-Bold.woff2') format('woff2');
+  font-weight: 700 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Newsreader;
+  src: url('./fonts/Newsreader.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  src: url('./fonts/DMSans.woff2') format('woff2');
+  font-weight: 100 1000;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Epilogue;
+  src: url('./fonts/Epilogue.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./fonts/JetBrainsMono.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chakra Petch';
+  src: url('./fonts/ChakraPetch-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chakra Petch';
+  src: url('./fonts/ChakraPetch-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chakra Petch';
+  src: url('./fonts/ChakraPetch-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('./fonts/IBMPlexMono.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('./fonts/IBMPlexMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Rubik;
+  src: url('./fonts/Rubik.woff2') format('woff2');
+  font-weight: 300 900;
+  font-display: swap;
+}
+
+
+/* Additional families used by the complete palette catalog. */
+@font-face { font-family: 'Archivo'; src: url('./fonts/Archivo.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Archivo Narrow'; src: url('./fonts/ArchivoNarrow.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Chivo'; src: url('./fonts/Chivo.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Figtree'; src: url('./fonts/Figtree.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Instrument Sans'; src: url('./fonts/InstrumentSans.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Instrument Serif'; src: url('./fonts/InstrumentSerif.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('./fonts/Inter.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Karla'; src: url('./fonts/Karla.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Manrope'; src: url('./fonts/Manrope.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Mukta'; src: url('./fonts/Mukta-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Mukta'; src: url('./fonts/Mukta-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Nunito'; src: url('./fonts/Nunito.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Nunito Sans'; src: url('./fonts/NunitoSans.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url('./fonts/Outfit.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url('./fonts/PlusJakartaSans.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Red Hat Display'; src: url('./fonts/RedHatDisplay.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Space Grotesk'; src: url('./fonts/SpaceGrotesk.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Space Mono'; src: url('./fonts/SpaceMono.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Space Mono'; src: url('./fonts/SpaceMono-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Syne'; src: url('./fonts/Syne.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Unbounded'; src: url('./fonts/Unbounded.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'Work Sans'; src: url('./fonts/WorkSans.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }

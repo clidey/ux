@@ -46,14 +46,18 @@ export interface SpinnerProps
     Omit<VariantProps<typeof spinnerVariants>, 'size'> {
   className?: string;
   size?: VariantProps<typeof spinnerVariants>['size'] | number;
+  /** The Clidey Design mark is the default; classic retains the twelve-spoke spinner. */
+  appearance?: 'brand' | 'classic';
 }
 
 const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
-  function Spinner({ className, variant, size = 'default' }, ref) {
+  function Spinner({ className, variant, size = 'default', appearance = 'brand', ...props }, ref) {
   return (
   <div
     ref={ref}
     data-slot="spinner"
+    data-appearance={appearance}
+    data-variant={variant ?? 'default'}
     role="status"
     aria-label="Loading"
     className={cn(
@@ -63,8 +67,21 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
       className,
     )}
     style={typeof size === 'number' ? { width: size, height: size } : undefined}
+    {...props}
   >
-    {Array.from({ length: 12 }).map((_, i) => (
+    {appearance === 'brand' ? <svg viewBox="0 0 120 96" fill="none" aria-hidden="true" className="ux-spinner-mark size-full">
+      <path className="ux-spinner-mark__outline" d="M18 20 C24 34 42 63 60 63 C78 63 96 34 102 20" />
+      <path className="ux-spinner-mark__stem-outline" d="M60 29 V80" />
+      <path className="ux-spinner-mark__signal" pathLength="100" d="M18 20 C24 34 42 63 60 63" />
+      <path className="ux-spinner-mark__signal" pathLength="100" d="M102 20 C96 34 78 63 60 63" />
+      <path className="ux-spinner-mark__meet" d="M48 59.1 C52 61.6 56 63 60 63 C64 63 68 61.6 72 59.1" />
+      <path className="ux-spinner-mark__stem" pathLength="100" d="M60 29 V80" />
+      <circle className="ux-spinner-mark__ring" cx="18" cy="20" r="4" />
+      <circle className="ux-spinner-mark__ring" cx="102" cy="20" r="4" />
+      <circle className="ux-spinner-mark__node" cx="35" cy="48" r="2.5" />
+      <circle className="ux-spinner-mark__node" cx="85" cy="48" r="2.5" />
+      <circle className="ux-spinner-mark__beacon" cx="60" cy="18" r="6" />
+    </svg> : Array.from({ length: 12 }).map((_, i) => (
       <div
         key={i}
         className="animate-spinner absolute left-[46.5%] top-[4.4%] h-[24%] w-[7%]

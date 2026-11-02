@@ -20,12 +20,12 @@ description: 'Install @clidey/ux and configure it in your React project.'
 </CodeGroup>
 
 <Note>
-  Clidey UX requires **React 18.3 or later** as a peer dependency. Make sure your project already has React installed.
+  Clidey Design requires **React 18.3 or later** as a peer dependency. Make sure your project already has React installed.
 </Note>
 
 ## Import the stylesheet
 
-Clidey UX ships a compiled CSS file that must be imported once — typically in your app's entry point:
+Clidey Design ships a compiled CSS file that must be imported once — typically in your app's entry point:
 
 <CodeGroup title="Import styles">
   ```tsx main.tsx
@@ -76,7 +76,7 @@ function App() {
 
 ## Configure Tailwind CSS
 
-If you use Tailwind CSS in your own project, import Clidey UX's stylesheet and add the package as a Tailwind source:
+If you use Tailwind CSS in your own project, import Clidey Design's stylesheet and add the package as a Tailwind source:
 
 ```css
 /* your global CSS */
@@ -112,7 +112,7 @@ Import and render a component to confirm everything is working:
 import { Button } from '@clidey/ux';
 
 export default function Home() {
-  return <Button>Hello, Clidey UX!</Button>;
+  return <Button>Hello, Clidey Design!</Button>;
 }
 ```
 
@@ -122,7 +122,7 @@ export default function Home() {
 
 ## TypeScript
 
-Clidey UX ships TypeScript definitions at `dist/index.d.ts`. No additional `@types` packages are needed. Your `tsconfig.json` only needs standard React settings:
+Clidey Design ships TypeScript definitions at `dist/index.d.ts`. No additional `@types` packages are needed. Your `tsconfig.json` only needs standard React settings:
 
 ```json
 {

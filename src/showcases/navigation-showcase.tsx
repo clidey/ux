@@ -43,7 +43,7 @@ export function NavigationShowcase() {
                         <AccordionItem value="item-3">
                             <AccordionTrigger>Do you offer team pricing?</AccordionTrigger>
                             <AccordionContent>
-                                Teams of 5 or more get a 20% discount. Contact sales for custom enterprise agreements.
+                                Teams of 5 or more get a 20% discount. Contact sales for custom plans.
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>

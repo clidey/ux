@@ -1,7 +1,8 @@
 {
   "name": "@clidey/ux",
+  "description": "Clidey Design — accessible React components and design tokens.",
   "private": false,
-  "version": "1.5.3",
+  "version": "1.5.4",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,16 +18,29 @@
     },
     "./brand.css": {
       "default": "./dist/brand.css"
-    }
+    },
+    "./theme-fonts.css": {
+      "default": "./themes/fonts.css"
+    },
+    "./theme-palettes.css": {
+      "default": "./themes/palettes.css"
+    },
+    "./icons": {
+      "types": "./icons/index.d.ts",
+      "import": "./icons/index.js"
+    },
+    "./icons/*": "./icons/*"
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "icons",
+    "themes"
   ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:lib": "vite build --config vite.lib.config.ts",
+    "build:lib": "vite build --config vite.lib.config.ts && node scripts/build-theme-palettes.mjs",
     "lint": "oxlint",
     "fmt": "oxfmt --write src/",
     "docker:push": "docker buildx build --platform linux/amd64,linux/arm64 -t clidey/ux-docs:${UX_DOCS_VERSION:?set UX_DOCS_VERSION} -f k8s/Dockerfile . --push",
@@ -84,6 +98,7 @@
     "happy-dom": "21.0.3",
     "oxfmt": "0.72.0",
     "oxlint": "1.87.0",
+    "prism-react-renderer": "2.4.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "tailwindcss": "4.3.3",
@@ -102,7 +117,7 @@
     "radix-ui"
   ],
   "author": "Clidey",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/clidey/ux.git"

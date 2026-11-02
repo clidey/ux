@@ -1,11 +1,11 @@
 ---
 title: 'Theming Overview'
-description: 'Customize colors and branding for your Clidey UX integration.'
+description: 'Customize colors and branding for your Clidey Design integration.'
 ---
 
 # Theming Overview
 
-Clidey UX uses **CSS custom properties** (variables) for all colors and design tokens. The `ThemeProvider` manages which set of variables is applied based on the active theme (light, dark, or system).
+Clidey Design uses **CSS custom properties** (variables) for all colors and design tokens. The `ThemeProvider` manages which set of variables is applied based on the active theme (light, dark, or system).
 
 ## ThemeProvider
 
@@ -29,6 +29,8 @@ function Root() {
 | --- | --- | --- | --- |
 | `defaultTheme` | `"light" \| "dark" \| "system"` | `"system"` | Theme applied on first load before any user preference is stored. |
 | `storageKey` | `string` | `"@clidey/ux/theme"` | `localStorage` key used to persist the user's choice. |
+| `defaultPalette` | `string` | — | Optional palette ID, such as `"paper-ink"` or `"midnight-noir"`. Omit it to keep the default CSS tokens. |
+| `paletteStorageKey` | `string` | `"@clidey/ux/palette"` | `localStorage` key for the selected palette. |
 | `children` | `ReactNode` | — | Your application tree. |
 
 ### useTheme hook
@@ -58,6 +60,45 @@ function MyComponent() {
 | --- | --- | --- |
 | `theme` | `"light" \| "dark" \| "system"` | The currently selected theme. |
 | `setTheme` | `(theme: Theme) => void` | Updates the theme and persists it. |
+| `palette` | `string \| null` | The selected palette ID. |
+| `setPalette` | `(id: string \| null) => void` | Selects one of the shared palettes, or clears the palette. |
+
+## Shared palettes
+
+The package includes all 30 Clidey Design palettes. Palette IDs and metadata are available from `themes`; `getThemeById` resolves one palette. The provider applies its CSS tokens to `<html>` and preserves unrelated root classes.
+
+To load the palette typefaces as well as colors, import the optional font stylesheet. Fonts are self-hosted and loaded on demand by the browser.
+
+```tsx
+import '@clidey/ux/theme-fonts.css';
+```
+
+```tsx
+import { ThemeProvider, themes, useTheme } from '@clidey/ux';
+
+function PalettePicker() {
+  const { palette, setPalette } = useTheme();
+  return <select value={palette ?? ''} onChange={event => setPalette(event.target.value || null)}>
+    <option value="">Default tokens</option>
+    {themes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+  </select>;
+}
+
+function App() {
+  return <ThemeProvider defaultPalette="paper-ink"><PalettePicker /></ThemeProvider>;
+}
+```
+
+React applications can use this palette catalog through their `@clidey/ux` dependency.
+
+For a vanilla JavaScript app, import `@clidey/ux/theme-palettes.css` (or copy that file into the app's static assets). Apply a palette and color mode to the root element:
+
+```js
+document.documentElement.classList.add('theme-deep-ocean', 'dark');
+document.documentElement.dataset.theme = 'deep-ocean';
+```
+
+The CSS asset contains the same 30 palettes as the React catalog. `@clidey/ux/theme-fonts.css` is optional for apps that also want their typefaces.
 
 ## ModeToggle
 
@@ -86,7 +127,7 @@ function Header() {
 - **Dark mode** → `dark` class added to `<html>`
 - **System** → reads `prefers-color-scheme` media query and applies accordingly
 
-All Clidey UX components use Tailwind's `dark:` modifier, so they respond automatically to the `dark` class on `<html>`.
+All Clidey Design components use Tailwind's `dark:` modifier, so they respond automatically to the `dark` class on `<html>`.
 
 ## Customizing CSS variables
 
@@ -107,6 +148,7 @@ The stylesheet exposes CSS custom properties using OKLCH color values. Override 
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
+  --control-border: color-mix(in srgb, var(--foreground) 50%, var(--card));
   --ring: oklch(0.708 0 0);
   --radius: 0.625rem;
 }

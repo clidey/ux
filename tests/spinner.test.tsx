@@ -43,4 +43,21 @@ describe('Spinner Component', () => {
         const root = container.querySelector('[data-slot="spinner"]');
         expect(root).toBeInTheDocument();
     });
+
+    it('uses the Clidey Design mark by default', () => {
+        render(<Spinner/>);
+        const spinner = screen.getByRole('status');
+        expect(spinner).toHaveAttribute('data-appearance', 'brand');
+        expect(spinner.querySelector('svg.ux-spinner-mark')).toBeInTheDocument();
+        expect(spinner.querySelectorAll('.ux-spinner-mark__signal')).toHaveLength(2);
+    });
+
+    it('keeps the radial spinner available as classic', () => {
+        render(<Spinner appearance="classic" size={40} />);
+        const spinner = screen.getByRole('status');
+        expect(spinner).toHaveAttribute('data-appearance', 'classic');
+        expect(spinner.querySelector('svg')).not.toBeInTheDocument();
+        expect(spinner.querySelectorAll('div.animate-spinner')).toHaveLength(12);
+        expect(spinner).toHaveStyle({width: '40px', height: '40px'});
+    });
 });

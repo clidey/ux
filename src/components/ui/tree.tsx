@@ -40,6 +40,7 @@ type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
   onExpandChange?: (ids: string[]) => void;
   folderIcon?: LucideIcon;
   itemIcon?: LucideIcon;
+  density?: "condensed" | "comfortable" | "spacious";
 };
 
 function flattenVisible(items: TreeDataItem[], expandedIds: string[]): TreeDataItem[] {
@@ -103,6 +104,7 @@ function Tree({
   onExpandChange,
   folderIcon,
   itemIcon,
+  density = "comfortable",
   className,
   ...props
 }: TreeProps) {
@@ -229,7 +231,7 @@ function Tree({
   const { ref: refRoot, width, height } = useResizeObserver<HTMLDivElement>();
 
   return (
-    <div ref={refRoot} data-slot="tree" className={cn("overflow-hidden", className)} {...props}>
+    <div ref={refRoot} data-slot="tree" data-density={density} className={cn("overflow-hidden", className)} {...props}>
       <ScrollArea style={{ width, height }}>
         <div
           ref={treeRef}
@@ -283,7 +285,7 @@ function TreeItems({
   itemIcon?: LucideIcon;
 }) {
   return (
-    <ul role="group">
+    <ul role="group" className="m-0 list-none p-0">
       {items.map((item) => (
         <li key={item.id} role="treeitem" aria-expanded={item.children ? expandedIds.includes(item.id) : undefined}>
           {item.children ? (
@@ -345,7 +347,7 @@ function TreeFolder({
   const Icon = item.icon || FolderIcon;
 
   return (
-    <AccordionPrimitive.Header>
+    <AccordionPrimitive.Header className="m-0">
       <AccordionPrimitive.Trigger
         data-slot="tree-folder"
         id={`tree-node-${item.id}`}

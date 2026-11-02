@@ -19,10 +19,12 @@ import {createRoot} from 'react-dom/client'
 import App from './app.tsx'
 import {ThemeProvider} from './components/theme/provider.tsx'
 import './index.css'
+import './brand.css'
+import '../themes/fonts.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="dark" defaultPalette="paper-ink">
       <App />
     </ThemeProvider>
   </StrictMode>,

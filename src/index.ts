@@ -75,6 +75,7 @@ export { ConfirmDialog } from './components/ui/confirm-dialog'
 // Theme Components
 export { ThemeProvider, useTheme } from './components/theme/provider'
 export { ModeToggle } from './components/theme/toggle'
+export { themes, getThemeById, applyTheme, injectTheme, type ThemeDefinition } from './themes'
 
 // Utilities
 export * from './lib/utils'

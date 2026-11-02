@@ -38,6 +38,7 @@
   --color-destructive: var(--destructive);
   --color-border: var(--border);
   --color-input: var(--input);
+  --color-control-border: var(--control-border);
   --color-ring: var(--ring);
   --color-backdrop: var(--backdrop);
   --color-chart-1: var(--chart-1);
@@ -98,6 +99,7 @@
 }
 
 :root {
+  --control-border: color-mix(in srgb, var(--foreground) 50%, var(--card));
   --radius: 0.625rem;
   /* Clidey brand: orange is the company mark color; components never use it directly */
   --brand: oklch(0.705 0.178 50); /* #F4781C */
@@ -244,4 +246,41 @@
     min-height: 44px;
     width: 100%;
   }
+}
+
+/* Tree density is a public prop so the same hierarchy can fit sidebars or roomy panels. */
+[data-slot="tree"][data-density="condensed"] :is([data-slot="tree-folder"], [data-slot="tree-leaf"]) { padding-block: 4px; }
+[data-slot="tree"][data-density="spacious"] :is([data-slot="tree-folder"], [data-slot="tree-leaf"]) { padding-block: 12px; }
+
+/* Clidey Design loading mark. */
+.ux-spinner-mark {
+  --ux-spinner-blue: var(--primary);
+  --ux-spinner-orange: #f4781c;
+  --ux-spinner-yellow: #ffc233;
+  overflow: visible;
+}
+[data-slot="spinner"][data-variant="secondary"] .ux-spinner-mark { --ux-spinner-blue: var(--secondary-foreground); }
+[data-slot="spinner"][data-variant="destructive"] .ux-spinner-mark { --ux-spinner-blue: var(--destructive); }
+[data-slot="spinner"][data-variant="muted"] .ux-spinner-mark { --ux-spinner-blue: var(--muted-foreground); }
+.ux-spinner-mark :is(path, circle) { vector-effect: non-scaling-stroke; }
+.ux-spinner-mark :is(.ux-spinner-mark__outline, .ux-spinner-mark__stem-outline, .ux-spinner-mark__signal, .ux-spinner-mark__meet, .ux-spinner-mark__stem) { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ux-spinner-mark__outline { stroke: color-mix(in srgb, var(--ux-spinner-blue) 28%, transparent); stroke-width: 1.6; }
+.ux-spinner-mark__stem-outline { stroke: color-mix(in srgb, var(--ux-spinner-orange) 22%, transparent); stroke-width: 2; }
+.ux-spinner-mark__signal { stroke: var(--ux-spinner-blue); stroke-width: 2; stroke-dasharray: 20 100; opacity: 0; animation: ux-spinner-signal 2.4s linear infinite; }
+.ux-spinner-mark__meet { stroke: var(--ux-spinner-blue); stroke-width: 2; opacity: 0; animation: ux-spinner-meet 2.4s linear infinite; }
+.ux-spinner-mark__stem { stroke: var(--ux-spinner-orange); stroke-width: 2.5; stroke-dasharray: 5 100; animation: ux-spinner-stem 2.4s linear infinite; }
+.ux-spinner-mark__ring, .ux-spinner-mark__node { fill: var(--background); stroke: var(--ux-spinner-blue); stroke-width: 1.6; }
+.ux-spinner-mark__ring { transform-box: fill-box; transform-origin: center; animation: ux-spinner-ring 2.4s linear infinite; }
+.ux-spinner-mark__node { animation: ux-spinner-node 2.4s linear infinite; }
+.ux-spinner-mark__beacon { fill: var(--ux-spinner-yellow); transform-box: fill-box; transform-origin: center; animation: ux-spinner-beacon 2.4s linear infinite; }
+@keyframes ux-spinner-signal { 0%, 5% { stroke-dasharray: 20 100; stroke-dashoffset: 20; opacity: 0; } 10% { opacity: 1; } 45% { stroke-dasharray: 30 100; stroke-dashoffset: -50; } 66%, 82% { stroke-dasharray: 45 100; stroke-dashoffset: -55; opacity: 1; } 92%, 100% { stroke-dasharray: 10 100; stroke-dashoffset: -100; opacity: 0; } }
+@keyframes ux-spinner-stem { 0% { stroke-dasharray: 5 100; stroke-dashoffset: -95; opacity: 1; } 15%, 64% { stroke-dashoffset: -100; opacity: 0; } 70% { stroke-dasharray: 30 100; stroke-dashoffset: 0; opacity: 1; } 80%, 100% { stroke-dasharray: 5 100; stroke-dashoffset: -95; opacity: 1; } }
+@keyframes ux-spinner-meet { 0%, 40%, 92%, 100% { opacity: 0; } 50%, 82% { opacity: 1; } }
+@keyframes ux-spinner-ring { 0%, 10%, 94%, 100% { opacity: 1; } 22%, 82% { opacity: .35; } }
+@keyframes ux-spinner-node { 0%, 20%, 62%, 100% { opacity: .35; } 32%, 52% { opacity: 1; } }
+@keyframes ux-spinner-beacon { 0%, 62%, 82%, 100% { transform: scale(1); } 66%, 76% { transform: scale(1.25); } }
+@media (prefers-reduced-motion: reduce) {
+  .ux-spinner-mark :is(.ux-spinner-mark__signal, .ux-spinner-mark__meet, .ux-spinner-mark__stem, .ux-spinner-mark__ring, .ux-spinner-mark__node, .ux-spinner-mark__beacon) { animation: none; }
+  .ux-spinner-mark__signal, .ux-spinner-mark__meet { opacity: 0; }
+  .ux-spinner-mark__stem { stroke-dashoffset: 0; }
 }

@@ -1,8 +1,9 @@
 <p align="center">
-  <img src="./docs/logo/logo.png" alt="Clidey UX" height="72" />
+  <img src="./docs/logo/logo.png" alt="Clidey Design" height="72" />
 </p>
 
 <p align="center">
+  <strong>Clidey Design</strong><br/>
   <strong>A production-ready React component library built on Radix UI and Tailwind CSS v4.</strong><br/>
   37+ accessible, composable, dark-mode-ready components — drop in and ship.
 </p>
@@ -15,7 +16,7 @@
     <img src="https://img.shields.io/npm/dm/@clidey/ux?color=6366f1&labelColor=18181b&style=flat-square" alt="downloads" />
   </a>
   <a href="https://github.com/clidey/ux/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-6366f1?labelColor=18181b&style=flat-square" alt="MIT license" />
+    <img src="https://img.shields.io/badge/license-Apache--2.0-6366f1?labelColor=18181b&style=flat-square" alt="Apache 2.0 license" />
   </a>
   <img src="https://img.shields.io/badge/React-18%20%7C%2019-6366f1?labelColor=18181b&style=flat-square" alt="React 18/19" />
   <img src="https://img.shields.io/badge/TypeScript-ready-6366f1?labelColor=18181b&style=flat-square" alt="TypeScript" />
@@ -23,9 +24,9 @@
 
 ---
 
-## Why Clidey UX?
+## Why Clidey Design?
 
-Building a consistent, accessible UI from scratch takes weeks. Clidey UX gives you a complete set of polished components so you can focus on your product, not your design system.
+Building a consistent, accessible UI from scratch takes weeks. Clidey Design gives you a complete set of polished components so you can focus on your product, not your design system.
 
 - **Accessible by default** — every component is built on [Radix UI](https://radix-ui.com) primitives. Keyboard navigation, focus management, and ARIA attributes are handled for you.
 - **Dark mode included** — wrap your app with `ThemeProvider` and all components adapt automatically. System preference detection and `localStorage` persistence built in.
@@ -370,4 +371,16 @@ Contributions, bug reports, and feature requests are welcome. Please open an iss
 
 ## License
 
-MIT — free to use in personal and commercial projects.
+Licensed under the [Apache License 2.0](LICENSE).
+
+## Clidey Design icons
+
+The full Clidey Design icon collection is available as raw SVG assets without loading it through the main UI entry. Import a single icon URL in a Vite app:
+
+```tsx
+import searchUrl from "@clidey/ux/icons/svg/search.svg?url";
+
+<img src={searchUrl} alt="" />
+```
+
+For a dynamic icon picker, import the `icons` URL map from `@clidey/ux/icons`. See [`icons/README.md`](icons/README.md) for usage examples.

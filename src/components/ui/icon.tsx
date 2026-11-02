@@ -27,12 +27,15 @@ export interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
    * @default 24
    */
   size?: number
+  /** Plain line icon by default; use subtle or solid when a surface is needed. */
+  variant?: "plain" | "subtle" | "solid"
 }
 
 export const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
   function Icon({
   icon,
   size = 24,
+  variant = "plain",
   className,
   ...props
 }, ref) {
@@ -40,8 +43,12 @@ export const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
     <span
       ref={ref}
       data-slot="icon"
+      data-variant={variant}
       className={cn(
-        "inline-flex items-center justify-center rounded-md bg-icon dark:bg-icon p-2",
+        "inline-flex shrink-0 items-center justify-center",
+        variant === "plain" && "text-foreground",
+        variant === "subtle" && "rounded-md bg-primary/10 p-2 text-primary",
+        variant === "solid" && "rounded-md bg-icon p-2 text-icon-foreground",
         className
       )}
       {...props}
@@ -50,7 +57,7 @@ export const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
         width: size,
         height: size,
         className: cn(
-          "stroke-icon-foreground dark:stroke-icon-foreground",
+          "stroke-current",
             icon.props?.className
         ),
         "aria-hidden": true,

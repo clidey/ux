@@ -19,6 +19,7 @@ import userEvent from '@testing-library/user-event';
 import {ThemeProvider, useTheme} from '@/components/theme/provider';
 import {ModeToggle} from '@/components/theme/toggle';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
+import {themes} from '@/themes';
 
 // Mock matchMedia
 beforeEach(() => {
@@ -38,6 +39,26 @@ beforeEach(() => {
 });
 
 describe('ThemeProvider', () => {
+    it('offers every sandbox palette and preserves unrelated root classes when switching', async () => {
+        const user = userEvent.setup();
+        localStorage.clear();
+        document.documentElement.classList.add('theme-custom');
+        const paletteKey = 'test-palette';
+        const TestComponent = () => {
+            const {palette, setPalette} = useTheme();
+            return <div><span>Palette: {palette}</span><button onClick={() => setPalette('midnight-noir')}>Change palette</button></div>;
+        };
+
+        render(<ThemeProvider defaultTheme="dark" defaultPalette="paper-ink" paletteStorageKey={paletteKey}><TestComponent/></ThemeProvider>);
+        expect(themes).toHaveLength(30);
+        expect(document.documentElement).toHaveClass('theme-paper-ink', 'dark', 'theme-custom');
+        await user.click(screen.getByRole('button', {name: 'Change palette'}));
+        expect(screen.getByText('Palette: midnight-noir')).toBeInTheDocument();
+        expect(document.documentElement).toHaveClass('theme-midnight-noir', 'dark', 'theme-custom');
+        expect(document.documentElement).not.toHaveClass('theme-paper-ink');
+        expect(localStorage.getItem(paletteKey)).toBe('midnight-noir');
+        document.documentElement.classList.remove('theme-custom');
+    });
     it('should provide theme context to children', () => {
         const TestComponent = () => {
             const {theme} = useTheme();

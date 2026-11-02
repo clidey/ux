@@ -27,6 +27,18 @@ describe('Icon Component', () => {
         expect(icon).toBeInTheDocument();
     });
 
+    it('defaults to a plain line icon and offers surface variants', () => {
+        const {container, rerender} = render(<Icon icon={<Home/>}/>);
+        const wrapper = container.querySelector('[data-slot="icon"]');
+        expect(wrapper).toHaveAttribute('data-variant', 'plain');
+        expect(wrapper).not.toHaveClass('bg-icon');
+        rerender(<Icon icon={<Home/>} variant="subtle"/>);
+        expect(wrapper).toHaveAttribute('data-variant', 'subtle');
+        rerender(<Icon icon={<Home/>} variant="solid"/>);
+        expect(wrapper).toHaveAttribute('data-variant', 'solid');
+        expect(wrapper).toHaveClass('bg-icon');
+    });
+
     it('should render with different sizes', () => {
         const {container} = render(<Icon icon={<Settings/>} size={32}/>);
 

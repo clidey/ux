@@ -53,6 +53,13 @@ describe("Tree", () => {
         expect(screen.getByText("Root 2")).toBeInTheDocument();
     });
 
+    it("exposes density for alternate row spacing", () => {
+        const {rerender, container} = render(<Tree data={mockData} density="condensed"/>);
+        expect(container.querySelector('[data-slot="tree"]')).toHaveAttribute('data-density', 'condensed');
+        rerender(<Tree data={mockData} density="spacious"/>);
+        expect(container.querySelector('[data-slot="tree"]')).toHaveAttribute('data-density', 'spacious');
+    });
+
     it("expands and collapses tree nodes", async () => {
         const user = userEvent.setup();
         render(<Tree data={mockData}/>);

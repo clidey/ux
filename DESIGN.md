@@ -1,5 +1,5 @@
 ---
-name: Clidey UX
+name: Clidey Design
 description: Production-ready React components built on Radix UI and Tailwind CSS v4.
 colors:
   primary-blue: "#2c6bd4"
@@ -70,13 +70,13 @@ components:
     height: "36px"
 ---
 
-# Design System: Clidey UX
+# Design System: Clidey Design
 
 ## 1. Overview
 
 **Creative North Star: "The Precision Instrument"**
 
-Clidey UX is engineered like a well-machined tool: every surface considered, every edge deliberate, nothing decorative. The system communicates through structural clarity and mechanical precision rather than ornamentation. Components are functional objects that earn trust through predictable behavior and dimensional consistency.
+Clidey Design is engineered like a well-machined tool: every surface considered, every edge deliberate, nothing decorative. The system communicates through structural clarity and mechanical precision rather than ornamentation. Components are functional objects that earn trust through predictable behavior and dimensional consistency.
 
 The aesthetic philosophy is subtractive. Start with nothing and add only what the interaction requires. Color is rare and meaningful. Typography carries hierarchy. Spacing is the primary tool for visual grouping. When a component appears on screen, it should feel like it was always meant to be there: no entrance fanfare, no competing for attention.
 

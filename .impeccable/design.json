@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-05-30T00:00:00Z",
-  "title": "Design System: Clidey UX",
+  "title": "Design System: Clidey Design",
   "extensions": {
     "colorMeta": {
       "primary-violet": {
@@ -163,7 +163,7 @@
   ],
   "narrative": {
     "northStar": "The Precision Instrument",
-    "overview": "Clidey UX is engineered like a well-machined tool: every surface considered, every edge deliberate, nothing decorative. The system communicates through structural clarity and mechanical precision rather than ornamentation. Components are functional objects that earn trust through predictable behavior and dimensional consistency.\n\nThe aesthetic philosophy is subtractive. Start with nothing and add only what the interaction requires. Color is rare and meaningful. Typography carries hierarchy. Spacing is the primary tool for visual grouping. When a component appears on screen, it should feel like it was always meant to be there: no entrance fanfare, no competing for attention.\n\nThis system explicitly rejects the visual weight of Material UI, the generic sameness of Bootstrap templates, and the bare-bones abandonment of headless libraries.",
+    "overview": "Clidey Design is engineered like a well-machined tool: every surface considered, every edge deliberate, nothing decorative. The system communicates through structural clarity and mechanical precision rather than ornamentation. Components are functional objects that earn trust through predictable behavior and dimensional consistency.\n\nThe aesthetic philosophy is subtractive. Start with nothing and add only what the interaction requires. Color is rare and meaningful. Typography carries hierarchy. Spacing is the primary tool for visual grouping. When a component appears on screen, it should feel like it was always meant to be there: no entrance fanfare, no competing for attention.\n\nThis system explicitly rejects the visual weight of Material UI, the generic sameness of Bootstrap templates, and the bare-bones abandonment of headless libraries.",
     "keyCharacteristics": [
       "Achromatic neutrals with one deliberate accent",
       "Tight, consistent radius scale (6px-14px)",
