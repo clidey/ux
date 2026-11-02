@@ -284,3 +284,29 @@
   .ux-spinner-mark__signal, .ux-spinner-mark__meet { opacity: 0; }
   .ux-spinner-mark__stem { stroke-dashoffset: 0; }
 }
+
+/* Animated not-found page */
+.ux-not-found { margin-inline: auto; color: var(--foreground); font-family: var(--theme-font-body, ui-sans-serif, sans-serif); width: min(100%, 860px); text-align: center; overflow: hidden; }
+.ux-not-found-eyebrow { font: 600 11px var(--theme-font-mono, ui-monospace, monospace); letter-spacing: .15em; text-transform: uppercase; color: var(--brand-readable, var(--brand)); }
+.ux-not-found h1 { font-family: var(--theme-font-heading, inherit); font-size: clamp(34px, 5vw, 58px); line-height: 1.06; letter-spacing: -.04em; margin: 14px 0 12px; }
+.ux-not-found p { color: var(--muted-foreground); font-size: 17px; margin: 0 auto; max-width: 580px; }
+.ux-not-found-stage { width: min(100%, 560px); height: 190px; margin: 66px auto 40px; position: relative; overflow: hidden; }
+.ux-not-found-character { position: absolute; left: 0; bottom: 0; width: 140px; height: 112px; transform-origin: 50% 95%; will-change: transform, opacity; }
+.ux-not-found-character-inner { width: 140px; height: 112px; transform-origin: 100% 50%; will-change: transform; }
+.ux-not-found-character svg { display: block; width: 140px; height: 112px; overflow: visible; }
+.ux-not-found-track, .ux-not-found-signal { stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+.ux-not-found-track { opacity: .2; }
+.ux-not-found-track.blue, .ux-not-found-signal.blue, .ux-not-found-ring { stroke: var(--primary); }
+.ux-not-found-track.orange, .ux-not-found-signal.orange { stroke: #f4781c; }
+.ux-not-found-ring { fill: var(--background); }
+.ux-not-found-head { fill: #ffc233; }
+.ux-not-found-impact { transform-box: fill-box; transform-origin: 50% 50%; }
+.ux-not-found-impact path { stroke: var(--muted-foreground); stroke-width: 4; stroke-linecap: round; }
+.ux-not-found-number { position: absolute; right: 0; bottom: 0; font-size: clamp(112px, 15vw, 176px); line-height: .74; font-weight: 800; letter-spacing: -.075em; color: var(--foreground); font-variant-numeric: tabular-nums; }
+.ux-not-found-actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 16px; }
+.ux-not-found-motion { display: flex; gap: 3px; padding: 4px; border-radius: 9px; background: var(--muted); }
+.ux-not-found-motion button { border: 0; background: transparent; color: var(--muted-foreground); border-radius: 6px; padding: 7px 11px; text-transform: capitalize; }
+.ux-not-found-motion button.active { background: var(--card); color: var(--foreground); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
+
+.ux-not-found-motion button { cursor: pointer; font: inherit; }
+@media (max-width: 700px) { .ux-not-found-stage { margin-top: 46px; } .ux-not-found p { font-size: 15px; } }

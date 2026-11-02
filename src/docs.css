@@ -28,32 +28,7 @@ html.dark .docs-app { --docs-code-string: #f4a261; }
   opacity: 0.45;
 }
 .docs-article.docs-article-404 { max-width: none; width: 100%; min-height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; padding: 32px; overflow: hidden; }
-.docs-404 { width: min(100%, 860px); text-align: center; overflow: hidden; }
-.docs-404-content > .docs-eyebrow { color: var(--brand-readable, var(--brand)); }
-.docs-404 h1 { font-size: clamp(34px, 5vw, 58px); line-height: 1.06; letter-spacing: -.04em; margin: 14px 0 12px; }
-.docs-404 p { color: var(--muted-foreground); font-size: 17px; margin: 0 auto; max-width: 580px; }
-.docs-404-stage { width: min(100%, 560px); height: 190px; margin: 66px auto 40px; position: relative; overflow: hidden; }
-.docs-404-character { position: absolute; left: 0; bottom: 0; width: 140px; height: 112px; transform-origin: 50% 95%; will-change: transform, opacity; }
-.docs-404-character-inner { width: 140px; height: 112px; transform-origin: 100% 50%; will-change: transform; }
-.docs-404-character svg { display: block; width: 140px; height: 112px; overflow: visible; }
-.docs-404-track, .docs-404-signal { stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
-.docs-404-track { opacity: .2; }
-.docs-404-track.blue, .docs-404-signal.blue, .docs-404-ring { stroke: var(--primary); }
-.docs-404-track.orange, .docs-404-signal.orange { stroke: #f4781c; }
-.docs-404-ring { fill: var(--background); }
-.docs-404-head { fill: #ffc233; }
-.docs-404-impact { transform-box: fill-box; transform-origin: 50% 50%; }
-.docs-404-impact path { stroke: var(--muted-foreground); stroke-width: 4; stroke-linecap: round; }
-.docs-404-number { position: absolute; right: 0; bottom: 0; font-size: clamp(112px, 15vw, 176px); line-height: .74; font-weight: 800; letter-spacing: -.075em; color: var(--foreground); font-variant-numeric: tabular-nums; }
-.docs-404-actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 16px; }
-.docs-404-motion { display: flex; gap: 3px; padding: 4px; border-radius: 9px; background: var(--muted); }
-.docs-404-motion button { border: 0; background: transparent; color: var(--muted-foreground); border-radius: 6px; padding: 7px 11px; text-transform: capitalize; }
-.docs-404-motion button.active { background: var(--card); color: var(--foreground); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
-.docs-404-component { border: 1px solid var(--docs-line); border-radius: 12px; overflow: hidden; margin: 34px 0; }
-.docs-404-component-head { padding: 16px 20px; background: var(--card); border-bottom: 1px solid var(--docs-line); color: var(--muted-foreground); font: 600 12px ui-monospace, monospace; letter-spacing: .16em; }
-.docs-404-component .docs-404 { width: 100%; padding: 36px 24px 48px; }
-.docs-404-component .docs-404-stage { margin-top: 35px; }
-@media (max-width: 700px) { .docs-article-404 { padding: 24px; } .docs-404-stage { margin-top: 46px; } .docs-404 p { font-size: 15px; } }
+@media (max-width: 700px) { .docs-article-404 { padding: 24px; } }
 .docs-sidebar {
   --sidebar: #060c18;
   --sidebar-foreground: rgb(255 255 255 / 0.85);

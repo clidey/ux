@@ -369,6 +369,18 @@ All other dependencies (Radix UI, Lucide, Recharts, Sonner, Vaul, cmdk) are bund
 
 Contributions, bug reports, and feature requests are welcome. Please open an issue or pull request on [GitHub](https://github.com/clidey/ux).
 
+## Not found page
+
+Use the animated 404 view in your application's fallback route:
+
+```tsx
+import { NotFoundPage } from '@clidey/ux';
+
+<NotFoundPage homeHref="/" homeLabel="Back to home" />
+```
+
+Customize the copy with `title`, `description`, and `eyebrow`. Use `onHome` for router navigation or `action` for a custom action. Playback supports `loop`, `once`, and `off` through `defaultMotion` or controlled `motion` / `onMotionChange` props. Reduced motion preferences automatically show a still pose. Optional playback controls are enabled with `showMotionControls`.
+
 ## License
 
 Licensed under the [Apache License 2.0](LICENSE).

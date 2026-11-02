@@ -71,6 +71,7 @@ export { CopyButton } from './components/ui/copy-button'
 export { MultiSearchSelect, type MultiSearchSelectOption } from './components/ui/multi-search-select'
 export { FormSheet } from './components/ui/form-sheet'
 export { ConfirmDialog } from './components/ui/confirm-dialog'
+export { NotFoundPage, type NotFoundPageProps, type NotFoundMotion } from './components/ui/not-found-page'
 
 // Theme Components
 export { ThemeProvider, useTheme } from './components/theme/provider'

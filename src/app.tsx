@@ -12,7 +12,7 @@ import { Button, Toaster, useTheme, themes, getThemeById } from "@clidey/ux";
 import { ComponentDocsPage } from "./docs-component-pages";
 import { CodeSyntax } from "./docs-code-syntax";
 import { ExtraComponentDocsPage, extraComponentPages } from "./docs-extra-pages";
-import { DocsNotFound } from "./docs-not-found";
+import { DocsNotFound, NotFoundDocsPage } from "./docs-not-found";
 import { PatternDocsPage, patternPages } from "./docs-pattern-pages";
 import "./docs.css";
 import clideyMark from "./assets/clidey-mark.webp";
@@ -926,7 +926,7 @@ export default function App() {
             ) : id === "button" ? (
               <ButtonPage />
             ) : id === "404-page" ? (
-              <div className="docs-404-component"><div className="docs-404-component-head">PREVIEW</div><DocsNotFound onHome={() => go("overview")} /></div>
+              <NotFoundDocsPage onHome={() => go("overview")} />
             ) : patternPages.some(item => item.id === id) ? (
               <PatternDocsPage id={id} />
             ) : ["text-field", "combobox", "checkbox", "radio", "switch", "badge", "data-table", "tabs", "sidebar", "document-stepper", "key-bar", "alert", "toast", "dialog", "sheet", "menu", "command", "balanced-entry"].includes(id) ? (

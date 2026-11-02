@@ -83,6 +83,7 @@
               "components/skeleton",
               "components/progress",
               "components/empty-state",
+              "components/not-found-page",
               "components/separator"
             ]
           },

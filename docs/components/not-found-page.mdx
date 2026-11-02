@@ -1,0 +1,49 @@
+---
+title: 'NotFoundPage'
+description: 'An animated 404 fallback with configurable copy, navigation, and motion.'
+---
+
+# NotFoundPage
+
+A missing route view with the Clidey Design character hitting the 404 wall and falling. The component uses the library styles and theme tokens.
+
+```tsx
+import { NotFoundPage } from '@clidey/ux';
+import '@clidey/ux/styles.css';
+
+<NotFoundPage homeHref="/" homeLabel="Back to home" />
+```
+
+## Application navigation
+
+```tsx
+<NotFoundPage
+  title="This page is missing."
+  description="Return to your dashboard to continue."
+  onHome={() => navigate('/dashboard')}
+  homeLabel="Open dashboard"
+/>
+```
+
+Use `action` to replace the navigation control, or `action={null}` to hide it. `className` and section HTML attributes apply to the outer element.
+
+## Playback
+
+`defaultMotion` accepts `"loop"`, `"once"`, or `"off"`. Once plays to the settled pose and stops. Off shows a still pose. The component also honors `prefers-reduced-motion`, cancels its animation on unmount, and recalculates its position when resized.
+
+```tsx
+<NotFoundPage defaultMotion="once" showMotionControls />
+```
+
+For controlled playback, pass `motion` and `onMotionChange` together:
+
+```tsx
+import { useState } from 'react';
+import { NotFoundPage, type NotFoundMotion } from '@clidey/ux';
+
+const [motion, setMotion] = useState<NotFoundMotion>('off');
+
+<NotFoundPage motion={motion} onMotionChange={setMotion} showMotionControls />
+```
+
+`NotFoundPageProps` and `NotFoundMotion` are exported from `@clidey/ux`. Playback controls are hidden by default.
