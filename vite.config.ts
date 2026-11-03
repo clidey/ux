@@ -29,6 +29,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@clidey/ux/icons': path.resolve(__dirname, './icons/index.js'),
       "@": path.resolve(__dirname, "./src"),
       // The showcase consumes the public entry point like an app would.
       "@clidey/ux": path.resolve(__dirname, "./src/index.ts"),

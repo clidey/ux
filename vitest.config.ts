@@ -33,6 +33,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
+            '@clidey/ux/icons': path.resolve(__dirname, './icons/index.js'),
             '@': path.resolve(__dirname, './src'),
             '@clidey/ux': path.resolve(__dirname, './src/index.ts'),
         },

@@ -189,6 +189,8 @@ export default function Example() {
 | Component | Description |
 | --- | --- |
 | `Icon` | SVG wrapper with consistent sizing |
+| `CatalogIcon` | Plain SVG icon selected by catalog name |
+| `IconSearch`, `IconHome`, … | Named components for every catalog SVG, including `Alt` variants |
 | `Toaster` | Toast notifications powered by Sonner |
 
 ### Theme
@@ -201,6 +203,18 @@ export default function Example() {
 ---
 
 ## Usage examples
+
+### Catalog icons
+
+```tsx
+import { IconSearch, IconSearchAlt, CatalogIcon } from '@clidey/ux';
+
+<IconSearch className="size-4" />
+<IconSearchAlt size={20} />
+<CatalogIcon name="source" size={16} />
+```
+
+Catalog icons inherit the current text color and accept SVG props and refs. Add `aria-label` when an icon needs its own accessible name.
 
 ### Triggers and `asChild`
 

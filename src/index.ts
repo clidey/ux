@@ -59,6 +59,8 @@ export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./
 export { ResizablePanel, ResizablePanelGroup, ResizableHandle } from "./components/ui/resizable";
 export { Alert, AlertTitle, AlertDescription, AlertAction, alertVariants } from "./components/ui/alert";
 export { Icon } from "./components/ui/icon";
+export { CatalogIcon, type CatalogIconProps } from "./components/ui/catalog-icon";
+export * from "./components/ui/catalog-icons";
 export { Switch } from "./components/ui/switch";
 export { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "./components/ui/alert-dialog";
 export { Spinner, spinnerVariants } from "./components/ui/spinner";

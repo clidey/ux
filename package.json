@@ -2,7 +2,7 @@
   "name": "@clidey/ux",
   "description": "Clidey Design — accessible React components and design tokens.",
   "private": false,
-  "version": "1.6.3",
+  "version": "1.6.4",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -40,14 +40,15 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:lib": "vite build --config vite.lib.config.ts && node scripts/build-theme-palettes.mjs",
+    "build:lib": "pnpm generate:icons && vite build --config vite.lib.config.ts && node scripts/build-theme-palettes.mjs",
     "lint": "oxlint",
     "fmt": "oxfmt --write src/",
     "docker:push": "docker buildx build --platform linux/amd64,linux/arm64 -t clidey/ux-docs:${UX_DOCS_VERSION:?set UX_DOCS_VERSION} -f k8s/Dockerfile . --push",
     "preview": "vite preview",
     "test": "vitest --coverage",
     "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "npm run build:lib"
+    "prepublishOnly": "npm run build:lib",
+    "generate:icons": "node scripts/build-icon-components.mjs"
   },
   "peerDependencies": {
     "react": ">=18.3.0",

@@ -43,6 +43,7 @@ export default defineConfig({
     },
     rolldownOptions: {
       external: [
+        '@clidey/ux/icons',
         'react',
         'react-dom',
         'react/jsx-runtime',
