@@ -9,8 +9,10 @@ export default defineConfig({
         globals: true,
         environment: 'happy-dom',
         setupFiles: './tests/setup.ts',
+        include: ['tests/**/*.test.{ts,tsx}'],
         exclude: [
-            'node_modules/**',
+            '**/node_modules/**',
+            '.dory/**',
             'dist/**',
             'src/showcases/**',
             'src/index.ts',
@@ -19,7 +21,8 @@ export default defineConfig({
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
             exclude: [
-                'node_modules/',
+                '**/node_modules/**',
+                '.dory/**',
                 'tests/',
                 '*.config.*',
                 'src/app.tsx',
