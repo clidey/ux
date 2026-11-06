@@ -119,7 +119,7 @@ function MultiSearchSelect({
           role="combobox"
           aria-expanded={open}
           disabled={disabled}
-          className={cn("w-full justify-between font-normal", buttonClassName, className)}
+          className={cn("w-full min-w-0 justify-between font-normal", buttonClassName, className)}
         >
           <span className="truncate text-muted-foreground">
             {triggerLabel}
@@ -128,7 +128,7 @@ function MultiSearchSelect({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className={cn("w-[var(--radix-popover-trigger-width)] p-0", contentClassName)}
+        className={cn("min-w-[var(--radix-popover-trigger-width)] w-max max-w-[min(24rem,var(--radix-popover-content-available-width))] p-0", contentClassName)}
         side={side}
         align={align}
       >
@@ -163,7 +163,7 @@ function MultiSearchSelect({
                       {isSelected && <Check className="size-3 text-primary-foreground" />}
                     </div>
                     {option.icon && <span className="mr-2">{option.icon}</span>}
-                    <span>{option.label}</span>
+                    <span className="truncate">{option.label}</span>
                   </CommandItem>
                 )
               })}

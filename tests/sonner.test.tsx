@@ -15,8 +15,8 @@
  */
 
 import {beforeEach, describe, expect, it, vi} from "vitest";
-import {render} from "@testing-library/react";
-import {Toaster} from "@/components/ui/sonner";
+import {act, render, screen} from "@testing-library/react";
+import {Toaster, toast} from "@/components/ui/sonner";
 
 // Mock matchMedia
 beforeEach(() => {
@@ -112,4 +112,33 @@ describe("Sonner", () => {
         const {container} = render(<Toaster hotkey={["Shift", "T"]}/>);
         expect(container.firstChild).toBeInTheDocument();
     });
+    it('uses neutral themed surfaces for status notifications by default', async () => {
+        render(<Toaster id="neutral-test"/>);
+        let id: string | number = '';
+        act(() => { id = toast.success('Neutral notification', {toasterId: 'neutral-test'}); });
+        const message = await screen.findByText('Neutral notification');
+        expect(message.closest('[data-sonner-toast]')).toHaveAttribute('data-rich-colors', 'false');
+        act(() => { toast.dismiss(id); });
+    });
+
+    it('keeps filled status colors available as an explicit opt-in', async () => {
+        render(<Toaster id="rich-test" richColors/>);
+        let id: string | number = '';
+        act(() => { id = toast.success('Explicit rich notification', {toasterId: 'rich-test'}); });
+        const message = await screen.findByText('Explicit rich notification');
+        expect(message.closest('[data-sonner-toast]')).toHaveAttribute('data-rich-colors', 'true');
+        act(() => { toast.dismiss(id); });
+    });
+
+    it('preserves theme tokens when callers add inline styling', async () => {
+        render(<Toaster id="style-test" style={{marginTop: 12}}/>);
+        let id: string | number = '';
+        act(() => { id = toast('Styled notification', {toasterId: 'style-test'}); });
+        const message = await screen.findByText('Styled notification');
+        const toaster = message.closest('[data-sonner-toaster]') as HTMLElement;
+        expect(toaster.style.getPropertyValue('--normal-bg')).toBe('var(--popover)');
+        expect(toaster.style.marginTop).toBe('12px');
+        act(() => { toast.dismiss(id); });
+    });
+
 });

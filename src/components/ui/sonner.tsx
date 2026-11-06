@@ -19,26 +19,27 @@ import {toast, Toaster as Sonner, type ToasterProps} from "sonner"
 import {cn} from "@/lib/utils"
 import {markNotSlottable} from "@/lib/slot"
 
-const Toaster = ({className, ...props}: ToasterProps) => {
+const Toaster = ({className, style, toastOptions, richColors = false, ...props}: ToasterProps) => {
   const { theme = "system" } = useTheme()
-
-  return (
-      <div data-slot="toaster" className={cn("toaster group", className)}>
-          <Sonner
-              theme={theme as ToasterProps["theme"]}
-              richColors
-              className={cn("toaster group", className)}
-              style={
-                  {
-                      "--normal-bg": "var(--popover)",
-                      "--normal-text": "var(--popover-foreground)",
-                      "--normal-border": "var(--border)",
-                  } as React.CSSProperties
-              }
-              {...props}
-          />
-      </div>
-  )
+  return <div data-slot="toaster" className={cn("toaster group", className)}>
+    <Sonner
+      theme={theme as ToasterProps["theme"]}
+      richColors={richColors}
+      className={cn("toaster group", className)}
+      style={{
+        "--normal-bg": "var(--popover)",
+        "--normal-text": "var(--popover-foreground)",
+        "--normal-border": "var(--border)",
+        "--border-radius": "var(--radius)",
+        ...style,
+      } as React.CSSProperties}
+      toastOptions={{
+        ...toastOptions,
+        style: {paddingInlineEnd: props.closeButton ? "3rem" : undefined, ...toastOptions?.style},
+      }}
+      {...props}
+    />
+  </div>
 }
 
 markNotSlottable(Toaster)

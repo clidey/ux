@@ -18,7 +18,7 @@ import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from '@/components/ui/tooltip';
 import {Button} from '@/components/ui/button';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 
 describe('Tooltip Component', () => {
     it('should show and hide the tooltip on hover', async () => {
@@ -48,4 +48,22 @@ describe('Tooltip Component', () => {
         // The tooltip test should not check for removal as Radix keeps it hidden
         // Testing the visibility state is enough
     });
+    it('respects the delay of an enclosing provider', async () => {
+        const user = userEvent.setup();
+        render(<TooltipProvider delayDuration={1500}><Tooltip><TooltipTrigger><Button>Delayed hint</Button></TooltipTrigger><TooltipContent>Wait for the provider delay</TooltipContent></Tooltip></TooltipProvider>);
+        await user.hover(screen.getByRole('button', {name: 'Delayed hint'}));
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+        await user.unhover(screen.getByRole('button', {name: 'Delayed hint'}));
+    });
+
+    it('preserves the controlled open contract', async () => {
+        const user = userEvent.setup();
+        const onOpenChange = vi.fn();
+        render(<Tooltip open={false} onOpenChange={onOpenChange}><TooltipTrigger><Button>Controlled hint</Button></TooltipTrigger><TooltipContent>Controlled content</TooltipContent></Tooltip>);
+        await user.hover(screen.getByRole('button', {name: 'Controlled hint'}));
+        await new Promise(resolve => setTimeout(resolve, 20));
+        expect(onOpenChange).toHaveBeenCalledWith(true);
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    });
+
 });

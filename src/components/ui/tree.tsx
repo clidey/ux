@@ -19,7 +19,8 @@
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { IconChevronRight as ChevronRight, IconFolder, IconFileText } from "@/components/ui/catalog-icons";
+type TreeIcon = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 import useResizeObserver from "@/lib/use-resize-observer";
 import { cn } from "@/lib/utils";
 import {markNotSlottable} from "@/lib/slot"
@@ -27,7 +28,7 @@ import {markNotSlottable} from "@/lib/slot"
 export interface TreeDataItem {
   id: string;
   name: string;
-  icon?: LucideIcon;
+  icon?: TreeIcon;
   children?: TreeDataItem[];
 }
 
@@ -38,8 +39,8 @@ type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
   expandAll?: boolean;
   expandedIds?: string[];
   onExpandChange?: (ids: string[]) => void;
-  folderIcon?: LucideIcon;
-  itemIcon?: LucideIcon;
+  folderIcon?: TreeIcon;
+  itemIcon?: TreeIcon;
   density?: "condensed" | "comfortable" | "spacious";
 };
 
@@ -102,8 +103,8 @@ function Tree({
   expandAll = false,
   expandedIds: controlledExpandedIds,
   onExpandChange,
-  folderIcon,
-  itemIcon,
+  folderIcon = IconFolder,
+  itemIcon = IconFileText,
   density = "comfortable",
   className,
   ...props
@@ -235,7 +236,7 @@ function Tree({
       <ScrollArea style={{ width, height }}>
         <div
           ref={treeRef}
-          className="relative p-2 outline-none"
+          className="group/tree relative p-2 outline-none"
           role="tree"
           tabIndex={0}
           aria-activedescendant={focusedItemId ? `tree-node-${focusedItemId}` : undefined}
@@ -281,8 +282,8 @@ function TreeItems({
   handleSelectChange: (item: TreeDataItem | undefined) => void;
   expandedIds: string[];
   toggleExpand: (id: string) => void;
-  folderIcon?: LucideIcon;
-  itemIcon?: LucideIcon;
+  folderIcon?: TreeIcon;
+  itemIcon?: TreeIcon;
 }) {
   return (
     <ul role="group" className="m-0 list-none p-0">
@@ -341,7 +342,7 @@ function TreeFolder({
   item: TreeDataItem;
   isSelected: boolean;
   isFocused: boolean;
-  FolderIcon?: LucideIcon;
+  FolderIcon?: TreeIcon;
   onSelect: () => void;
 }) {
   const Icon = item.icon || FolderIcon;
@@ -358,7 +359,7 @@ function TreeFolder({
           "flex flex-1 w-full items-center py-2 px-2 rounded-md transition-all last:[&[data-state=open]>svg]:rotate-90 outline-none",
           "hover:bg-muted/80",
           isSelected && "bg-accent text-accent-foreground",
-          isFocused && "ring-2 ring-ring/50",
+          isFocused && "group-focus-visible/tree:ring-2 group-focus-visible/tree:ring-inset group-focus-visible/tree:ring-ring/50",
           isFocused && !isSelected && "bg-muted/60"
         )}
         onClick={(e) => {
@@ -388,7 +389,7 @@ function TreeLeaf({
   item: TreeDataItem;
   isSelected: boolean;
   isFocused: boolean;
-  Icon?: LucideIcon;
+  Icon?: TreeIcon;
   onClick: () => void;
 }) {
   const Icon = item.icon || DefaultIcon;
@@ -406,7 +407,7 @@ function TreeLeaf({
         "flex items-center py-2 px-2 rounded-md cursor-pointer w-full text-left outline-none",
         "hover:bg-muted/80",
         isSelected && "bg-accent text-accent-foreground",
-        isFocused && "ring-2 ring-ring/50",
+        isFocused && "group-focus-visible/tree:ring-2 group-focus-visible/tree:ring-inset group-focus-visible/tree:ring-ring/50",
         isFocused && !isSelected && "bg-muted/60"
       )}
       onClick={onClick}

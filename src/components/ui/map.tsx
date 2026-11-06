@@ -9,7 +9,7 @@ import MapGL, {
   type MapRef,
   type ViewState,
 } from "react-map-gl/maplibre"
-import type { LayerSpecification } from "maplibre-gl"
+import type { LayerSpecification, StyleSpecification } from "maplibre-gl"
 import type * as GeoJSON from "geojson"
 import { cn } from "@/lib/utils"
 import { ComponentErrorBoundary } from "@/lib/error-boundary"
@@ -42,7 +42,7 @@ export interface MapContainerProps extends Omit<React.ComponentProps<"div">, "st
   config: MapConfig
   initialViewState?: Partial<ViewState> & { latitude: number; longitude: number; zoom: number }
   projection?: MapProjection
-  mapStyle?: string
+  mapStyle?: string | StyleSpecification
   interactive?: boolean
   showNavigation?: boolean
   showScale?: boolean

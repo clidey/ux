@@ -20,27 +20,25 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import {cn} from "@/lib/utils"
 import {markSlottable, resolveTriggerChild, type TriggerChildProps} from "@/lib/slot"
 
-function TooltipProvider({
-  delayDuration = 0,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
-  return (
-    <TooltipPrimitive.Provider
-      data-slot="tooltip-provider"
-      delayDuration={delayDuration}
-      {...props}
-    />
-  )
+const TooltipProviderContext = React.createContext(false)
+
+function TooltipProvider({delayDuration = 0, ...props}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
+  return <TooltipProviderContext.Provider value={true}>
+    <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />
+  </TooltipProviderContext.Provider>
 }
 
-function Tooltip({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-  return (
-    <TooltipProvider>
-      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
-    </TooltipProvider>
-  )
+function Tooltip({open: controlledOpen, defaultOpen = false, onOpenChange, ...props}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+  const hasProvider = React.useContext(TooltipProviderContext)
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
+  const handleOpenChange = React.useCallback((next: boolean) => {
+    if (controlledOpen === undefined) setInternalOpen(next)
+    onOpenChange?.(next)
+  }, [controlledOpen, onOpenChange])
+  // Dispatch the Radix open notification during the event, before content
+  // installs its close-other-tooltips listener in compatibility runtimes.
+  const tooltip = <TooltipPrimitive.Root data-slot="tooltip" open={controlledOpen ?? internalOpen} onOpenChange={handleOpenChange} {...props} />
+  return hasProvider ? tooltip : <TooltipProvider>{tooltip}</TooltipProvider>
 }
 
 const TooltipTrigger = React.forwardRef<

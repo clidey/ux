@@ -313,3 +313,19 @@
 
 .ux-not-found-motion button { cursor: pointer; font: inherit; }
 @media (max-width: 700px) { .ux-not-found-stage { margin-top: 46px; } .ux-not-found p { font-size: 15px; } }
+
+/* Keep notification chrome inside the card and aligned in either direction. */
+.toaster[data-sonner-toaster] [data-sonner-toast][data-styled='true'] [data-close-button] {
+  inset-inline-start: auto;
+  inset-inline-end: .75rem;
+  top: .75rem;
+  transform: none;
+  border-color: transparent;
+  border-radius: calc(var(--radius) / 2);
+  background: transparent;
+  color: var(--muted-foreground);
+}
+.toaster[data-sonner-toaster] [data-sonner-toast][data-styled='true'] [data-close-button]:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
