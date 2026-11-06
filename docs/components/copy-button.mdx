@@ -3,9 +3,47 @@ title: 'CopyButton'
 description: 'Button that copies text to clipboard with visual feedback.'
 ---
 
-# CopyButton
+import { CopyPreview } from '../examples/action-demos.tsx';
+
 
 A button that copies the provided text to the clipboard and shows a brief checkmark confirmation. Includes a tooltip label.
+
+
+## Interactive example
+
+<Specimen label="Copy Button · Live example">
+  <CopyPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function CopyPreview() {
+  const [text, setText] = useState("workspace-studio");
+  const [copied, setCopied] = useState(false);
+  return (
+    <Demo hint="Change the text and copy it to your clipboard.">
+      <div className="ux-demo-row">
+        <UX.Input
+          aria-label="Text to copy"
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            setCopied(false);
+          }}
+        />
+        <UX.CopyButton text={text} onCopy={() => setCopied(true)} tooltipLabel="Copy text" />
+      </div>
+      <Status>{copied ? "Copied to clipboard" : "Ready to copy"}</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Usage
 

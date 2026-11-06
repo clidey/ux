@@ -1,0 +1,13 @@
+{
+  "name": "@clidey/ux-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node ../scripts/dory.mjs dev",
+    "build": "node ../scripts/build-docs.mjs",
+    "check": "node ../scripts/check-doc-icons.mjs && node ../scripts/check-doc-demos.mjs && node ../scripts/sync-doc-examples.mjs && node ../scripts/dory.mjs check",
+    "preview": "PORT=3191 node ../scripts/dory.mjs preview",
+    "mcp": "node ../scripts/dory.mjs mcp serve",
+    "mcp:config": "node ../scripts/dory.mjs mcp config"
+  }
+}

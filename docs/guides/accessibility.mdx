@@ -1,0 +1,38 @@
+---
+title: 'Accessible product interfaces'
+description: 'Preserve the accessibility of the primitives as you compose your application.'
+---
+
+Radix-backed controls provide keyboard and focus behavior. Accessible products also need labels, understandable content, appropriate structure, and testing in context.
+
+## Name every control
+
+```tsx
+import { Button, IconSearch, Input, Label } from '@clidey/ux';
+
+<Label htmlFor="project-search">Find a project</Label>
+<Input id="project-search" type="search" />
+<Button size="icon" aria-label="Search projects"><IconSearch /></Button>
+```
+
+A placeholder is supporting text, not a label. Decorative icons should not repeat a control's accessible name. Use words alongside status colors.
+
+## Keep keyboard paths predictable
+
+- Tab through the main workflow without using a mouse.
+- Check Enter and Space on actions and arrow keys in composite widgets.
+- Open and dismiss overlays, then confirm focus returns to the trigger.
+- Keep a visible focus indicator against every palette surface.
+- Avoid a document-level keyboard shortcut while someone is typing in a field.
+
+## Explain dialogs and validation
+
+Provide `DialogTitle` and `DialogDescription`, including when their visual presentation is subtle. Associate help and error text with fields using `aria-describedby`. Set `aria-invalid` when a value fails validation, and announce asynchronous failure without clearing the user's input.
+
+## Test themes and motion
+
+Review light and dark, the intended palettes, high zoom, narrow windows, and reduced motion. Palette selection is not a guarantee that every custom combination meets your contrast needs. Give chart series labels or patterns in addition to color.
+
+## Verify behavior, not implementation
+
+In component tests, query by role and accessible name. In a browser, complete a real task with only the keyboard. Include loading, empty, error, and disabled states. Automated checks help find issues; they do not replace a manual pass with assistive technology.

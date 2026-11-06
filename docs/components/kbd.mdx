@@ -3,9 +3,45 @@ title: 'Kbd'
 description: 'Styled keyboard key indicator for displaying shortcuts.'
 ---
 
-# Kbd
+import { KbdPreview } from '../examples/action-demos.tsx';
+
 
 A visual keyboard key cap component for displaying keyboard shortcuts. Purely presentational; it does not bind any keyboard listeners or register shortcuts.
+
+
+## Interactive example
+
+<Specimen label="Kbd · Live example">
+  <KbdPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function KbdPreview() {
+  const [platform, setPlatform] = useState("mac");
+  return (
+    <Demo hint="Change platforms to see how shortcut labels adapt.">
+      <div className="ux-demo-row">
+        <UX.Kbd>{platform === "mac" ? "⌘" : "Ctrl"}</UX.Kbd>
+        <UX.Kbd>K</UX.Kbd>
+        <span>Open command search</span>
+      </div>
+      <UX.Button
+        variant="outline"
+        onClick={() => setPlatform(platform === "mac" ? "windows" : "mac")}
+      >
+        Show {platform === "mac" ? "Windows" : "macOS"} shortcut
+      </UX.Button>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Usage
 

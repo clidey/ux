@@ -1,0 +1,52 @@
+---
+title: 'Semantic tokens'
+description: 'Style the meaning of an element so it stays coherent across palettes.'
+---
+
+Components read CSS custom properties. Product layouts should use the same roles, so theme switching reaches the whole experience.
+
+| Role | Tokens | Use |
+| --- | --- | --- |
+| Canvas | `--background`, `--foreground` | Page background and primary text |
+| Surfaces | `--card`, `--card-foreground`, `--popover`, `--popover-foreground` | Cards and floating layers |
+| Emphasis | `--primary`, `--primary-foreground` | Main action and its label |
+| Quiet content | `--muted`, `--muted-foreground` | Secondary surfaces and supporting text |
+| Interaction | `--accent`, `--accent-foreground`, `--ring` | Hover, selected controls, and focus |
+| Structure | `--border`, `--input`, `--radius` | Boundaries, fields, and shape |
+| Danger | `--destructive`, `--destructive-foreground` | Destructive actions and labels |
+| Navigation | `--sidebar`, `--sidebar-foreground`, `--sidebar-border` | Sidebar surfaces |
+| Data | `--chart-1` through `--chart-5` | Chart series |
+
+## Compose with semantic utilities
+
+```tsx
+<section className="rounded-lg border border-border bg-card p-6 text-card-foreground">
+  <h2 className="text-lg font-semibold">Workspace settings</h2>
+  <p className="text-muted-foreground">Changes apply to this workspace.</p>
+</section>
+```
+
+These layout utility classes require your app's Tailwind build. The package's compiled stylesheet styles its own components; it cannot generate arbitrary utilities added later in your source.
+
+## Override a token
+
+```css
+/* Import after the library stylesheet. */
+:root {
+  --primary: oklch(0.55 0.18 260);
+  --primary-foreground: oklch(0.99 0 0);
+}
+
+.dark {
+  --primary: oklch(0.72 0.13 260);
+  --primary-foreground: oklch(0.16 0.02 260);
+}
+```
+
+Use complete CSS color values. A bare HSL tuple is not interchangeable with an OKLCH or hex value. Override foreground/background pairs together and check their contrast.
+
+When a palette is active, target its root selector with equal or greater specificity and load your overrides last. Use a small, documented override layer instead of editing the generated package stylesheet.
+
+## Custom brand or shared palette?
+
+Use an existing palette when you want a complete visual direction. Use token overrides for a focused brand adjustment. For a new shared palette, add its definition and both mode styles to the source catalog, then regenerate `theme-palettes.css`; see [Development](/contributing/development).

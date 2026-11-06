@@ -1,0 +1,70 @@
+---
+title: 'Framework integration'
+description: 'Use UX in Vite and Next.js with predictable CSS and client boundaries.'
+---
+
+UX exports ES modules and TypeScript declarations. React and React DOM 18.3 or later are peer dependencies. Other required runtime packages are regular dependencies installed by your package manager; the library build externalizes them.
+
+## Vite
+
+```tsx
+// src/main.tsx
+import { createRoot } from 'react-dom/client';
+import { ThemeProvider } from '@clidey/ux';
+import '@clidey/ux/styles.css';
+import '@clidey/ux/theme-fonts.css';
+import App from './App';
+
+createRoot(document.getElementById('root')!).render(
+  <ThemeProvider defaultTheme="system" defaultPalette="paper-ink">
+    <App />
+  </ThemeProvider>
+);
+```
+
+No application Tailwind configuration is necessary to use the package's own styled controls. If you add Tailwind utility classes to your own markup, configure Tailwind in your application as usual.
+
+## Next.js App Router
+
+```tsx
+// app/providers.tsx
+'use client';
+import type { ReactNode } from 'react';
+import { ThemeProvider } from '@clidey/ux';
+
+export function Providers({ children }: { children: ReactNode }) {
+  return <ThemeProvider defaultTheme="system" defaultPalette="paper-ink">
+    {children}
+  </ThemeProvider>;
+}
+```
+
+```tsx
+// app/layout.tsx
+import '@clidey/ux/styles.css';
+import '@clidey/ux/theme-fonts.css';
+import type { ReactNode } from 'react';
+import { Providers } from './providers';
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return <html lang="en" suppressHydrationWarning>
+    <body><Providers>{children}</Providers></body>
+  </html>;
+}
+```
+
+Keep interactive UX controls in client components. The provider applies the saved preference on the client; test initial paint and hydration in your framework. `suppressHydrationWarning` does not prevent a theme flash or fix unrelated hydration errors.
+
+## Tailwind v4 in the consuming app
+
+```css
+@import 'tailwindcss';
+@import '@clidey/ux/styles.css';
+@source '../node_modules/@clidey/ux/dist';
+```
+
+Adjust the source path relative to the stylesheet. Put application overrides after the imports. The UX stylesheet uses a component layer so application utility classes can override it. Avoid including multiple versions of the package stylesheet on the same page.
+
+## Trouble getting styles to apply?
+
+Confirm the CSS import reaches the page, inspect the computed semantic variables, and check stylesheet ordering. For custom variants, inspect whether your application compiled their utility classes. For palette typography, confirm the optional font stylesheet loaded and the requested font assets return successfully.

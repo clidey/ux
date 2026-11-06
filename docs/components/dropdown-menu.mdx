@@ -3,9 +3,63 @@ title: 'DropdownMenu'
 description: 'Menu triggered by a button with items, checkboxes, radio groups, and sub-menus.'
 ---
 
-# DropdownMenu
+import { DropdownPreview } from '../examples/overlay-demos.tsx';
+
 
 `DropdownMenu` opens a floating menu when a trigger element is clicked. It supports standard items, checkbox items, radio groups, separators, shortcuts, and nested sub-menus.
+
+
+## Interactive example
+
+<Specimen label="Dropdown Menu · Live example">
+  <DropdownPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status, DemoIcon } from "./demo-shell";
+
+export function DropdownPreview() {
+  const [layout, setLayout] = useState("Board");
+  const [archived, setArchived] = useState(false);
+  return (
+    <Demo hint="Open the menu, choose a view, or toggle archived items with the keyboard.">
+      <UX.DropdownMenu>
+        <UX.DropdownMenuTrigger>
+          <UX.Button variant="outline">
+            <DemoIcon name="sliders" />
+            View options
+          </UX.Button>
+        </UX.DropdownMenuTrigger>
+        <UX.DropdownMenuContent>
+          <UX.DropdownMenuLabel>Project layout</UX.DropdownMenuLabel>
+          <UX.DropdownMenuRadioGroup value={layout} onValueChange={setLayout}>
+            {["Board", "List", "Timeline"].map((x) => (
+              <UX.DropdownMenuRadioItem value={x} key={x}>
+                {x}
+              </UX.DropdownMenuRadioItem>
+            ))}
+          </UX.DropdownMenuRadioGroup>
+          <UX.DropdownMenuSeparator />
+          <UX.DropdownMenuCheckboxItem
+            checked={archived}
+            onCheckedChange={(v) => setArchived(v === true)}
+          >
+            Show archived
+          </UX.DropdownMenuCheckboxItem>
+        </UX.DropdownMenuContent>
+      </UX.DropdownMenu>
+      <Status>
+        {layout} view · Archived projects {archived ? "visible" : "hidden"}
+      </Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -71,7 +125,7 @@ import {
 ## With icons
 
 ```tsx
-import { User, Settings, LogOut } from 'lucide-react';
+import { IconUser as User, IconSettings as Settings, IconLogOut as LogOut } from '@clidey/ux';
 
 <DropdownMenuContent>
   <DropdownMenuItem>

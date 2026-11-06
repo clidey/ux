@@ -3,9 +3,57 @@ title: 'Card'
 description: 'Container component with header, content, and footer sub-components.'
 ---
 
-# Card
+import { CardPreview } from '../examples/action-demos.tsx';
+
 
 `Card` is a flexible container for grouping related content. It composes from seven sub-components: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, and `CardFooter`.
+
+
+## Interactive example
+
+<Specimen label="Card · Live example">
+  <CardPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, DemoIcon } from "./demo-shell";
+
+export function CardPreview() {
+  const [saved, setSaved] = useState(false);
+  return (
+    <Demo hint="Save the project to change the card’s action and status.">
+      <UX.Card className="ux-demo-card">
+        <UX.CardHeader>
+          <UX.CardTitle>Studio foundations</UX.CardTitle>
+          <UX.CardDescription>One shared language for your next product.</UX.CardDescription>
+          <UX.CardAction>
+            <UX.Badge variant={saved ? "default" : "secondary"}>
+              {saved ? "Saved" : "Draft"}
+            </UX.Badge>
+          </UX.CardAction>
+        </UX.CardHeader>
+        <UX.CardContent>
+          <div className="ux-demo-metric">
+            12 <span>components in progress</span>
+          </div>
+          <UX.Progress value={68} aria-label="Project completion" />
+        </UX.CardContent>
+        <UX.CardFooter>
+          <UX.Button onClick={() => setSaved(!saved)}>
+            <DemoIcon name={saved ? "check" : "bookmark"} />
+            {saved ? "Saved to workspace" : "Save project"}
+          </UX.Button>
+        </UX.CardFooter>
+      </UX.Card>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

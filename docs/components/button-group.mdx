@@ -3,9 +3,53 @@ title: 'ButtonGroup'
 description: 'Group buttons together with connected borders and shared styling.'
 ---
 
-# ButtonGroup
+import { ButtonGroupPreview } from '../examples/action-demos.tsx';
+
 
 `ButtonGroup` connects multiple buttons visually by removing the gap between them and sharing border-radius at the joints. Use it for toolbars, segmented controls, and action sets.
+
+
+## Interactive example
+
+<Specimen label="Button Group · Live example">
+  <ButtonGroupPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function ButtonGroupPreview() {
+  const [view, setView] = useState("Week");
+  const [vertical, setVertical] = useState(false);
+  return (
+    <Demo hint="Switch the selected range and change the direction of the connected control.">
+      <div className="ux-demo-row">
+        <UX.ButtonGroup orientation={vertical ? "vertical" : "horizontal"}>
+          {["Day", "Week", "Month"].map((item) => (
+            <UX.Button
+              key={item}
+              variant={view === item ? "secondary" : "outline"}
+              aria-pressed={view === item}
+              onClick={() => setView(item)}
+            >
+              {item}
+            </UX.Button>
+          ))}
+        </UX.ButtonGroup>
+        <UX.Button variant="ghost" onClick={() => setVertical(!vertical)}>
+          Use {vertical ? "horizontal" : "vertical"}
+        </UX.Button>
+      </div>
+      <Status>{view} view</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -60,21 +104,15 @@ Use `ButtonGroupText` to insert a non-interactive label or unit inside the group
 </ButtonGroup>
 ```
 
-## With icons
+## With catalog icons
 
 ```tsx
-import { Bold, Italic, Underline } from 'lucide-react';
+import { Button, ButtonGroup, IconDownload, IconCopy, IconArchive } from '@clidey/ux';
 
 <ButtonGroup>
-  <Button variant="outline" size="icon" aria-label="Bold">
-    <Bold className="size-4" />
-  </Button>
-  <Button variant="outline" size="icon" aria-label="Italic">
-    <Italic className="size-4" />
-  </Button>
-  <Button variant="outline" size="icon" aria-label="Underline">
-    <Underline className="size-4" />
-  </Button>
+  <Button variant="outline" size="icon" aria-label="Download"><IconDownload /></Button>
+  <Button variant="outline" size="icon" aria-label="Copy"><IconCopy /></Button>
+  <Button variant="outline" size="icon" aria-label="Archive"><IconArchive /></Button>
 </ButtonGroup>
 ```
 

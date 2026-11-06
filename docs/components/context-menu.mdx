@@ -3,9 +3,54 @@ title: 'ContextMenu'
 description: 'Right-click context menu with rich item types and variants.'
 ---
 
-# ContextMenu
+import { ContextMenuPreview } from '../examples/overlay-demos.tsx';
+
 
 `ContextMenu` opens a menu when the user right-clicks (or long-presses on touch devices) on the trigger area. It supports the same rich item types as `DropdownMenu`.
+
+
+## Interactive example
+
+<Specimen label="Context Menu · Live example">
+  <ContextMenuPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status, DemoIcon } from "./demo-shell";
+
+export function ContextMenuPreview() {
+  const [action, setAction] = useState("No action yet");
+  return (
+    <Demo hint="Right-click the project, or focus it and press Shift+F10.">
+      <UX.ContextMenu>
+        <UX.ContextMenuTrigger className="ux-demo-context" tabIndex={0}>
+          <DemoIcon name="folder" />
+          <strong>Studio foundations</strong>
+          <span>Right-click for project actions</span>
+        </UX.ContextMenuTrigger>
+        <UX.ContextMenuContent>
+          <UX.ContextMenuItem onSelect={() => setAction("Opened Studio foundations")}>
+            Open project
+          </UX.ContextMenuItem>
+          <UX.ContextMenuItem onSelect={() => setAction("Created a local duplicate")}>
+            Duplicate
+          </UX.ContextMenuItem>
+          <UX.ContextMenuSeparator />
+          <UX.ContextMenuItem onSelect={() => setAction("Archived the demo project")}>
+            Archive
+          </UX.ContextMenuItem>
+        </UX.ContextMenuContent>
+      </UX.ContextMenu>
+      <Status>{action}</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -17,7 +62,6 @@ import {
   ContextMenuItem,
   ContextMenuLabel,
   ContextMenuSeparator,
-  ContextMenuGroup,
   ContextMenuShortcut,
   ContextMenuCheckboxItem,
   ContextMenuRadioGroup,

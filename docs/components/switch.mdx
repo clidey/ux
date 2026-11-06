@@ -3,9 +3,42 @@ title: 'Switch'
 description: 'Toggle switch for boolean settings with smooth animation.'
 ---
 
-# Switch
+import { SwitchPreview } from '../examples/form-demos.tsx';
+
 
 `Switch` is an accessible toggle switch built on Radix UI's primitive. It slides between checked and unchecked states with a smooth CSS transition.
+
+
+## Interactive example
+
+<Specimen label="Switch · Live example">
+  <SwitchPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function SwitchPreview() {
+  const [on, setOn] = useState(true);
+  return (
+    <Demo hint="Toggle the switch with the pointer or Space to update the setting immediately.">
+      <div className="ux-demo-setting">
+        <div>
+          <UX.Label htmlFor="switch-sync">Background sync</UX.Label>
+          <p>Keep this workspace up to date.</p>
+        </div>
+        <UX.Switch id="switch-sync" checked={on} onCheckedChange={setOn} />
+      </div>
+      <Status>Sync is {on ? "enabled" : "paused"}</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

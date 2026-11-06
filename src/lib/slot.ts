@@ -113,7 +113,7 @@ const isDevelopment = (() => {
 function reportMisuse(owner: string, reason: string) {
   if (isDevelopment) {
     console.error(
-      `[@clidey/ux] ${owner}: asChild was set but ${reason}. Rendering the primitive's own element instead so the trigger keeps working. See docs/triggers-and-aschild.md.`
+      `[@clidey/ux] ${owner}: asChild was set but ${reason}. Rendering the primitive's own element instead so the trigger keeps working. See docs/triggers-and-aschild.mdx.`
     )
   }
 }

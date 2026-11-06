@@ -3,9 +3,112 @@ title: 'Chart'
 description: 'Recharts wrapper with consistent theming, tooltips, and legend.'
 ---
 
-# Chart
+import { ChartPreview } from '../examples/chart-demo.tsx';
+
 
 The `chart.tsx` module wraps [Recharts](https://recharts.org) components with a theme-aware `ChartContainer` and accessory components for tooltips and legends. All charts automatically adapt to light and dark mode.
+
+
+## Interactive example
+
+<Specimen label="Chart · Live example">
+  <ChartPreview />
+
+```tsx
+import { useState } from "react";
+import { Area, AreaChart, Bar, BarChart } from "recharts";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+const data = [
+  { week: "Mon", completed: 18, planned: 24 },
+  { week: "Tue", completed: 28, planned: 32 },
+  { week: "Wed", completed: 24, planned: 30 },
+  { week: "Thu", completed: 42, planned: 40 },
+  { week: "Fri", completed: 38, planned: 44 },
+  { week: "Sat", completed: 52, planned: 50 },
+  { week: "Sun", completed: 64, planned: 58 },
+];
+
+export function ChartPreview() {
+  const [kind, setKind] = useState("area");
+  const [compare, setCompare] = useState(false);
+  const shared = (
+    <>
+      <UX.ThemedCartesianGrid vertical={false} />
+      <UX.ThemedXAxis dataKey="week" />
+      <UX.ThemedYAxis width={32} />
+      <UX.ChartTooltip content={<UX.ChartTooltipContent />} />
+      <UX.ChartLegend content={<UX.ChartLegendContent />} />
+    </>
+  );
+  return (
+    <Demo hint="Switch chart types, show a second series, and hover a data point for its tooltip.">
+      <div className="ux-demo-row">
+        <UX.Button
+          variant={kind === "area" ? "secondary" : "ghost"}
+          onClick={() => setKind("area")}
+        >
+          Area chart
+        </UX.Button>
+        <UX.Button variant={kind === "bar" ? "secondary" : "ghost"} onClick={() => setKind("bar")}>
+          Bar chart
+        </UX.Button>
+        <UX.Switch id="chart-compare" checked={compare} onCheckedChange={setCompare} />
+        <UX.Label htmlFor="chart-compare">Show planned work</UX.Label>
+      </div>
+      <UX.ChartContainer
+        className="ux-demo-chart"
+        config={{
+          completed: { label: "Completed", color: "var(--chart-1)" },
+          planned: { label: "Planned", color: "var(--chart-2)" },
+        }}
+      >
+        {kind === "area" ? (
+          <AreaChart data={data}>
+            {shared}
+            <Area
+              type="monotone"
+              dataKey="completed"
+              stroke="var(--color-completed)"
+              fill="var(--color-completed)"
+              fillOpacity={0.16}
+              strokeWidth={2}
+            />
+            {compare && (
+              <Area
+                type="monotone"
+                dataKey="planned"
+                stroke="var(--color-planned)"
+                fill="var(--color-planned)"
+                fillOpacity={0.1}
+              />
+            )}
+          </AreaChart>
+        ) : (
+          <BarChart data={data}>
+            {shared}
+            <Bar dataKey="completed" fill="var(--color-completed)" radius={[4, 4, 0, 0]} />
+            {compare && <Bar dataKey="planned" fill="var(--color-planned)" radius={[4, 4, 0, 0]} />}
+          </BarChart>
+        )}
+      </UX.ChartContainer>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
+
+## Install chart primitives
+
+If your application imports primitives such as `AreaChart` or `Bar` directly, declare Recharts as a direct dependency. This is important with package managers that isolate transitive dependencies.
+
+```bash
+pnpm add recharts@3.10.1
+```
 
 ## Import
 
@@ -43,11 +146,11 @@ import type { ChartConfig } from '@clidey/ux';
 const chartConfig: ChartConfig = {
   revenue: {
     label: 'Revenue',
-    color: 'hsl(var(--chart-1))',
+    color: 'var(--chart-1)',
   },
   expenses: {
     label: 'Expenses',
-    color: 'hsl(var(--chart-2))',
+    color: 'var(--chart-2)',
   },
 };
 ```
@@ -89,7 +192,7 @@ const lineData = [
 ];
 
 const lineConfig: ChartConfig = {
-  users: { label: 'Active Users', color: 'hsl(var(--chart-1))' },
+  users: { label: 'Active Users', color: 'var(--chart-1)' },
 };
 
 <ChartContainer config={lineConfig} className="h-48">
@@ -113,17 +216,17 @@ const lineConfig: ChartConfig = {
 
 ```tsx
 const pieData = [
-  { name: 'Frontend', value: 42, color: 'hsl(var(--chart-1))' },
-  { name: 'Backend', value: 31, color: 'hsl(var(--chart-2))' },
-  { name: 'Mobile', value: 15, color: 'hsl(var(--chart-3))' },
-  { name: 'DevOps', value: 12, color: 'hsl(var(--chart-4))' },
+  { name: 'Frontend', value: 42, color: 'var(--chart-1)' },
+  { name: 'Backend', value: 31, color: 'var(--chart-2)' },
+  { name: 'Mobile', value: 15, color: 'var(--chart-3)' },
+  { name: 'DevOps', value: 12, color: 'var(--chart-4)' },
 ];
 
 const pieConfig: ChartConfig = {
-  Frontend: { label: 'Frontend', color: 'hsl(var(--chart-1))' },
-  Backend: { label: 'Backend', color: 'hsl(var(--chart-2))' },
-  Mobile: { label: 'Mobile', color: 'hsl(var(--chart-3))' },
-  DevOps: { label: 'DevOps', color: 'hsl(var(--chart-4))' },
+  Frontend: { label: 'Frontend', color: 'var(--chart-1)' },
+  Backend: { label: 'Backend', color: 'var(--chart-2)' },
+  Mobile: { label: 'Mobile', color: 'var(--chart-3)' },
+  DevOps: { label: 'DevOps', color: 'var(--chart-4)' },
 };
 
 <ChartContainer config={pieConfig} className="h-48">
@@ -200,15 +303,6 @@ Replace raw Recharts primitives with the themed versions:
 
 All standard Recharts props are forwarded, so you can override any defaults when needed.
 
-## useChart hook
+## Share chart configuration
 
-Inside a `ChartContainer`, use `useChart()` to access the active config:
-
-```tsx
-import { useChart } from '@clidey/ux';
-
-function CustomTooltip() {
-  const { config } = useChart();
-  // config is the ChartConfig passed to ChartContainer
-}
-```
+Keep the `ChartConfig` object in application state or a shared module when several chart components need the same labels and colors. Pass it to `ChartContainer`; the internal chart context is not part of the package's public exports.

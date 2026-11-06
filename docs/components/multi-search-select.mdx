@@ -3,9 +3,48 @@ title: 'MultiSearchSelect'
 description: 'Multi-value combobox with search filtering and select-all.'
 ---
 
-# MultiSearchSelect
+import { MultiSearchPreview } from '../examples/form-demos.tsx';
+
 
 A multi-select combobox that combines a Popover trigger with a searchable Command list. Supports selecting multiple values, a "Select All" toggle, and icon-labeled options.
+
+
+## Interactive example
+
+<Specimen label="Multi Search Select · Live example">
+  <MultiSearchPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function MultiSearchPreview() {
+  const [value, setValue] = useState(["name", "status"]);
+  return (
+    <Demo hint="Search the options, toggle multiple values, or select all columns.">
+      <div className="ux-demo-form">
+        <UX.Label>Visible columns</UX.Label>
+        <UX.MultiSearchSelect
+          value={value}
+          onValueChange={setValue}
+          options={[
+            { value: "name", label: "Project name" },
+            { value: "owner", label: "Owner" },
+            { value: "status", label: "Status" },
+            { value: "updated", label: "Last updated" },
+          ]}
+        />
+        <Status>{value.length ? value.join(", ") : "No columns selected"}</Status>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Usage
 

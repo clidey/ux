@@ -1,0 +1,89 @@
+---
+title: 'Compose an interface'
+description: 'Build product behavior from shared primitives without losing control of layout.'
+---
+
+UX components are building blocks. Keep product state and domain logic in your application, then compose the controls and surfaces around them.
+
+## A card with a real action
+
+```tsx
+import { useState } from 'react';
+import {
+  Button, Card, CardHeader, CardTitle, CardDescription,
+  CardContent, CardFooter, Input, Label,
+} from '@clidey/ux';
+
+export function WorkspaceForm({ save }: {
+  save: (name: string) => Promise<void>;
+}) {
+  const [name, setName] = useState('Studio');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  return (
+    <form onSubmit={async event => {
+      event.preventDefault();
+      setSaving(true);
+      setError('');
+      try { await save(name.trim()); }
+      catch { setError('Could not save. Please try again.'); }
+      finally { setSaving(false); }
+    }}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Workspace</CardTitle>
+          <CardDescription>The name your team sees.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Label htmlFor="workspace-name">Name</Label>
+          <Input id="workspace-name" value={name} required
+            onChange={event => setName(event.target.value)} />
+          {error && <p role="alert">{error}</p>}
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" loading={saving} disabled={!name.trim()}>
+            Save workspace
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
+  );
+}
+```
+
+Keep side effects in event handlers. Show progress and failure in the same flow, and preserve input after a failed request.
+
+## Triggers are part of the composition
+
+```tsx
+import {
+  Button, Dialog, DialogTrigger, DialogContent,
+  DialogHeader, DialogTitle, DialogDescription,
+} from '@clidey/ux';
+
+<Dialog>
+  <DialogTrigger><Button>Invite a teammate</Button></DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Invite a teammate</DialogTitle>
+      <DialogDescription>Send an invitation to your workspace.</DialogDescription>
+    </DialogHeader>
+    {/* Your invitation form */}
+  </DialogContent>
+</Dialog>
+```
+
+UX overlay triggers detect slot-safe children. A UX `Button` works without adding `asChild` to the trigger. In contrast, `Button` itself needs `asChild` when you want its styles applied to a link. Read [Triggers and asChild](/triggers-and-aschild) before wrapping custom components.
+
+## Choose the right surface
+
+| User need | Pattern |
+| --- | --- |
+| Make a short decision | Dialog or AlertDialog |
+| Inspect a row while keeping its list | Sheet or MasterDetailPanels |
+| Choose an action | DropdownMenu |
+| Choose one known value | Select |
+| Find a value in a long list | SearchSelect |
+| Find an application command | Command |
+
+Use state to describe what is open or selected. Avoid imperative DOM manipulation for application navigation, and avoid nesting interactive controls inside one another.

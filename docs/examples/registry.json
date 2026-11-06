@@ -1,0 +1,182 @@
+{
+  "button-group": {
+    "module": "action-demos",
+    "component": "ButtonGroupPreview"
+  },
+  "copy-button": {
+    "module": "action-demos",
+    "component": "CopyPreview"
+  },
+  "kbd": {
+    "module": "action-demos",
+    "component": "KbdPreview"
+  },
+  "card": {
+    "module": "action-demos",
+    "component": "CardPreview"
+  },
+  "empty-state": {
+    "module": "action-demos",
+    "component": "EmptyStatePreview"
+  },
+  "not-found-page": {
+    "module": "action-demos",
+    "component": "NotFoundPreview"
+  },
+  "icon": {
+    "module": "action-demos",
+    "component": "IconPresentationPreview"
+  },
+  "input": {
+    "module": "form-demos",
+    "component": "InputPreview"
+  },
+  "label": {
+    "module": "form-demos",
+    "component": "LabelPreview"
+  },
+  "checkbox": {
+    "module": "form-demos",
+    "component": "CheckboxPreview"
+  },
+  "switch": {
+    "module": "form-demos",
+    "component": "SwitchPreview"
+  },
+  "select": {
+    "module": "form-demos",
+    "component": "SelectPreview"
+  },
+  "multi-search-select": {
+    "module": "form-demos",
+    "component": "MultiSearchPreview"
+  },
+  "badge": {
+    "module": "feedback-demos",
+    "component": "BadgePreview"
+  },
+  "alert": {
+    "module": "feedback-demos",
+    "component": "AlertPreview"
+  },
+  "skeleton": {
+    "module": "feedback-demos",
+    "component": "SkeletonPreview"
+  },
+  "spinner": {
+    "module": "feedback-demos",
+    "component": "SpinnerPreview"
+  },
+  "sonner": {
+    "module": "feedback-demos",
+    "component": "ToastPreview"
+  },
+  "alert-dialog": {
+    "module": "overlay-demos",
+    "component": "AlertDialogPreview"
+  },
+  "dropdown-menu": {
+    "module": "overlay-demos",
+    "component": "DropdownPreview"
+  },
+  "context-menu": {
+    "module": "overlay-demos",
+    "component": "ContextMenuPreview"
+  },
+  "popover": {
+    "module": "overlay-demos",
+    "component": "PopoverPreview"
+  },
+  "tooltip": {
+    "module": "overlay-demos",
+    "component": "TooltipPreview"
+  },
+  "sheet": {
+    "module": "overlay-demos",
+    "component": "SheetPreview"
+  },
+  "drawer": {
+    "module": "overlay-demos",
+    "component": "DrawerPreview"
+  },
+  "form-sheet": {
+    "module": "overlay-demos",
+    "component": "FormSheetPreview"
+  },
+  "confirm-dialog": {
+    "module": "overlay-demos",
+    "component": "ConfirmPreview"
+  },
+  "accordion": {
+    "module": "layout-demos",
+    "component": "AccordionPreview"
+  },
+  "separator": {
+    "module": "layout-demos",
+    "component": "SeparatorPreview"
+  },
+  "scroll-area": {
+    "module": "layout-demos",
+    "component": "ScrollAreaPreview"
+  },
+  "resizable": {
+    "module": "layout-demos",
+    "component": "ResizablePreview"
+  },
+  "master-detail-panels": {
+    "module": "layout-demos",
+    "component": "MasterDetailPreview"
+  },
+  "stack-list": {
+    "module": "layout-demos",
+    "component": "StackListPreview"
+  },
+  "tabs": {
+    "module": "navigation-demos",
+    "component": "TabsPreview"
+  },
+  "breadcrumb": {
+    "module": "navigation-demos",
+    "component": "BreadcrumbPreview"
+  },
+  "pagination": {
+    "module": "navigation-demos",
+    "component": "PaginationPreview"
+  },
+  "command": {
+    "module": "navigation-demos",
+    "component": "CommandPreview"
+  },
+  "sidebar": {
+    "module": "navigation-demos",
+    "component": "SidebarPreview"
+  },
+  "table": {
+    "module": "data-demos",
+    "component": "TablePreview"
+  },
+  "tree": {
+    "module": "data-demos",
+    "component": "TreePreview"
+  },
+  "chart": {
+    "module": "chart-demo",
+    "component": "ChartPreview"
+  },
+  "map": {
+    "module": "map-demo",
+    "component": "MapPreview"
+  },
+  "button": {
+    "module": "live-components",
+    "component": "ButtonDemo"
+  },
+  "dialog": {
+    "module": "live-components",
+    "component": "DialogDemo"
+  },
+  "progress": {
+    "module": "live-components",
+    "component": "FeedbackDemo"
+  }
+}

@@ -3,9 +3,52 @@ title: 'Resizable'
 description: 'Resizable panel layout system for split views.'
 ---
 
-# Resizable
+import { ResizablePreview } from '../examples/layout-demos.tsx';
+
 
 `ResizablePanelGroup` creates a layout where panels can be resized by dragging a handle. Built on [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels).
+
+
+## Interactive example
+
+<Specimen label="Resizable · Live example">
+  <ResizablePreview />
+
+```tsx
+import * as UX from "@clidey/ux";
+import { Demo, DemoIcon } from "./demo-shell";
+
+export function ResizablePreview() {
+  return (
+    <Demo hint="Drag the divider, or focus it and use arrow keys to resize the panels.">
+      <div className="ux-demo-panels">
+        <UX.ResizablePanelGroup direction="horizontal">
+          <UX.ResizablePanel defaultSize={35} minSize={20}>
+            <div className="ux-demo-panel">
+              <DemoIcon name="folder" />
+              <strong>Projects</strong>
+              <p>Studio foundations</p>
+              <p>Developer portal</p>
+            </div>
+          </UX.ResizablePanel>
+          <UX.ResizableHandle withHandle />
+          <UX.ResizablePanel minSize={25}>
+            <div className="ux-demo-panel">
+              <UX.Badge variant="outline">In progress</UX.Badge>
+              <h3>Room to focus.</h3>
+              <p>Adjust the split to fit the task in front of you.</p>
+            </div>
+          </UX.ResizablePanel>
+        </UX.ResizablePanelGroup>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

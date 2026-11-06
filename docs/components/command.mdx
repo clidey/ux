@@ -3,9 +3,60 @@ title: 'Command'
 description: 'Fast command palette with search, groups, and keyboard navigation.'
 ---
 
-# Command
+import { CommandPreview } from '../examples/navigation-demos.tsx';
+
 
 `Command` is a keyboard-first command palette built on the [cmdk](https://cmdk.paco.me) library. Use it for global search, quick navigation, or any fuzzy-search interface.
+
+
+## Interactive example
+
+<Specimen label="Command · Live example">
+  <CommandPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status, DemoIcon } from "./demo-shell";
+
+export function CommandPreview() {
+  const [selected, setSelected] = useState("Nothing selected");
+  return (
+    <Demo hint="Search commands, move through results with arrows, and press Enter to run one.">
+      <UX.Command className="ux-demo-command">
+        <UX.CommandInput placeholder="Find a page or action…" />
+        <UX.CommandList>
+          <UX.CommandEmpty>No command matches. Try “project”.</UX.CommandEmpty>
+          <UX.CommandGroup heading="Workspace">
+            {[
+              ["home", "Open overview"],
+              ["folder", "Open projects"],
+              ["settings", "Open settings"],
+            ].map(([icon, label]) => (
+              <UX.CommandItem key={label} onSelect={() => setSelected(label)}>
+                <DemoIcon name={icon} />
+                {label}
+              </UX.CommandItem>
+            ))}
+          </UX.CommandGroup>
+          <UX.CommandSeparator />
+          <UX.CommandGroup heading="Actions">
+            <UX.CommandItem onSelect={() => setSelected("New project prepared")}>
+              <DemoIcon name="plus" />
+              Create project
+            </UX.CommandItem>
+          </UX.CommandGroup>
+        </UX.CommandList>
+      </UX.Command>
+      <Status>{selected}</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

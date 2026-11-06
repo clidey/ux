@@ -3,9 +3,69 @@ title: 'Breadcrumb'
 description: 'Hierarchical navigation path showing current location.'
 ---
 
-# Breadcrumb
+import { BreadcrumbPreview } from '../examples/navigation-demos.tsx';
+
 
 `Breadcrumb` shows a trail of links representing the current page's position in the site hierarchy.
+
+
+## Interactive example
+
+<Specimen label="Breadcrumb · Live example">
+  <BreadcrumbPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function BreadcrumbPreview() {
+  const [current, setCurrent] = useState("Foundations");
+  const select = (event: React.MouseEvent<HTMLAnchorElement>, name: string) => {
+    event.preventDefault();
+    setCurrent(name);
+  };
+  return (
+    <Demo hint="Follow the parent links to change the local location, then restore the nested path.">
+      <UX.Breadcrumb>
+        <UX.BreadcrumbList>
+          <UX.BreadcrumbItem>
+            <UX.BreadcrumbLink href="#workspace" onClick={(e) => select(e, "Workspace")}>
+              Workspace
+            </UX.BreadcrumbLink>
+          </UX.BreadcrumbItem>
+          {current !== "Workspace" && (
+            <>
+              <UX.BreadcrumbSeparator />
+              <UX.BreadcrumbItem>
+                <UX.BreadcrumbLink href="#projects" onClick={(e) => select(e, "Projects")}>
+                  Projects
+                </UX.BreadcrumbLink>
+              </UX.BreadcrumbItem>
+            </>
+          )}
+          {current === "Foundations" && (
+            <>
+              <UX.BreadcrumbSeparator />
+              <UX.BreadcrumbItem>
+                <UX.BreadcrumbPage>Foundations</UX.BreadcrumbPage>
+              </UX.BreadcrumbItem>
+            </>
+          )}
+        </UX.BreadcrumbList>
+      </UX.Breadcrumb>
+      <Status>Current location: {current}</Status>
+      <UX.Button variant="outline" onClick={() => setCurrent("Foundations")}>
+        Open Foundations
+      </UX.Button>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -82,7 +142,7 @@ import { Link } from 'react-router-dom';
 ## Custom separator
 
 ```tsx
-import { ChevronRight } from 'lucide-react';
+import { IconChevronRight as ChevronRight } from '@clidey/ux';
 
 <BreadcrumbSeparator>
   <ChevronRight className="size-3" />

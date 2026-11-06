@@ -1,9 +1,9 @@
 {
-  "name": "Clidey Design",
-  "title": "Clidey Design \u2014 React Component Library",
-  "description": "A beautiful, accessible React component library built on Radix UI and Tailwind CSS v4.",
-  "url": "https://ux.clidey.com",
-  "basePath": "/docs",
+  "name": "Clidey UX",
+  "title": "Clidey UX \u2014 One system. Every product.",
+  "description": "Composable React components, 30 complete theme palettes, a shared SVG icon catalog, and documentation your team and AI tools can use.",
+  "url": "https://clidey.github.io",
+  "basePath": "/ux",
   "favicon": "./logo/logo.png",
   "colors": {
     "primary": "#2C6BD4",
@@ -28,20 +28,29 @@
           {
             "group": "Setup",
             "pages": [
-              "getting-started/installation",
-              "getting-started/quick-start"
+              "getting-started/quick-start",
+              "getting-started/installation"
             ]
           },
           {
             "group": "Theming",
             "pages": [
               "theming/overview",
-              "theming/dark-mode"
+              "theming/dark-mode",
+              "theming/palettes",
+              "theming/tokens",
+              "theming/typography"
             ]
           },
           {
             "group": "Guides",
             "pages": [
+              "guides/icons",
+              "guides/composition",
+              "guides/accessibility",
+              "guides/mcp",
+              "guides/frameworks",
+              "guides/examples",
               "triggers-and-aschild"
             ]
           }
@@ -138,11 +147,39 @@
             "group": "Utilities",
             "pages": [
               "components/icon",
-              "components/sonner"
+              "components/sonner",
+              "components/kbd",
+              "components/copy-button",
+              "components/multi-search-select",
+              "components/form-sheet",
+              "components/confirm-dialog"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Contribute",
+        "groups": [
+          {
+            "group": "Maintain the system",
+            "pages": [
+              "contributing/development",
+              "contributing/documentation"
             ]
           }
         ]
       }
     ]
+  },
+  "repository": {
+    "url": "https://github.com/clidey/ux",
+    "branch": "main",
+    "path": "docs"
+  },
+  "version": "1.6.4",
+  "copyright": "Clidey",
+  "theme": {
+    "mode": "system",
+    "radius": "0.625rem"
   }
 }

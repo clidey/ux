@@ -3,8 +3,6 @@ title: 'Triggers and asChild'
 description: 'How ux trigger components decide whether to render as their child or as their own button.'
 ---
 
-# Triggers and `asChild`
-
 Every `*Trigger` in `@clidey/ux` (`DropdownMenuTrigger`, `TooltipTrigger`, `PopoverTrigger`, `DialogTrigger`, `SheetTrigger`, `AlertDialogTrigger`, `DrawerTrigger`, `ContextMenuTrigger`) wraps a Radix primitive. Radix renders its own `<button>` unless `asChild` is set, in which case it clones the single child and merges `ref`, `data-state`, `aria-*` and event handlers into it.
 
 Getting this wrong has two failure modes:

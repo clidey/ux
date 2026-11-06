@@ -3,9 +3,65 @@ title: 'Progress'
 description: 'Linear progress bar for showing completion percentage.'
 ---
 
-# Progress
+import { FeedbackDemo } from '../examples/live-components.tsx';
+
+
 
 `Progress` is a horizontal progress bar that visually represents a completion percentage. Built on Radix UI's progress primitive.
+
+
+
+## Interactive example
+
+<Specimen label="Progress · Live example">
+  <FeedbackDemo />
+
+```tsx
+import { useState } from "react";
+import { Button, Badge, Label, Progress, CatalogIcon, Alert, AlertTitle, AlertDescription } from "@clidey/ux";
+
+export function FeedbackDemo() {
+  const [value, setValue] = useState(35);
+  return (
+    <div className="ux-demo">
+      <div className="ux-demo-row">
+        <Badge>In progress</Badge>
+        <Badge variant="secondary">Draft</Badge>
+        <Badge variant="outline">Reviewed</Badge>
+      </div>
+      <Label>Project progress: {value}%</Label>
+      <Progress value={value} aria-label="Project progress" />
+      <div className="ux-demo-row">
+        <Button
+          variant="outline"
+          disabled={value === 0}
+          onClick={() => setValue((n) => Math.max(0, n - 10))}
+        >
+          Decrease
+        </Button>
+        <Button disabled={value === 100} onClick={() => setValue((n) => Math.min(100, n + 10))}>
+          Advance
+        </Button>
+        <Button variant="ghost" onClick={() => setValue(35)}>
+          Reset
+        </Button>
+      </div>
+      {value === 100 && (
+        <Alert>
+          <CatalogIcon name="check-circle" />
+          <AlertTitle>All done</AlertTitle>
+          <AlertDescription>The progress control reached its completed state.</AlertDescription>
+        </Alert>
+      )}
+      <p>Change the value to see progress, disabled actions, and completion feedback.</p>
+    </div>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

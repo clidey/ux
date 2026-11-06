@@ -3,7 +3,8 @@ title: 'NotFoundPage'
 description: 'An animated 404 fallback with configurable copy, navigation, and motion.'
 ---
 
-# NotFoundPage
+import { NotFoundPreview } from '../examples/action-demos.tsx';
+
 
 A missing route view with the Clidey Design character hitting the 404 wall and falling. The component uses the library styles and theme tokens.
 
@@ -13,6 +14,47 @@ import '@clidey/ux/styles.css';
 
 <NotFoundPage homeHref="/" homeLabel="Back to home" />
 ```
+
+
+## Interactive example
+
+<Specimen label="Not Found Page · Live example">
+  <NotFoundPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function NotFoundPreview() {
+  const [home, setHome] = useState(false);
+  return (
+    <Demo hint="Try the recovery action and the character’s motion controls.">
+      {home ? (
+        <div className="ux-demo-form">
+          <h3>Back in your workspace.</h3>
+          <UX.Button variant="outline" onClick={() => setHome(false)}>
+            Show the missing page again
+          </UX.Button>
+        </div>
+      ) : (
+        <UX.NotFoundPage
+          title="This page wandered off."
+          description="Your workspace is still right here."
+          homeLabel="Return to workspace"
+          onHome={() => setHome(true)}
+          showMotionControls
+          defaultMotion="off"
+        />
+      )}
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Application navigation
 

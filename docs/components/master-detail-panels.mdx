@@ -3,9 +3,69 @@ title: 'Master Detail Panels'
 description: 'List/detail split that collapses to one panel at a time on mobile.'
 ---
 
-# Master Detail Panels
+import { MasterDetailPreview } from '../examples/layout-demos.tsx';
+
 
 `MasterDetailPanels` renders a list panel next to a detail panel. On desktop it is a horizontal [Resizable](/components/resizable) split. Below the mobile breakpoint (768px, the same one the [Sidebar](/components/sidebar) uses) it shows one panel at a time: the list until `detailOpen` is true, then the detail with a back button.
+
+
+## Interactive example
+
+<Specimen label="Master Detail Panels · Live example">
+  <MasterDetailPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function MasterDetailPreview() {
+  const [selected, setSelected] = useState<string | null>(null);
+  const names = ["Studio foundations", "Developer portal", "Product launch"];
+  return (
+    <Demo hint="Choose a project. Resize the window to try the mobile back-to-list behavior.">
+      <div className="ux-demo-panels">
+        <UX.MasterDetailPanels
+          list={
+            <div className="ux-demo-panel">
+              {names.map((name) => (
+                <UX.Button
+                  key={name}
+                  variant={selected === name ? "secondary" : "ghost"}
+                  onClick={() => setSelected(name)}
+                >
+                  {name}
+                </UX.Button>
+              ))}
+            </div>
+          }
+          detail={
+            <div className="ux-demo-panel">
+              {selected ? (
+                <>
+                  <UX.Badge variant="outline">Project details</UX.Badge>
+                  <h3>{selected}</h3>
+                  <p>One focused place for the work your team is doing.</p>
+                </>
+              ) : (
+                <p>Select a project to inspect its details.</p>
+              )}
+            </div>
+          }
+          detailOpen={selected !== null}
+          onBack={() => setSelected(null)}
+          backLabel="All projects"
+          listDefaultSize={40}
+        />
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

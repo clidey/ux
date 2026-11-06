@@ -3,9 +3,54 @@ title: 'StackList'
 description: 'Key-value pair list with separators for metadata and detail views.'
 ---
 
-# StackList
+import { StackListPreview } from '../examples/layout-demos.tsx';
+
 
 `StackList` renders a vertical list of key-value pairs separated by dividers. It's ideal for displaying entity details, metadata, or configuration summaries. Both the key and value cells automatically truncate long text with an ellipsis to prevent layout overflow.
+
+
+## Interactive example
+
+<Specimen label="Stack List · Live example">
+  <StackListPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function StackListPreview() {
+  const [status, setStatus] = useState("In progress");
+  return (
+    <Demo hint="Change the project’s status and see the metadata list update.">
+      <UX.StackList>
+        <UX.StackListItem item="Project">Studio foundations</UX.StackListItem>
+        <UX.StackListItem item="Owner">Alex Chen</UX.StackListItem>
+        <UX.StackListItem item="Status">
+          <UX.Badge variant="secondary">{status}</UX.Badge>
+        </UX.StackListItem>
+        <UX.StackListItem item="Visibility">Team workspace</UX.StackListItem>
+      </UX.StackList>
+      <UX.Select value={status} onValueChange={setStatus}>
+        <UX.SelectTrigger aria-label="Project status">
+          <UX.SelectValue />
+        </UX.SelectTrigger>
+        <UX.SelectContent>
+          {["In progress", "In review", "Complete"].map((x) => (
+            <UX.SelectItem key={x} value={x}>
+              {x}
+            </UX.SelectItem>
+          ))}
+        </UX.SelectContent>
+      </UX.Select>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

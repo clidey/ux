@@ -3,14 +3,69 @@ title: 'Button'
 description: 'Interactive button with 6 style variants and 4 sizes.'
 ---
 
-# Button
+import { ButtonDemo } from '../examples/live-components.tsx';
+
+
 
 The `Button` component is the primary action element. It supports 6 visual variants, 4 sizes, and can render as any element via the `asChild` prop.
+
+
+
+## Interactive example
+
+<Specimen label="Button · Live example">
+  <ButtonDemo />
+
+```tsx
+import { useState } from "react";
+import { Button, Badge, CatalogIcon } from "@clidey/ux";
+
+export function ButtonDemo() {
+  const [count, setCount] = useState(0);
+  const [saving, setSaving] = useState(false);
+  return (
+    <div className="ux-demo">
+      <div className="ux-demo-row">
+        <Button onClick={() => setCount((value) => value + 1)}>
+          <CatalogIcon name="plus" /> Add one
+        </Button>
+        <Button variant="outline" onClick={() => setCount(0)}>
+          Reset
+        </Button>
+        <Badge variant="secondary">
+          <span role="status">Clicked {count} times</span>
+        </Badge>
+      </div>
+      <div className="ux-demo-row">
+        <Button
+          variant="secondary"
+          loading={saving}
+          onClick={() => {
+            setSaving(true);
+            setTimeout(() => setSaving(false), 900);
+          }}
+        >
+          {saving ? "Saving…" : "Try loading state"}
+        </Button>
+        <Button variant="destructive" onClick={() => setCount((value) => Math.max(0, value - 1))}>
+          Remove one
+        </Button>
+        <Button disabled>Disabled</Button>
+      </div>
+      <p>These are actual UX buttons. Click them or use Tab, Enter, and Space.</p>
+    </div>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
 ```tsx
-import { Button } from '@clidey/ux';
+import { Button, IconSearch } from '@clidey/ux';
 ```
 
 ## Variants
@@ -39,7 +94,7 @@ import { Button } from '@clidey/ux';
 <Button size="sm">Small</Button>
 <Button size="default">Default</Button>
 <Button size="lg">Large</Button>
-<Button size="icon"><SearchIcon /></Button>
+<Button size="icon" aria-label="Search"><IconSearch /></Button>
 ```
 
 | Size | Height | Use case |
@@ -51,10 +106,10 @@ import { Button } from '@clidey/ux';
 
 ## With icons
 
-Place Lucide icons inside the button. They automatically scale to match the button size:
+Place UX catalog icons inside the button. They automatically scale to match the button size:
 
 ```tsx
-import { Plus, Download, Trash2 } from 'lucide-react';
+import { IconPlus as Plus, IconDownload as Download, IconTrash as Trash2 } from '@clidey/ux';
 
 <Button>
   <Plus />
@@ -73,27 +128,25 @@ import { Plus, Download, Trash2 } from 'lucide-react';
 
 ## Loading state
 
-Disable the button and show a spinner while an async action is in progress:
+The `loading` prop displays a spinner and disables the button. Handle failure in your application and clear progress when the request finishes:
 
 ```tsx
-import { Button, Spinner } from '@clidey/ux';
 import { useState } from 'react';
+import { Button } from '@clidey/ux';
 
-function SaveButton() {
+export function SaveButton({ save }: { save: () => Promise<void> }) {
   const [loading, setLoading] = useState(false);
-
-  async function handleSave() {
-    setLoading(true);
-    await saveData();
-    setLoading(false);
-  }
-
-  return (
-    <Button onClick={handleSave} disabled={loading}>
-      {loading && <Spinner size="sm" />}
-      {loading ? 'Saving...' : 'Save changes'}
-    </Button>
-  );
+  const [error, setError] = useState('');
+  return <>
+    <Button loading={loading} onClick={async () => {
+      setLoading(true);
+      setError('');
+      try { await save(); }
+      catch { setError('Could not save. Please try again.'); }
+      finally { setLoading(false); }
+    }}>{loading ? 'Saving…' : 'Save changes'}</Button>
+    {error && <p role="alert">{error}</p>}
+  </>;
 }
 ```
 
@@ -105,13 +158,13 @@ Use `asChild` to render the button as an `<a>` tag or any other element while ke
 import { Button } from '@clidey/ux';
 
 // Render as native anchor
-<Button>
+<Button asChild>
   <a href="/dashboard">Go to Dashboard</a>
 </Button>
 
 // With React Router
 import { Link } from 'react-router-dom';
-<Button>
+<Button asChild>
   <Link to="/settings">Settings</Link>
 </Button>
 ```
@@ -129,6 +182,7 @@ import { Link } from 'react-router-dom';
 | `variant` | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"` | `"default"` | Visual style variant. |
 | `size` | `"default" \| "sm" \| "lg" \| "icon"` | `"default"` | Button size. |
 | `asChild` | `boolean` | `false` | Merge props onto the immediate child element instead of rendering a `<button>`. |
+| `loading` | `boolean` | `false` | Shows a spinner and disables the native button while pending. |
 | `disabled` | `boolean` | `false` | Disables the button and applies muted styling. |
 | `className` | `string` | — | Additional CSS classes. |
 | `children` | `ReactNode` | — | Button content. |

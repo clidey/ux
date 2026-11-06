@@ -1,0 +1,64 @@
+---
+title: 'Documentation workflow'
+description: 'Author MDX, preview with Dory, and review the exact site before publishing.'
+---
+
+The `docs/` directory is a private workspace. `docs/compiler.json` pins the reviewed Dory source revision used locally and in CI. Documentation uses Dory's own theme and font assets; no duplicate font bundle is needed here.
+
+## Work locally
+
+```bash
+pnpm docs:setup
+pnpm docs:dev
+pnpm docs:check
+pnpm docs:build
+pnpm docs:preview
+```
+
+Development runs at `http://localhost:3000/ux/`; the built-site preview runs at `http://localhost:3191/ux/`. The build stages the current library under `.dory/docs-ux-package/` and uses it in Dory, so examples and documentation chrome use the source being documented. It writes the site to `docs/dist/` and preserves root `dist/`.
+
+## Structure a guide
+
+Give every MDX page a frontmatter title and useful description. Start with the problem it solves, provide a complete import and example, explain its important behavior, and link to related patterns. Add new routes to `docs/dory.json` so readers and search can discover them.
+
+Keep component examples checked against source exports. Use UX catalog icons in application examples. Distinguish peer dependencies from regular runtime dependencies, and distinguish palette selection from light/dark mode.
+
+## Screenshots
+
+The workspace example uses fictional data and real components. Capture it with the intended palette and mode, wait for fonts to load, and review the resulting image at its documentation size. Use transparent surroundings and the example's theme-aware shadow so screenshots sit naturally in both documentation modes.
+
+Store intentional public screenshots in `docs/images/`. Never include personal application state, customer records, credentials, or desktop captures. Browser automation scratch output belongs outside the repository.
+
+## Live component coverage
+
+Every component reference has a dedicated stateful demo and a source panel. Keep its implementation under `docs/examples/` and register the page, module, and export in `docs/examples/registry.json`. Run `pnpm docs:sync` after changing a demo to refresh its source panel. The documentation check fails if a component guide has no registered preview or if its displayed code differs from the real example.
+
+## Complete agent context
+
+After Dory builds, `scripts/build-agent-context.mjs` generates the complete `llms.txt` and `llms-full.txt` from the docs, fresh in-memory TypeScript declarations, icon catalog, palette definitions, and working example source. It leaves root `dist/` unchanged. The original compact index and page-only text remain available as `llms-index.txt` and `llms-pages.txt`.
+
+Use the copyable prompt in Quick Start or the AI guide. It adjusts its context URL to the current host so local previews and deployed sites point to the right endpoint.
+
+## MCP
+
+`pnpm docs:mcp:config` prints a stdio authoring configuration. The production preview server also supports read-only MCP at the configured base path. See [MCP and AI workflows](/guides/mcp).
+
+## Deployment
+
+`docs/dist/` is a static site. Keep the configured `url` and `basePath` aligned with the host. The current configuration targets `https://clidey.github.io/ux/`; changing hosts requires updating those fields and checking nested routes, assets, search, and `llms.txt`.
+
+Publishing static files does not publish the MCP server. A server-backed deployment must separately run `dory preview` and route its MCP endpoint. Preview and review documentation code before any push; publishing requires explicit approval.
+
+## Pinned source compiler
+
+Run `pnpm docs:setup` once to clone the exact public revision in `docs/compiler.json` under ignored `.dory/compiler/`, install its frozen dependencies with lifecycle scripts disabled, and compile its CLI. CI checks out the same revision. No npm package release is required, and release-age and integrity protections remain enabled.
+
+The documentation commands use that compiler by default. `DORY_CLI=/absolute/path/to/dory/bin/dist/dory.js` can select another reviewed checkout; the build verifies the required capabilities before compiling examples. Setup refuses to replace a different existing checkout.
+
+## Security boundaries
+
+Imported MDX components are trusted executable source. They can run with Node privileges during bundling and prerendering and in the published site's browser origin. Review components and dependencies before building. A temporary workspace is not a sandbox for hostile code.
+
+The documentation workflow uses ephemeral runners, read-only permissions, no stored checkout credentials, frozen dependency installs, and disabled lifecycle scripts. Pull requests cannot deploy. Only main-branch builds upload a Pages artifact, and a separate artifact-only job receives Pages deployment permissions. Never add production secrets to the build job.
+
+The output hardening step refuses hidden files and symlinks and adds a content security policy to every HTML document. Scripts use same-origin resources or exact inline hashes; connections and workers stay on the same origin. Inline styles remain enabled for component positioning and themes. GitHub Pages serves a static site, without a live MCP server or server-side credentials. A checksum-pinned Gitleaks scan checks the tracked source and generated site before any Pages artifact is uploaded. Scan source and built output locally before publication too.

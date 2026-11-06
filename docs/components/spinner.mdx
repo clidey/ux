@@ -3,9 +3,54 @@ title: 'Spinner'
 description: 'Animated loading indicator with color variants and sizes.'
 ---
 
-# Spinner
+import { SpinnerPreview } from '../examples/feedback-demos.tsx';
+
 
 `Spinner` is an animated circular loader with 5 color variants and flexible sizing options.
+
+
+## Interactive example
+
+<Specimen label="Spinner · Live example">
+  <SpinnerPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function SpinnerPreview() {
+  const [running, setRunning] = useState(true);
+  const [size, setSize] = useState<"sm" | "default" | "lg">("default");
+  return (
+    <Demo hint="Change the spinner size and complete the task to stop the loading state.">
+      <div className="ux-demo-row">
+        {running ? <UX.Spinner size={size} /> : <UX.CatalogIcon name="check-circle" size={24} />}
+        <Status>{running ? "Preparing your workspace…" : "Workspace ready"}</Status>
+      </div>
+      <div className="ux-demo-row">
+        <UX.Select value={size} onValueChange={(v) => setSize(v as typeof size)}>
+          <UX.SelectTrigger aria-label="Spinner size">
+            <UX.SelectValue />
+          </UX.SelectTrigger>
+          <UX.SelectContent>
+            <UX.SelectItem value="sm">Small</UX.SelectItem>
+            <UX.SelectItem value="default">Default</UX.SelectItem>
+            <UX.SelectItem value="lg">Large</UX.SelectItem>
+          </UX.SelectContent>
+        </UX.Select>
+        <UX.Button variant="outline" onClick={() => setRunning(!running)}>
+          {running ? "Complete task" : "Start task"}
+        </UX.Button>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

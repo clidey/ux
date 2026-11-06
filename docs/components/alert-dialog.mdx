@@ -3,9 +3,59 @@ title: 'AlertDialog'
 description: 'Blocking confirmation dialog for destructive or critical actions.'
 ---
 
-# AlertDialog
+import { AlertDialogPreview } from '../examples/overlay-demos.tsx';
+
 
 `AlertDialog` is a modal that requires an explicit user decision before proceeding. Unlike `Dialog`, it cannot be closed by clicking outside or pressing Escape — the user must click one of the action buttons. Use it for irreversible or high-consequence actions. The overlay backdrop color is controlled by the `--backdrop` CSS token (see Theming docs).
+
+
+## Interactive example
+
+<Specimen label="Alert Dialog · Live example">
+  <AlertDialogPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function AlertDialogPreview() {
+  const [removed, setRemoved] = useState(false);
+  return (
+    <Demo hint="Open the confirmation, cancel it, or remove the fictional draft.">
+      <UX.AlertDialog>
+        <UX.AlertDialogTrigger>
+          <UX.Button variant="destructive">Remove draft</UX.Button>
+        </UX.AlertDialogTrigger>
+        <UX.AlertDialogContent>
+          <UX.AlertDialogHeader>
+            <UX.AlertDialogTitle>Remove this draft?</UX.AlertDialogTitle>
+            <UX.AlertDialogDescription>
+              This example changes local state only. Your real projects are untouched.
+            </UX.AlertDialogDescription>
+          </UX.AlertDialogHeader>
+          <UX.AlertDialogFooter>
+            <UX.AlertDialogCancel>Keep draft</UX.AlertDialogCancel>
+            <UX.AlertDialogAction onClick={() => setRemoved(true)}>
+              Remove draft
+            </UX.AlertDialogAction>
+          </UX.AlertDialogFooter>
+        </UX.AlertDialogContent>
+      </UX.AlertDialog>
+      <Status>{removed ? "The demo draft was removed." : "Draft is available."}</Status>
+      {removed && (
+        <UX.Button variant="ghost" onClick={() => setRemoved(false)}>
+          Restore demo
+        </UX.Button>
+      )}
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

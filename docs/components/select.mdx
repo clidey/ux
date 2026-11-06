@@ -3,9 +3,68 @@ title: 'Select'
 description: 'Dropdown selector with a searchable variant supporting icons.'
 ---
 
-# Select
+import { SelectPreview } from '../examples/form-demos.tsx';
+
 
 Two components are available: the composable `Select` built on Radix UI, and the ready-to-use `SearchSelect` with built-in search and icon support.
+
+
+## Interactive example
+
+<Specimen label="Select · Live example">
+  <SelectPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function SelectPreview() {
+  const [value, setValue] = useState("monthly");
+  const [search, setSearch] = useState("design");
+  return (
+    <Demo hint="Use arrows and Enter in the select, then try filtering the searchable picker.">
+      <div className="ux-demo-form">
+        <div>
+          <UX.Label htmlFor="period-select">Reporting period</UX.Label>
+          <UX.Select value={value} onValueChange={setValue}>
+            <UX.SelectTrigger id="period-select">
+              <UX.SelectValue />
+            </UX.SelectTrigger>
+            <UX.SelectContent>
+              {["daily", "weekly", "monthly"].map((x) => (
+                <UX.SelectItem key={x} value={x}>
+                  {x[0].toUpperCase() + x.slice(1)}
+                </UX.SelectItem>
+              ))}
+            </UX.SelectContent>
+          </UX.Select>
+        </div>
+        <div>
+          <UX.Label>Team</UX.Label>
+          <UX.SearchSelect
+            options={[
+              { value: "design", label: "Design" },
+              { value: "engineering", label: "Engineering" },
+              { value: "product", label: "Product" },
+            ]}
+            value={search}
+            onValueChange={setSearch}
+            placeholder="Find a team"
+          />
+        </div>
+        <Status>
+          {value} report · {search}
+        </Status>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -129,7 +188,7 @@ const options = [
 ### With icons
 
 ```tsx
-import { Code2, Globe, Server } from 'lucide-react';
+import { IconCode as Code2, IconGlobe as Globe, IconServer as Server } from '@clidey/ux';
 
 const options = [
   { value: 'frontend', label: 'Frontend', icon: <Code2 className="size-4" /> },

@@ -3,9 +3,71 @@ title: 'Input'
 description: 'Text input, textarea, and search input components.'
 ---
 
-# Input
+import { InputPreview } from '../examples/form-demos.tsx';
+
+
 
 The `input.tsx` module exports three components: `Input` for single-line text, `TextArea` for multi-line text, and `SearchInput` for search fields with a built-in icon.
+
+
+
+## Interactive example
+
+<Specimen label="Input · Live example">
+  <InputPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function InputPreview() {
+  const [text, setText] = useState("Studio workspace");
+  const [disabled, setDisabled] = useState(false);
+  return (
+    <Demo hint="Edit the fields, reveal the password, or disable the controls.">
+      <div className="ux-demo-form">
+        <div>
+          <UX.Label htmlFor="preview-name">Workspace name</UX.Label>
+          <UX.Input
+            id="preview-name"
+            value={text}
+            disabled={disabled}
+            onChange={(e) => setText(e.target.value)}
+          />
+        </div>
+        <div>
+          <UX.Label htmlFor="preview-secret">Password</UX.Label>
+          <UX.Input
+            id="preview-secret"
+            type="password"
+            defaultValue="a-demo-password"
+            showPasswordToggle
+            disabled={disabled}
+          />
+        </div>
+        <div>
+          <UX.Label htmlFor="preview-description">Description</UX.Label>
+          <UX.TextArea
+            id="preview-description"
+            placeholder="A place to do your best work…"
+            disabled={disabled}
+          />
+        </div>
+        <div className="ux-demo-row">
+          <UX.Switch id="preview-disable" checked={disabled} onCheckedChange={setDisabled} />
+          <UX.Label htmlFor="preview-disable">Disable fields</UX.Label>
+        </div>
+        <Status>{text.length} characters in the workspace name</Status>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

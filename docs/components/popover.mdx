@@ -3,14 +3,68 @@ title: 'Popover'
 description: 'Floating panel anchored to a trigger element.'
 ---
 
-# Popover
+import { PopoverPreview } from '../examples/overlay-demos.tsx';
+
 
 `Popover` shows a floating panel when a trigger is clicked. Unlike a tooltip (hover-only), a popover responds to clicks and can contain interactive content like forms, pickers, or menus.
+
+
+## Interactive example
+
+<Specimen label="Popover · Live example">
+  <PopoverPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function PopoverPreview() {
+  const [name, setName] = useState("Studio foundations");
+  const [open, setOpen] = useState(false);
+  return (
+    <Demo hint="Edit the project in place and save to update its visible name.">
+      <div className="ux-demo-row">
+        <strong>{name}</strong>
+        <UX.Popover open={open} onOpenChange={setOpen}>
+          <UX.PopoverTrigger>
+            <UX.Button variant="outline" size="sm">
+              Edit project
+            </UX.Button>
+          </UX.PopoverTrigger>
+          <UX.PopoverContent>
+            <form
+              className="ux-demo-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setOpen(false);
+              }}
+            >
+              <UX.Label htmlFor="popover-project">Project name</UX.Label>
+              <UX.Input
+                id="popover-project"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              <UX.Button type="submit">Save name</UX.Button>
+            </form>
+          </UX.PopoverContent>
+        </UX.Popover>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
 ```tsx
-import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from '@clidey/ux';
+import { Popover, PopoverTrigger, PopoverContent } from '@clidey/ux';
 ```
 
 ## Basic popover
@@ -98,7 +152,6 @@ const [open, setOpen] = useState(false);
 | `Popover` | Root component. Manages open state. |
 | `PopoverTrigger` | Toggles the popover on click. Renders as its child automatically for ux components (`Button`, `Badge`, ...) and intrinsic elements, so no `asChild` is needed; pass `asChild` only for other ref-forwarding elements. See [Triggers and asChild](/triggers-and-aschild). |
 | `PopoverContent` | Floating panel content. |
-| `PopoverAnchor` | Custom positioning anchor (advanced). |
 
 ### PopoverContent Props
 

@@ -3,9 +3,50 @@ title: 'Separator'
 description: 'Visual divider line for horizontal or vertical layouts.'
 ---
 
-# Separator
+import { SeparatorPreview } from '../examples/layout-demos.tsx';
+
 
 `Separator` renders a thin line to visually divide content sections. It can be horizontal or vertical and is purely decorative by default.
+
+
+## Interactive example
+
+<Specimen label="Separator · Live example">
+  <SeparatorPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function SeparatorPreview() {
+  const [vertical, setVertical] = useState(false);
+  return (
+    <Demo hint="Switch orientation to see how the separator organizes a toolbar or a stack.">
+      <div className={vertical ? "ux-demo-row ux-demo-separator-row" : "ux-demo-form"}>
+        <span>Workspace</span>
+        <UX.Separator
+          orientation={vertical ? "vertical" : "horizontal"}
+          className={vertical ? "ux-demo-vertical-separator" : ""}
+        />
+        <span>Projects</span>
+        <UX.Separator
+          orientation={vertical ? "vertical" : "horizontal"}
+          className={vertical ? "ux-demo-vertical-separator" : ""}
+        />
+        <span>Activity</span>
+      </div>
+      <UX.Button variant="outline" onClick={() => setVertical(!vertical)}>
+        Use {vertical ? "horizontal" : "vertical"} separators
+      </UX.Button>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

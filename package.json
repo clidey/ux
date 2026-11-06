@@ -1,6 +1,6 @@
 {
   "name": "@clidey/ux",
-  "description": "Clidey Design — accessible React components and design tokens.",
+  "description": "Clidey Design \u2014 accessible React components and design tokens.",
   "private": false,
   "version": "1.6.4",
   "type": "module",
@@ -48,7 +48,17 @@
     "test": "vitest --coverage",
     "test:coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build:lib",
-    "generate:icons": "node scripts/build-icon-components.mjs"
+    "generate:icons": "node scripts/build-icon-components.mjs",
+    "docs:dev": "pnpm --dir docs dev",
+    "docs:build": "pnpm --dir docs build",
+    "docs:check": "pnpm --dir docs check",
+    "docs:preview": "pnpm --dir docs preview",
+    "docs:mcp": "pnpm --dir docs mcp",
+    "docs:mcp:config": "pnpm --dir docs mcp:config",
+    "dev:examples": "pnpm generate:icons && vite --host 127.0.0.1 --port 3190 --open /examples/workspace/",
+    "docs:sync": "node scripts/sync-doc-examples.mjs --write",
+    "docs:setup": "node scripts/setup-docs.mjs",
+    "docs:security": "node --test scripts/secure-docs-output.test.mjs"
   },
   "peerDependencies": {
     "react": ">=18.3.0",

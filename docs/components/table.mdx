@@ -3,9 +3,92 @@ title: 'Table'
 description: 'Full-featured data table with automatic virtualization for large datasets.'
 ---
 
-# Table
+import { TablePreview } from '../examples/data-demos.tsx';
+
 
 The `table.tsx` module provides a composable table. `TableBody` renders its rows normally by default; give the enclosing `Table` a `maxHeight` and `TableBody` automatically windows its rows so thousands of rows can be rendered without DOM overflow — no separate virtualized component required, and no risk of the header and body columns drifting out of alignment, since rows always stay in native table layout.
+
+
+## Interactive example
+
+<Specimen label="Table · Live example">
+  <TablePreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+const projects = Array.from({ length: 36 }, (_, i) => ({
+  id: i + 1,
+  name:
+    ["Studio foundations", "Developer portal", "Product launch"][i % 3] +
+    " " +
+    String(i + 1).padStart(2, "0"),
+  status: i % 3 === 0 ? "In review" : "In progress",
+  progress: Math.min(98, 24 + i * 2),
+}));
+
+export function TablePreview() {
+  const [query, setQuery] = useState("");
+  const [ascending, setAscending] = useState(true);
+  const [selected, setSelected] = useState<number | null>(null);
+  const rows = projects
+    .filter((x) => x.name.toLowerCase().includes(query.toLowerCase()))
+    .sort((a, b) => (ascending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)));
+  return (
+    <Demo hint="Filter, sort, select a row, and scroll the automatically windowed table.">
+      <div className="ux-demo-row">
+        <UX.SearchInput
+          aria-label="Filter demo projects"
+          placeholder="Find a project…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <UX.Button variant="outline" onClick={() => setAscending(!ascending)}>
+          Name {ascending ? "A–Z" : "Z–A"}
+        </UX.Button>
+      </div>
+      <UX.Table maxHeight={260}>
+        <UX.TableHeader>
+          <UX.TableHeadRow>
+            <UX.TableHead>Project</UX.TableHead>
+            <UX.TableHead>Status</UX.TableHead>
+            <UX.TableHead>Progress</UX.TableHead>
+            <UX.TableHead>Action</UX.TableHead>
+          </UX.TableHeadRow>
+        </UX.TableHeader>
+        <UX.TableBody>
+          {rows.map((row) => (
+            <UX.TableRow key={row.id} data-state={selected === row.id ? "selected" : undefined}>
+              <UX.TableCell>{row.name}</UX.TableCell>
+              <UX.TableCell>
+                <UX.Badge variant={row.status === "In review" ? "default" : "secondary"}>
+                  {row.status}
+                </UX.Badge>
+              </UX.TableCell>
+              <UX.TableCell>{row.progress}%</UX.TableCell>
+              <UX.TableCell>
+                <UX.Button size="sm" variant="ghost" onClick={() => setSelected(row.id)}>
+                  Inspect
+                </UX.Button>
+              </UX.TableCell>
+            </UX.TableRow>
+          ))}
+        </UX.TableBody>
+      </UX.Table>
+      {!rows.length && <p>No matching projects. Clear the search to see them again.</p>}
+      <Status>
+        {rows.length} projects{selected ? " · Inspecting project " + selected : ""}
+      </Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -19,7 +102,6 @@ import {
   TableRow,
   TableCell,
   TableCaption,
-  TableProvider,
   TableHeadRow,
 } from '@clidey/ux';
 ```

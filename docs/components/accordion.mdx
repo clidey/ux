@@ -3,9 +3,52 @@ title: 'Accordion'
 description: 'Collapsible content sections with animated expand/collapse.'
 ---
 
-# Accordion
+import { AccordionPreview } from '../examples/layout-demos.tsx';
+
 
 `Accordion` provides collapsible sections. Each section has a trigger that shows or hides content with a smooth animation. The chevron icon rotates 180° when open.
+
+
+## Interactive example
+
+<Specimen label="Accordion · Live example">
+  <AccordionPreview />
+
+```tsx
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function AccordionPreview() {
+  return (
+    <Demo hint="Expand each section with the pointer or Enter; use arrows between headers.">
+      <UX.Accordion type="single" collapsible defaultValue="one">
+        <UX.AccordionItem value="one">
+          <UX.AccordionTrigger>What belongs in a workspace?</UX.AccordionTrigger>
+          <UX.AccordionContent>
+            Your projects, people, and a shared set of defaults.
+          </UX.AccordionContent>
+        </UX.AccordionItem>
+        <UX.AccordionItem value="two">
+          <UX.AccordionTrigger>Can the team change its theme?</UX.AccordionTrigger>
+          <UX.AccordionContent>
+            Yes. Keep the same components and choose a different palette.
+          </UX.AccordionContent>
+        </UX.AccordionItem>
+        <UX.AccordionItem value="three">
+          <UX.AccordionTrigger>Where do changes get saved?</UX.AccordionTrigger>
+          <UX.AccordionContent>
+            This example keeps state in the browser. Connect your application’s persistence layer.
+          </UX.AccordionContent>
+        </UX.AccordionItem>
+      </UX.Accordion>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -34,7 +77,7 @@ Only one item can be open at a time:
   <AccordionItem value="item-3">
     <AccordionTrigger>What are the peer dependencies?</AccordionTrigger>
     <AccordionContent>
-      Only React 18.3 or later. All other libraries are bundled.
+      React and React DOM 18.3 or later are peer dependencies. Other required packages are installed as regular dependencies.
     </AccordionContent>
   </AccordionItem>
 </Accordion>

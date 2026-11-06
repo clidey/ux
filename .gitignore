@@ -26,3 +26,11 @@ dist-ssr
 # Coverage reports
 coverage/
 .codex
+
+# Local documentation tooling
+.dory/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example

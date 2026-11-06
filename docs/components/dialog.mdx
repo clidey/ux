@@ -3,9 +3,72 @@ title: 'Dialog'
 description: 'Modal dialog for displaying content overlaid on the page.'
 ---
 
-# Dialog
+import { DialogDemo } from '../examples/live-components.tsx';
+
+
 
 `Dialog` renders content in an overlay that blocks interaction with the rest of the page. Built on Radix UI's dialog primitive with focus trapping and scroll locking.
+
+
+
+## Interactive example
+
+<Specimen label="Dialog · Live example">
+  <DialogDemo />
+
+```tsx
+import { useState } from "react";
+import { Button, Input, Label, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose, CatalogIcon } from "@clidey/ux";
+
+export function DialogDemo() {
+  const [invited, setInvited] = useState(false);
+  return (
+    <div className="ux-demo">
+      <Dialog>
+        <DialogTrigger>
+          <Button>
+            <CatalogIcon name="user-plus" /> Invite teammate
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Bring your team together</DialogTitle>
+            <DialogDescription>
+              Try the focus handling, form controls, and Escape key.
+            </DialogDescription>
+          </DialogHeader>
+          <form
+            className="ux-demo-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              setInvited(true);
+            }}
+          >
+            <div>
+              <Label htmlFor="demo-invite">Email address</Label>
+              <Input id="demo-invite" type="email" placeholder="teammate@example.com" required />
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button type="submit">Prepare invitation</Button>
+            </DialogFooter>
+            {invited && <p role="status">Invitation prepared locally. No email was sent.</p>}
+          </form>
+        </DialogContent>
+      </Dialog>
+      <p>Open the dialog, tab through its fields, and press Escape to return focus.</p>
+    </div>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

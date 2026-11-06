@@ -1,0 +1,44 @@
+---
+title: 'Typography and motion'
+description: 'Use the palette’s type and motion choices without copying font files into your application.'
+---
+
+Palettes describe heading, body, and monospace families alongside transition duration and easing. This lets a product feel editorial, compact, or expressive while keeping the same component structure.
+
+## Load the optional fonts
+
+```tsx
+import '@clidey/ux/styles.css';
+import '@clidey/ux/theme-fonts.css';
+```
+
+The font stylesheet references self-hosted WOFF2 assets already included in UX. Browsers fetch the faces used by the active page. You do not need to copy fonts into your repository or depend on a third-party font service.
+
+If your product supplies its own licensed fonts, omit this import and set its font tokens. Check your content languages against the chosen faces' glyph coverage.
+
+## Use the theme variables
+
+```css
+.product-title {
+  font-family: var(--theme-font-heading, system-ui);
+}
+.product-body {
+  font-family: var(--theme-font-body, system-ui);
+}
+.product-code {
+  font-family: var(--theme-font-mono, monospace);
+}
+.product-panel {
+  transition: background-color var(--theme-transition-duration, 200ms)
+    var(--theme-transition-easing, ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-panel { transition: none; }
+}
+```
+
+Avoid `transition: all` on large page regions. Preserve reduced-motion behavior in product-specific animation, and use a stable line height so type changes do not make controls unusable.
+
+## Keep information readable
+
+Use monospace or tabular numerals for values people compare. Keep supporting text readable in both modes. Test long names, localization, zoom, and font loading with your actual product content.

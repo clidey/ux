@@ -3,9 +3,44 @@ title: 'Pagination'
 description: 'Page navigation controls with previous, next, and numbered links.'
 ---
 
-# Pagination
+import { PaginationPreview } from '../examples/navigation-demos.tsx';
+
 
 `Pagination` provides navigation controls for multi-page content. It includes previous/next buttons, numbered page links, and an ellipsis for large page ranges.
+
+
+## Interactive example
+
+<Specimen label="Pagination · Live example">
+  <PaginationPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status, DemoIcon } from "./demo-shell";
+
+export function PaginationPreview() {
+  const [page, setPage] = useState(1);
+  return (
+    <Demo hint="Move through pages and watch the displayed records change.">
+      <div className="ux-demo-result-list">
+        {Array.from({ length: 3 }, (_, i) => (
+          <div className="ux-demo-list-row" key={i}>
+            <DemoIcon name="folder" />
+            Project {String((page - 1) * 3 + i + 1).padStart(2, "0")}
+          </div>
+        ))}
+      </div>
+      <UX.DataPagination totalPages={5} currentPage={page} onPageChange={setPage} />
+      <Status>Page {page} of 5</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

@@ -3,9 +3,73 @@ title: 'Drawer'
 description: 'Slide-out panel from any screen edge, powered by Vaul.'
 ---
 
-# Drawer
+import { DrawerPreview } from '../examples/overlay-demos.tsx';
+
 
 `Drawer` slides in from any screen edge (top, bottom, left, right). It's powered by the [Vaul](https://github.com/emilkowalski/vaul) library and supports drag-to-dismiss on mobile.
+
+
+## Interactive example
+
+<Specimen label="Drawer · Live example">
+  <DrawerPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status, DemoIcon } from "./demo-shell";
+
+export function DrawerPreview() {
+  const [open, setOpen] = useState(false);
+  const [goal, setGoal] = useState(12);
+  return (
+    <Demo hint="Open the drawer, change the weekly goal, then close it by dragging or using Done.">
+      <UX.Drawer open={open} onOpenChange={setOpen}>
+        <UX.DrawerTrigger>
+          <UX.Button variant="outline">Set weekly goal</UX.Button>
+        </UX.DrawerTrigger>
+        <UX.DrawerContent>
+          <div className="ux-demo-drawer-body">
+            <UX.DrawerHeader>
+              <UX.DrawerTitle>A little momentum</UX.DrawerTitle>
+              <UX.DrawerDescription>
+                Choose a weekly goal for this example workspace.
+              </UX.DrawerDescription>
+            </UX.DrawerHeader>
+            <div className="ux-demo-row">
+              <UX.Button
+                variant="outline"
+                size="icon"
+                aria-label="Decrease goal"
+                onClick={() => setGoal((n) => Math.max(1, n - 1))}
+              >
+                <DemoIcon name="minus" />
+              </UX.Button>
+              <span className="ux-demo-metric">{goal}</span>
+              <UX.Button
+                variant="outline"
+                size="icon"
+                aria-label="Increase goal"
+                onClick={() => setGoal((n) => n + 1)}
+              >
+                <DemoIcon name="plus" />
+              </UX.Button>
+            </div>
+            <UX.DrawerFooter>
+              <UX.Button onClick={() => setOpen(false)}>Done</UX.Button>
+            </UX.DrawerFooter>
+          </div>
+        </UX.DrawerContent>
+      </UX.Drawer>
+      <Status>{goal} tasks per week</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

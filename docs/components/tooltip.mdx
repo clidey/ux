@@ -3,9 +3,52 @@ title: 'Tooltip'
 description: 'Small popup label shown on hover for supplementary information.'
 ---
 
-# Tooltip
+import { TooltipPreview } from '../examples/overlay-demos.tsx';
+
 
 `Tooltip` shows a small label when hovering over an element. Built on Radix UI's tooltip primitive with configurable delay and positioning.
+
+
+## Interactive example
+
+<Specimen label="Tooltip · Live example">
+  <TooltipPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status, DemoIcon } from "./demo-shell";
+
+export function TooltipPreview() {
+  const [saved, setSaved] = useState(false);
+  return (
+    <Demo hint="Hover the control or focus it with Tab. Its tooltip follows the action state.">
+      <UX.TooltipProvider delayDuration={150}>
+        <UX.Tooltip>
+          <UX.TooltipTrigger>
+            <UX.Button
+              size="icon"
+              variant="outline"
+              aria-label={saved ? "Remove bookmark" : "Bookmark project"}
+              onClick={() => setSaved(!saved)}
+            >
+              <DemoIcon name={saved ? "check" : "bookmark"} />
+            </UX.Button>
+          </UX.TooltipTrigger>
+          <UX.TooltipContent>
+            {saved ? "Saved to your workspace" : "Save this project for later"}
+          </UX.TooltipContent>
+        </UX.Tooltip>
+      </UX.TooltipProvider>
+      <Status>{saved ? "Project bookmarked" : "Project not bookmarked"}</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

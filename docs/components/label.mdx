@@ -3,9 +3,42 @@ title: 'Label'
 description: 'Accessible form label that links to its associated control.'
 ---
 
-# Label
+import { LabelPreview } from '../examples/form-demos.tsx';
+
 
 `Label` is a styled form label built on Radix UI's `@radix-ui/react-label` primitive. It handles `htmlFor` linking, disabled state (via group data attributes), and renders accessible markup.
+
+
+## Interactive example
+
+<Specimen label="Label · Live example">
+  <LabelPreview />
+
+```tsx
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function LabelPreview() {
+  return (
+    <Demo hint="Click either label to move focus to its associated input.">
+      <div className="ux-demo-form">
+        <div>
+          <UX.Label htmlFor="label-email">Email address</UX.Label>
+          <UX.Input id="label-email" type="email" placeholder="you@example.com" />
+        </div>
+        <div className="ux-demo-row">
+          <UX.Checkbox id="label-consent" />
+          <UX.Label htmlFor="label-consent">Send me product updates</UX.Label>
+        </div>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

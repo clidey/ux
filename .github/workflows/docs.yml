@@ -1,0 +1,86 @@
+name: Documentation
+
+on:
+  pull_request:
+    paths: ['docs/**', 'examples/**', 'scripts/**', 'src/**', 'icons/**', 'themes/**', 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'vite*.ts', 'tsconfig*.json', '.github/workflows/docs.yml']
+  push:
+    branches: [main]
+    paths: ['docs/**', 'examples/**', 'scripts/**', 'src/**', 'icons/**', 'themes/**', 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'vite*.ts', 'tsconfig*.json', '.github/workflows/docs.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Imported MDX is executable source. PR builds receive no deployment token,
+      # secrets, or persisted checkout credentials. Never use pull_request_target.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: pnpm
+      - name: Scan publication source for secrets
+        run: |
+          mkdir -p "$RUNNER_TEMP/ux-secret-scan" "$RUNNER_TEMP/ux-source"
+          curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz -o "$RUNNER_TEMP/ux-secret-scan/scanner.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/ux-secret-scan/scanner.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/ux-secret-scan/scanner.tar.gz" -C "$RUNNER_TEMP/ux-secret-scan" gitleaks
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/ux-source"
+          "$RUNNER_TEMP/ux-secret-scan/gitleaks" dir "$RUNNER_TEMP/ux-source" --redact --no-banner
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm generate:icons
+      - run: pnpm docs:setup
+      - name: Validate compiler boundaries
+        working-directory: .dory/compiler
+        run: |
+          pnpm test
+          node --import tsx --test bin/dependency-overlay.test.mts bin/preview-static.test.mts
+      - run: pnpm lint
+      - run: pnpm test:coverage
+      - run: pnpm build
+      - run: pnpm docs:security
+      - run: pnpm docs:check
+      - run: pnpm docs:build
+      - name: Scan generated site for secrets
+        run: '"$RUNNER_TEMP/ux-secret-scan/gitleaks" dir docs/dist --redact --no-banner'
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: github.event_name == 'pull_request'
+        with:
+          name: ux-docs-preview
+          path: docs/dist
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: docs/dist
+
+  deploy:
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # The privileged deployment job runs no documentation or repository code.
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

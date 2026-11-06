@@ -3,8 +3,6 @@ title: 'Installation'
 description: 'Install @clidey/ux and configure it in your React project.'
 ---
 
-# Installation
-
 ## Install the package
 
 <CodeGroup title="Install @clidey/ux">
@@ -145,4 +143,4 @@ The package externalizes these dependencies — they must be present in your pro
 | `react` | `>=18.3.0` |
 | `react-dom` | `>=18.3.0` |
 
-All other dependencies (Radix UI, Lucide, Recharts, etc.) are bundled and do not need to be installed separately.
+Other required runtime packages are regular dependencies installed by your package manager. The library build externalizes these packages; they are not bundled into a single dependency-free file.

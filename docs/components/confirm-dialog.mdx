@@ -3,9 +3,65 @@ title: 'ConfirmDialog'
 description: 'Pre-composed confirmation dialog for destructive or important actions.'
 ---
 
-# ConfirmDialog
+import { ConfirmPreview } from '../examples/overlay-demos.tsx';
+
 
 A pre-composed `AlertDialog` for confirming actions. Supports dependency blocking (disabling confirmation when prerequisites aren't met) and an item preview list.
+
+
+## Interactive example
+
+<Specimen label="Confirm Dialog · Live example">
+  <ConfirmPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function ConfirmPreview() {
+  const [open, setOpen] = useState(false);
+  const [blocked, setBlocked] = useState(false);
+  const [archived, setArchived] = useState(false);
+  return (
+    <Demo hint="Try confirmation both with and without a blocking dependency.">
+      <div className="ux-demo-row">
+        <UX.Checkbox
+          id="confirm-blocker"
+          checked={blocked}
+          onCheckedChange={(v) => setBlocked(v === true)}
+        />
+        <UX.Label htmlFor="confirm-blocker">Require an outstanding review</UX.Label>
+      </div>
+      <UX.Button variant="outline" onClick={() => setOpen(true)}>
+        Archive project
+      </UX.Button>
+      <UX.ConfirmDialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Archive Studio foundations?"
+        description="This changes only the local demonstration."
+        dependencies={blocked ? ["Complete the outstanding review first."] : []}
+        confirmLabel="Archive project"
+        onConfirm={() => {
+          setArchived(true);
+          setOpen(false);
+        }}
+      />
+      <Status>{archived ? "Project archived in this demo." : "Project is active."}</Status>
+      {archived && (
+        <UX.Button variant="ghost" onClick={() => setArchived(false)}>
+          Reset project
+        </UX.Button>
+      )}
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Usage
 

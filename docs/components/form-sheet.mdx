@@ -3,9 +3,61 @@ title: 'FormSheet'
 description: 'Pre-composed slide-out panel for hosting forms.'
 ---
 
-# FormSheet
+import { FormSheetPreview } from '../examples/overlay-demos.tsx';
+
 
 A convenience wrapper around `Sheet` that provides a standard slide-out panel with title, description, and optional pinned footer. Reduces boilerplate for the common "open a side panel with a form" pattern.
+
+
+## Interactive example
+
+<Specimen label="Form Sheet · Live example">
+  <FormSheetPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function FormSheetPreview() {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("Studio");
+  const [saved, setSaved] = useState("Studio");
+  return (
+    <Demo hint="Open the form sheet, edit the name, and save to update the workspace.">
+      <UX.Button variant="outline" onClick={() => setOpen(true)}>
+        Edit workspace
+      </UX.Button>
+      <UX.FormSheet
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Edit workspace"
+        description="A focused form with a pinned action."
+        footer={
+          <UX.Button
+            onClick={() => {
+              setSaved(name);
+              setOpen(false);
+            }}
+          >
+            Save workspace
+          </UX.Button>
+        }
+      >
+        <div className="ux-demo-form">
+          <UX.Label htmlFor="form-sheet-name">Workspace name</UX.Label>
+          <UX.Input id="form-sheet-name" value={name} onChange={(e) => setName(e.target.value)} />
+        </div>
+      </UX.FormSheet>
+      <Status>Saved workspace: {saved}</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Usage
 

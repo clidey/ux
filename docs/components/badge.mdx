@@ -3,9 +3,52 @@ title: 'Badge'
 description: 'Small label for status, category, or version indicators.'
 ---
 
-# Badge
+import { BadgePreview } from '../examples/feedback-demos.tsx';
+
 
 `Badge` is a compact inline label used for status indicators, categories, version tags, and counts.
+
+
+## Interactive example
+
+<Specimen label="Badge · Live example">
+  <BadgePreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, DemoIcon } from "./demo-shell";
+
+export function BadgePreview() {
+  const [variant, setVariant] = useState<"default" | "secondary" | "destructive" | "outline">(
+    "default",
+  );
+  return (
+    <Demo hint="Choose a treatment and see the badge change while keeping its readable label.">
+      <div className="ux-demo-row">
+        {(["default", "secondary", "destructive", "outline"] as const).map((x) => (
+          <UX.Button
+            key={x}
+            size="sm"
+            variant={variant === x ? "secondary" : "ghost"}
+            aria-pressed={variant === x}
+            onClick={() => setVariant(x)}
+          >
+            {x}
+          </UX.Button>
+        ))}
+      </div>
+      <UX.Badge variant={variant}>
+        <DemoIcon name="check-circle" /> Ready to review
+      </UX.Badge>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -32,7 +75,7 @@ import { Badge } from '@clidey/ux';
 ## With icons
 
 ```tsx
-import { CheckCircle2, Clock, XCircle } from 'lucide-react';
+import { IconCheckCircle as CheckCircle2, IconClock as Clock, IconXCircle as XCircle } from '@clidey/ux';
 
 <Badge>
   <CheckCircle2 className="size-3" />

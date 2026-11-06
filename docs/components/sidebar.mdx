@@ -3,9 +3,84 @@ title: 'Sidebar'
 description: 'Full-featured sidebar with collapsible navigation, submenus, and mobile support.'
 ---
 
-# Sidebar
+import { SidebarPreview } from '../examples/navigation-demos.tsx';
+
 
 `Sidebar` is a comprehensive navigation sidebar component with collapsible menus, submenus, mobile responsiveness, and multiple layout variants. It's built on a context provider and exposes a `useSidebar` hook for programmatic control.
+
+
+## Interactive example
+
+<Specimen label="Sidebar · Live example">
+  <SidebarPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, DemoIcon } from "./demo-shell";
+
+export function SidebarPreview() {
+  const [selected, setSelected] = useState("Overview");
+  const [open, setOpen] = useState(true);
+  return (
+    <Demo hint="Use the embedded sidebar to switch sections or collapse it to an icon rail.">
+      <UX.SidebarProvider className="ux-demo-sidebar-provider">
+        <UX.Sidebar variant="embed" collapsible="icon" open={open} onOpenChange={setOpen}>
+          <UX.SidebarHeader>
+            <UX.SidebarMenu>
+              <UX.SidebarMenuItem>
+                <UX.SidebarMenuButton onClick={() => setOpen(!open)} tooltip="Toggle navigation">
+                  <DemoIcon name="app" />
+                  <span>Studio workspace</span>
+                </UX.SidebarMenuButton>
+              </UX.SidebarMenuItem>
+            </UX.SidebarMenu>
+          </UX.SidebarHeader>
+          <UX.SidebarContent>
+            <UX.SidebarGroup>
+              <UX.SidebarGroupLabel>Workspace</UX.SidebarGroupLabel>
+              <UX.SidebarMenu>
+                {[
+                  ["home", "Overview"],
+                  ["folder", "Projects"],
+                  ["settings", "Settings"],
+                ].map(([icon, label]) => (
+                  <UX.SidebarMenuItem key={label}>
+                    <UX.SidebarMenuButton
+                      isActive={selected === label}
+                      tooltip={label}
+                      onClick={() => setSelected(label)}
+                    >
+                      <DemoIcon name={icon} />
+                      <span>{label}</span>
+                    </UX.SidebarMenuButton>
+                  </UX.SidebarMenuItem>
+                ))}
+              </UX.SidebarMenu>
+            </UX.SidebarGroup>
+          </UX.SidebarContent>
+        </UX.Sidebar>
+        <div className="ux-demo-panel ux-demo-sidebar-content">
+          <UX.Button
+            variant="ghost"
+            size="icon"
+            aria-label="Toggle demo sidebar"
+            onClick={() => setOpen(!open)}
+          >
+            <DemoIcon name="sidebar" />
+          </UX.Button>
+          <h3>{selected}</h3>
+          <p>The surrounding content stays in place.</p>
+        </div>
+      </UX.SidebarProvider>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

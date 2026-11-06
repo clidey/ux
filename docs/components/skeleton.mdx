@@ -3,9 +3,57 @@ title: 'Skeleton'
 description: 'Pulsing placeholder for loading states.'
 ---
 
-# Skeleton
+import { SkeletonPreview } from '../examples/feedback-demos.tsx';
+
 
 `Skeleton` renders a gray pulsing rectangle as a placeholder while content loads. Use it to mimic the shape of the actual content for a better loading experience.
+
+
+## Interactive example
+
+<Specimen label="Skeleton · Live example">
+  <SkeletonPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function SkeletonPreview() {
+  const [loading, setLoading] = useState(true);
+  return (
+    <Demo hint="Toggle loading to compare a stable skeleton layout with the finished content.">
+      <div className="ux-demo-row">
+        {loading ? (
+          <UX.Skeleton className="ux-demo-avatar" />
+        ) : (
+          <span className="ux-demo-avatar ux-demo-avatar-loaded">AC</span>
+        )}
+        <div className="ux-demo-skeleton-lines">
+          {loading ? (
+            <>
+              <UX.Skeleton className="ux-demo-skeleton-title" />
+              <UX.Skeleton className="ux-demo-skeleton-subtitle" />
+            </>
+          ) : (
+            <>
+              <strong>Alex Chen</strong>
+              <p>Product designer · Studio workspace</p>
+            </>
+          )}
+        </div>
+      </div>
+      <UX.Button variant="outline" onClick={() => setLoading(!loading)}>
+        {loading ? "Show loaded content" : "Show skeleton"}
+      </UX.Button>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

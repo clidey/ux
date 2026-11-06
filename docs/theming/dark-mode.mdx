@@ -3,8 +3,6 @@ title: 'Dark Mode'
 description: 'Automatic and manual dark mode support for all components.'
 ---
 
-# Dark Mode
-
 Every component in Clidey Design supports dark mode out of the box. No configuration is required beyond wrapping your app with `ThemeProvider`.
 
 ## Automatic system detection
@@ -19,17 +17,17 @@ When `defaultTheme` is set to `"system"`, Clidey Design reads the user's OS pref
 
 The theme updates in real time if the user changes their OS setting while the app is open.
 
-## Forcing a specific theme
+## Choosing the initial mode
 
-To lock your app to a specific theme regardless of the user's OS preference:
+Set the initial preference for a new visitor. A saved choice takes precedence over `defaultTheme`:
 
 ```tsx
-// Always light
+// Initially light
 <ThemeProvider defaultTheme="light">
   <App />
 </ThemeProvider>
 
-// Always dark
+// Initially dark
 <ThemeProvider defaultTheme="dark">
   <App />
 </ThemeProvider>
@@ -53,7 +51,7 @@ Use `useTheme` to build your own theme switcher:
 
 ```tsx
 import { useTheme, Button } from '@clidey/ux';
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { IconSun as Sun, IconMoon as Moon, IconMonitor as Monitor } from '@clidey/ux';
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();

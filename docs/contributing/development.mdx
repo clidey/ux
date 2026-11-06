@@ -1,0 +1,56 @@
+---
+title: 'Developing UX'
+description: 'Build, test, and extend the shared library without coupling documentation to its output.'
+---
+
+Use the pnpm version pinned in `package.json`. Install from the lockfile and keep lifecycle scripts disabled as configured in the workspace.
+
+```bash
+pnpm install --frozen-lockfile --ignore-scripts
+pnpm generate:icons
+pnpm dev
+```
+
+## Repository map
+
+| Path | Responsibility |
+| --- | --- |
+| `src/components/ui/` | Components and their public prop types |
+| `src/components/theme/` | Mode, palette, persistence, and provider |
+| `src/themes/` | Palette definitions and mode styles |
+| `icons/` | Public SVG assets and URL map |
+| `themes/` | Distributed font and palette CSS assets |
+| `src/index.ts` | Public package exports |
+| `tests/` | Vitest and Testing Library regression tests |
+| `src/showcases/` | Interactive component demonstrations |
+| `examples/workspace/` | A complete component composition |
+| `docs/` | Dory configuration, MDX, and review screenshots |
+
+## Validation
+
+```bash
+pnpm lint
+pnpm test:coverage
+pnpm build
+pnpm build:lib
+pnpm docs:check
+pnpm docs:build
+```
+
+Both application and library builds write to root `dist/`; run the one you intend to inspect last. Dory builds from its own workspace and writes to `docs/dist/`, so it cannot replace the package's library output.
+
+## Add a component
+
+Follow the existing Radix and variant patterns. Export the public API from `src/index.ts`; document imports and props; add a showcase and behavior tests. Cover keyboard behavior, accessible names, disabled states, and controlled state where relevant.
+
+## Add or change a palette
+
+Keep the catalog definition and its CSS together in `src/themes/`. Include light and dark values and inspect their contrast with real UI. `pnpm build:lib` regenerates the distributed palette stylesheet. Do not hand-edit generated files.
+
+## Add an icon
+
+Update the SVG catalog, then run `pnpm generate:icons`. Named React components are generated from the catalog keys. Preserve distinct alternate artwork and verify naming collisions before updating documentation.
+
+## Before a contribution is published
+
+Include command results, before/after screenshots for visual work, and any compatibility impact. Follow the repository's commit instructions and obtain review before a commit, push, or release.

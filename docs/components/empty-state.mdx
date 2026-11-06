@@ -3,9 +3,51 @@ title: 'EmptyState'
 description: 'Placeholder UI for empty lists, results, and data sets.'
 ---
 
-# EmptyState
+import { EmptyStatePreview } from '../examples/action-demos.tsx';
+
 
 `EmptyState` provides a consistent, centered layout for empty data scenarios. It shows an icon, title, description, and optional call-to-action. The content container uses `w-full max-w-[400px]` so it fills narrow containers gracefully while capping width in wider ones.
+
+
+## Interactive example
+
+<Specimen label="Empty State · Live example">
+  <EmptyStatePreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function EmptyStatePreview() {
+  const [created, setCreated] = useState(false);
+  return (
+    <Demo hint="Create a first project to leave the empty state, then reset the example.">
+      {created ? (
+        <div className="ux-demo-form">
+          <UX.Badge>Project created</UX.Badge>
+          <h3>Untitled project</h3>
+          <UX.Button variant="outline" onClick={() => setCreated(false)}>
+            Reset example
+          </UX.Button>
+        </div>
+      ) : (
+        <UX.EmptyState
+          title="A fresh start"
+          description="Your next idea deserves a place to grow."
+          icon={<UX.CatalogIcon name="folder-plus" size={36} />}
+        >
+          <UX.Button onClick={() => setCreated(true)}>Create a project</UX.Button>
+        </UX.EmptyState>
+      )}
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -16,7 +58,7 @@ import { EmptyState } from '@clidey/ux';
 ## Basic usage
 
 ```tsx
-import { Inbox } from 'lucide-react';
+import { IconInbox as Inbox } from '@clidey/ux';
 
 <EmptyState
   icon={<Inbox className="size-10 text-muted-foreground" />}
@@ -28,7 +70,7 @@ import { Inbox } from 'lucide-react';
 ## With action
 
 ```tsx
-import { FolderOpen } from 'lucide-react';
+import { IconFolder as FolderOpen } from '@clidey/ux';
 
 <EmptyState
   icon={<FolderOpen className="size-10 text-muted-foreground" />}
@@ -45,7 +87,7 @@ import { FolderOpen } from 'lucide-react';
 ## Search empty state
 
 ```tsx
-import { SearchX } from 'lucide-react';
+import { IconSearch as SearchX } from '@clidey/ux';
 
 function NoResults({ query }: { query: string }) {
   return (

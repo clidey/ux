@@ -3,9 +3,77 @@ title: 'Tabs'
 description: 'Tab navigation for switching between content panels.'
 ---
 
-# Tabs
+import { TabsPreview } from '../examples/navigation-demos.tsx';
+
 
 `Tabs` provides a tabbed navigation pattern. The active tab highlights and shows its associated content panel. Built on Radix UI's tabs primitive.
+
+
+## Interactive example
+
+<Specimen label="Tabs · Live example">
+  <TabsPreview />
+
+```tsx
+import { type KeyboardEvent } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function tabKeyboard(event: KeyboardEvent<HTMLElement>) {
+  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+  const tabs = Array.from(
+    event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])'),
+  );
+  const i = tabs.indexOf(event.target as HTMLButtonElement);
+  if (i < 0) return;
+  event.preventDefault();
+  const n =
+    event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? tabs.length - 1
+        : (i + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+  tabs[n].focus();
+  tabs[n].click();
+}
+
+export function TabsPreview() {
+  return (
+    <Demo hint="Switch views with the pointer, or use Left, Right, Home, and End on the tab strip.">
+      <UX.Tabs defaultValue="overview">
+        <UX.TabsList aria-label="Project sections" onKeyDown={tabKeyboard}>
+          <UX.TabsTrigger value="overview">Overview</UX.TabsTrigger>
+          <UX.TabsTrigger value="activity">Activity</UX.TabsTrigger>
+          <UX.TabsTrigger value="settings">Settings</UX.TabsTrigger>
+        </UX.TabsList>
+        <UX.TabsContent value="overview">
+          <div className="ux-demo-panel">
+            <UX.Badge>On track</UX.Badge>
+            <h3>Studio foundations</h3>
+            <p>A shared language for everything your team builds.</p>
+          </div>
+        </UX.TabsContent>
+        <UX.TabsContent value="activity">
+          <div className="ux-demo-panel">
+            <p>Alex updated the component library.</p>
+            <p>Jordan reviewed the workspace layout.</p>
+          </div>
+        </UX.TabsContent>
+        <UX.TabsContent value="settings">
+          <div className="ux-demo-panel">
+            <UX.Label htmlFor="tab-title">Project name</UX.Label>
+            <UX.Input id="tab-title" defaultValue="Studio foundations" />
+          </div>
+        </UX.TabsContent>
+      </UX.Tabs>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -62,7 +130,7 @@ function ControlledTabs() {
 ## Tabs with icons
 
 ```tsx
-import { User, Lock, Bell } from 'lucide-react';
+import { IconUser as User, IconLock as Lock, IconBell as Bell } from '@clidey/ux';
 
 <Tabs defaultValue="profile">
   <TabsList>

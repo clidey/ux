@@ -1,0 +1,70 @@
+---
+title: 'MCP and AI workflows'
+description: 'Give coding tools the real UX documentation, then review the interfaces they build.'
+---
+
+import { StartWithAI } from '../examples/start-with-ai.tsx';
+
+
+A useful coding assistant needs the component APIs, the theme model, and the icon names your product actually uses. These docs are built with [Dory](https://clidey.github.io/dory/), which supports MCP and machine-readable MDX.
+
+UX is a React library; it does not ship a separate component-generation MCP server. Dory supplies the documentation connection described here.
+
+## Start with a prompt
+
+You can start building by giving Claude Code or Codex one documentation URL. The text at `llms.txt` contains the complete guides, public TypeScript contracts, all palette metadata and icon names, and working example source. A browsing or file-reading coding agent can use it without configuring MCP first.
+
+<StartWithAI />
+
+Add your app idea and paste the short prompt into your coding agent. The linked context contains the setup, implementation, and verification instructions. The public context is at [clidey.github.io/ux/llms.txt](https://clidey.github.io/ux/llms.txt).
+
+A local URL works for agents running on the same machine. For browser-based Claude or a remote agent, use the publicly deployed documentation URL once it is available. Reading the text gives the agent documentation; MCP is an optional connection for structured searches and page lookups.
+
+## What the context includes
+
+- Installation, stylesheet imports, framework integration, and application composition.
+- Component examples and current public TypeScript contracts.
+- Every valid catalog icon name and its React export.
+- Every palette’s ID, typography, surface, and motion metadata, plus semantic token names.
+- Complete live demo modules and their shared styling.
+- Instructions to implement real state, accessible controls, responsive layouts, and verification.
+
+The file ends with `END OF CLIDEY UX BUILD CONTEXT` so the agent can detect a truncated fetch. `llms-full.txt` contains the same complete context; `llms-index.txt` is the smaller navigation index.
+
+
+## Optional: connect through MCP
+
+Clone this repository, install dependencies, and build the docs:
+
+```bash
+pnpm install --frozen-lockfile --ignore-scripts
+pnpm docs:check
+pnpm docs:build
+pnpm docs:preview
+```
+
+The preview server exposes a **read-only Streamable HTTP MCP endpoint** at:
+
+```text
+http://localhost:3191/ux/mcp
+```
+
+Add that URL through your MCP client's connector settings while the preview server is running. Its tools are `site_guide`, `list_pages`, `search_docs`, and `read_page`. They read the built documentation; they do not edit application code.
+
+The endpoint belongs to `dory preview`. Deploying `docs/dist` to a static host does not deploy an MCP server. A hosted MCP connection requires running the Dory server and forwarding the base-path endpoint.
+
+## Maintain this documentation through MCP
+
+For an authoring connection, print a stdio configuration from the docs project:
+
+```bash
+pnpm docs:mcp:config
+```
+
+Add the printed `mcpServers.dory` entry to your client. Dory pins the project directory with `DORY_PROJECT_ROOT`, so the client can launch from elsewhere. Alternatively, launch the local server with `pnpm docs:mcp`.
+
+This authoring server can write local MDX, build the site, and capture review screenshots. Use it only with a checkout you intend the assistant to edit. Ask it to call `dory_guide` first, then inspect pages, validate changes, and build before review. Nothing in this workflow authorizes a Git commit, push, or release.
+
+## Build and review
+
+Keep your app requirements concrete: the intended users, its main screens, the data it uses, and the interactions that must work. Ask the agent to use the full context above, implement in your existing project, and show the running result. Review the application before a commit or deployment.

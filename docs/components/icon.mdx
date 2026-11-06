@@ -1,80 +1,81 @@
 ---
 title: 'Icon'
-description: 'Wrapper for SVG icons with consistent sizing and styling.'
+description: 'Catalog icons and a presentation wrapper for consistent sizes and surfaces.'
 ---
 
-# Icon
+import { IconPresentationPreview } from '../examples/action-demos.tsx';
 
-`Icon` is a lightweight wrapper around an SVG element that enforces consistent sizing. Pass any SVG React element (e.g., from Lucide) and use the `size` prop to control its dimensions.
 
-<Note>
-  In most cases you won't need `Icon` at all — Lucide icons can be used directly in components. Use `Icon` when you need to normalize sizing across different SVG sources or when wrapping custom SVGs.
-</Note>
 
-## Import
+Use catalog components for the icon itself. Use `Icon` when you need a consistent presentation surface around an SVG.
 
 ```tsx
-import { Icon } from '@clidey/ux';
+import { Icon, IconSettings, IconDownload, Button } from '@clidey/ux';
+
+<Icon icon={<IconSettings />} size={20} variant="subtle" />
+<Icon icon={<IconSettings />} size={24} variant="solid" />
+<Button variant="outline"><IconDownload /> Export</Button>
 ```
 
-## Basic usage
+
+
+## Interactive example
+
+<Specimen label="Icon · Live example">
+  <IconPresentationPreview />
 
 ```tsx
-import { Settings } from 'lucide-react';
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
 
-<Icon icon={<Settings />} />
+export function IconPresentationPreview() {
+  const [variant, setVariant] = useState<"plain" | "subtle" | "solid">("subtle");
+  return (
+    <Demo hint="Compare presentation variants while keeping the same catalog artwork.">
+      <div className="ux-demo-row">
+        {(["plain", "subtle", "solid"] as const).map((value) => (
+          <UX.Button
+            key={value}
+            variant={variant === value ? "secondary" : "ghost"}
+            onClick={() => setVariant(value)}
+          >
+            {value}
+          </UX.Button>
+        ))}
+      </div>
+      <div className="ux-demo-row">
+        <UX.Icon icon={<UX.CatalogIcon name="star" />} variant={variant} size={32} />
+        <UX.Icon icon={<UX.CatalogIcon name="folder" />} variant={variant} size={32} />
+        <UX.Icon icon={<UX.CatalogIcon name="settings" />} variant={variant} size={32} />
+      </div>
+    </Demo>
+  );
+}
 ```
+</Specimen>
 
-## Custom size
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
 
-```tsx
-import { Star } from 'lucide-react';
-
-<Icon icon={<Star />} size={32} />
-```
-
-## With className
-
-```tsx
-import { Bell } from 'lucide-react';
-
-<Icon icon={<Bell />} className="text-primary" />
-```
-
-## In a button
-
-```tsx
-import { Download } from 'lucide-react';
-
-<Button variant="ghost" size="icon">
-  <Icon icon={<Download />} size={16} />
-</Button>
-```
-
-## Custom SVG
-
-```tsx
-const CustomLogo = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-  </svg>
-);
-
-<Icon icon={<CustomLogo />} size={24} className="text-primary" />
-```
 
 ## Props
 
-| Prop | Type | Default | Description |
+| Prop | Type | Default | Purpose |
 | --- | --- | --- | --- |
-| `icon` | `React.ReactElement<React.SVGProps<SVGSVGElement>>` | — | SVG element to render. |
-| `size` | `number` | `24` | Width and height of the icon in pixels. |
-| `className` | `string` | — | Additional CSS classes (e.g., color utilities). |
+| `icon` | SVG React element | Required | Element cloned with the chosen dimensions. |
+| `size` | `number` | `24` | Width and height of the child SVG. |
+| `variant` | `"plain"`, `"subtle"`, `"solid"` | `"plain"` | Plain icon, muted surface, or filled icon tile. |
+| `className` | `string` | — | Additional classes on the wrapper span. |
 
-<Tip>
-  When using Lucide icons directly without `Icon` wrapper, set size with the `size` prop on the Lucide component:
-  ```tsx
-  import { Settings } from 'lucide-react';
-  <Settings size={20} className="text-muted-foreground" />
-  ```
-</Tip>
+`Icon` forwards its ref to the wrapping span and accepts span HTML attributes. Its child SVG is decorative. Put an accessible name on an icon-only button, or provide text beside a standalone status icon.
+
+## Choosing an API
+
+| Situation | API |
+| --- | --- |
+| Fixed React icon | `IconSearch`, `IconHome`, and other named catalog exports |
+| Dynamic React icon | `CatalogIcon` with a validated catalog name |
+| Background tile or consistent wrapper | `Icon` with a catalog element |
+| Non-React markup or static assets | `@clidey/ux/icons` URL map or individual SVG files |
+
+Read [The icon catalog](/guides/icons) for naming, alternative artwork, and asset handling.

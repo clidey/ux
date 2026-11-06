@@ -1,3 +1,7 @@
+packages:
+  - .
+  - docs
+
 preferFrozenLockfile: true
 strictSsl: true
 strictPeerDependencies: true

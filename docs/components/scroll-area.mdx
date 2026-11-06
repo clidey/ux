@@ -3,9 +3,47 @@ title: 'ScrollArea'
 description: 'Custom scrollable container with styled scrollbar.'
 ---
 
-# ScrollArea
+import { ScrollAreaPreview } from '../examples/layout-demos.tsx';
+
 
 `ScrollArea` replaces the browser's default scrollbar with a custom-styled one that matches your design system. Built on Radix UI's scroll area primitive.
+
+
+## Interactive example
+
+<Specimen label="Scroll Area · Live example">
+  <ScrollAreaPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status, DemoIcon } from "./demo-shell";
+
+export function ScrollAreaPreview() {
+  const [count, setCount] = useState(18);
+  return (
+    <Demo hint="Scroll the bounded activity list and add another entry.">
+      <UX.ScrollArea className="ux-demo-scroll">
+        {Array.from({ length: count }, (_, i) => (
+          <div className="ux-demo-list-row" key={i}>
+            <DemoIcon name="file" />
+            <span>Project update {String(i + 1).padStart(2, "0")}</span>
+            <UX.Badge variant="outline">Saved</UX.Badge>
+          </div>
+        ))}
+      </UX.ScrollArea>
+      <UX.Button variant="outline" onClick={() => setCount((n) => n + 1)}>
+        Add activity entry
+      </UX.Button>
+      <Status>{count} entries</Status>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

@@ -22,6 +22,14 @@ import {defineConfig} from "vite"
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    rolldownOptions: {
+      input: {
+        catalog: path.resolve(__dirname, "index.html"),
+        workspace: path.resolve(__dirname, "examples/workspace/index.html"),
+      },
+    },
+  },
   optimizeDeps: {
     // maplibre-gl >= 6.12 loads its worker from a sibling file via import.meta.url;
     // the dev pre-bundle copies the module but not the worker, so serve it unbundled.

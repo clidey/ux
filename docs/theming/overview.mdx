@@ -1,194 +1,75 @@
 ---
-title: 'Theming Overview'
-description: 'Customize colors and branding for your Clidey Design integration.'
+title: 'The theme system'
+description: 'Mode, palette, and semantic tokens work together across your application.'
 ---
 
-# Theming Overview
+import { ThemeDemo } from '../examples/live-components.tsx';
 
-Clidey Design uses **CSS custom properties** (variables) for all colors and design tokens. The `ThemeProvider` manages which set of variables is applied based on the active theme (light, dark, or system).
+UX separates two choices: **mode** selects light, dark, or system preference; **palette** selects the visual direction. Components use semantic CSS variables so both choices apply throughout the interface.
 
-## ThemeProvider
 
-Wrap your application root with `ThemeProvider` to enable theme management:
+## Try the theme system
+
+<ThemeDemo />
+
+
+## Set up the provider
 
 ```tsx
 import { ThemeProvider } from '@clidey/ux';
-
-function Root() {
-  return (
-    <ThemeProvider defaultTheme="system" storageKey="my-app-theme">
-      <App />
-    </ThemeProvider>
-  );
-}
-```
-
-### Props
-
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `defaultTheme` | `"light" \| "dark" \| "system"` | `"system"` | Theme applied on first load before any user preference is stored. |
-| `storageKey` | `string` | `"@clidey/ux/theme"` | `localStorage` key used to persist the user's choice. |
-| `defaultPalette` | `string` | — | Optional palette ID, such as `"paper-ink"` or `"midnight-noir"`. Omit it to keep the default CSS tokens. |
-| `paletteStorageKey` | `string` | `"@clidey/ux/palette"` | `localStorage` key for the selected palette. |
-| `children` | `ReactNode` | — | Your application tree. |
-
-### useTheme hook
-
-Any component inside `ThemeProvider` can read and change the active theme:
-
-```tsx
-import { useTheme } from '@clidey/ux';
-
-function MyComponent() {
-  const { theme, setTheme } = useTheme();
-
-  return (
-    <div>
-      <p>Current theme: {theme}</p>
-      <button onClick={() => setTheme('dark')}>Switch to Dark</button>
-      <button onClick={() => setTheme('light')}>Switch to Light</button>
-      <button onClick={() => setTheme('system')}>Use System</button>
-    </div>
-  );
-}
-```
-
-### Hook return values
-
-| Value | Type | Description |
-| --- | --- | --- |
-| `theme` | `"light" \| "dark" \| "system"` | The currently selected theme. |
-| `setTheme` | `(theme: Theme) => void` | Updates the theme and persists it. |
-| `palette` | `string \| null` | The selected palette ID. |
-| `setPalette` | `(id: string \| null) => void` | Selects one of the shared palettes, or clears the palette. |
-
-## Shared palettes
-
-The package includes all 30 Clidey Design palettes. Palette IDs and metadata are available from `themes`; `getThemeById` resolves one palette. The provider applies its CSS tokens to `<html>` and preserves unrelated root classes.
-
-To load the palette typefaces as well as colors, import the optional font stylesheet. Fonts are self-hosted and loaded on demand by the browser.
-
-```tsx
+import '@clidey/ux/styles.css';
 import '@clidey/ux/theme-fonts.css';
+
+<ThemeProvider defaultTheme="system" defaultPalette="paper-ink">
+  <App />
+</ThemeProvider>
 ```
+
+The font stylesheet is optional. It references the package's own WOFF2 assets; you do not need a second font bundle in your repository.
+
+## Provider props
+
+| Prop | Type | Default | Behavior |
+| --- | --- | --- | --- |
+| `defaultTheme` | `"light"`, `"dark"`, `"system"` | `"system"` | Initial preference when there is no valid saved mode. |
+| `storageKey` | `string` | `"@clidey/ux/theme"` | Local storage key for mode. |
+| `defaultPalette` | `string` | Omitted | Initial catalog palette when there is no valid saved palette. |
+| `paletteStorageKey` | `string` | `"@clidey/ux/palette"` | Local storage key for palette. |
+| `children` | `ReactNode` | Required | Application content. |
+
+Omit the palette to use the base CSS tokens. Saved preferences take precedence over defaults. Use application-specific storage keys when several products share an origin.
+
+## Change either choice
 
 ```tsx
-import { ThemeProvider, themes, useTheme } from '@clidey/ux';
+import { Button, ModeToggle, useTheme } from '@clidey/ux';
 
-function PalettePicker() {
-  const { palette, setPalette } = useTheme();
-  return <select value={palette ?? ''} onChange={event => setPalette(event.target.value || null)}>
-    <option value="">Default tokens</option>
-    {themes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-  </select>;
-}
-
-function App() {
-  return <ThemeProvider defaultPalette="paper-ink"><PalettePicker /></ThemeProvider>;
-}
-```
-
-React applications can use this palette catalog through their `@clidey/ux` dependency.
-
-For a vanilla JavaScript app, import `@clidey/ux/theme-palettes.css` (or copy that file into the app's static assets). Apply a palette and color mode to the root element:
-
-```js
-document.documentElement.classList.add('theme-deep-ocean', 'dark');
-document.documentElement.dataset.theme = 'deep-ocean';
-```
-
-The CSS asset contains the same 30 palettes as the React catalog. `@clidey/ux/theme-fonts.css` is optional for apps that also want their typefaces.
-
-## ModeToggle
-
-The library ships a ready-made `ModeToggle` dropdown that lets users switch themes:
-
-```tsx
-import { ModeToggle } from '@clidey/ux';
-
-function Header() {
-  return (
-    <header className="flex items-center justify-between p-4">
-      <h1>My App</h1>
-      <ModeToggle />
-    </header>
-  );
+export function AppearanceActions() {
+  const { setPalette } = useTheme();
+  return <>
+    <ModeToggle />
+    <Button variant="outline" onClick={() => setPalette('forest-moss')}>
+      Try Forest Moss
+    </Button>
+    <Button variant="ghost" onClick={() => setPalette(null)}>
+      Use base tokens
+    </Button>
+  </>;
 }
 ```
 
-`ModeToggle` renders a button with a sun/moon icon. Clicking it opens a dropdown with Light, Dark, and System options.
+Call `useTheme` inside the provider. It returns `theme`, `setTheme`, `palette`, and `setPalette`. Mode values describe the user's preference: `"system"` remains `"system"` even while the resolved document mode is light or dark.
 
-## How it works
+## What happens on the document
 
-`ThemeProvider` applies a CSS class to the `<html>` element:
+The provider applies the resolved `light` or `dark` class to the document root. A selected palette adds its class and `data-theme` value, and applies its typography and motion properties. System mode listens for operating-system preference changes. Changes made through the hook are persisted locally.
 
-- **Light mode** → no class (or `light` class)
-- **Dark mode** → `dark` class added to `<html>`
-- **System** → reads `prefers-color-scheme` media query and applies accordingly
+Use semantic roles in custom surfaces instead of fixed colors. Changing a theme cannot update a hardcoded white background or an inline hex color in application markup.
 
-All Clidey Design components use Tailwind's `dark:` modifier, so they respond automatically to the `dark` class on `<html>`.
+## Go deeper
 
-## Customizing CSS variables
-
-The stylesheet exposes CSS custom properties using OKLCH color values. Override them in your own CSS after importing `@clidey/ux/styles.css`:
-
-```css
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --primary: oklch(0.546 0.174 260.1); /* Signal Blue #2C6BD4 */
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.44 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --control-border: color-mix(in srgb, var(--foreground) 50%, var(--card));
-  --ring: oklch(0.708 0 0);
-  --radius: 0.625rem;
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --primary: oklch(0.636 0.175 260.2); /* Signal Blue, lifted one step */
-  --primary-foreground: oklch(0.145 0 0);
-  /* ... dark mode overrides ... */
-}
-```
-
-### Clidey brand preset
-
-For Clidey-branded applications, import the ready-made brand token sheet after the base styles instead of writing overrides by hand:
-
-```css
-@import '@clidey/ux/styles.css';
-@import '@clidey/ux/brand.css';
-```
-
-`brand.css` applies the full Clidey palette (Paper/Ink surfaces, Signal Blue primary, Beacon Yellow highlight) in both light and dark modes, with every foreground/background pair WCAG-verified. Company surfaces (rather than product surfaces) can additionally set `class="brand-company"` on `<html>` to let orange lead primary actions.
-
-### Backdrop token
-
-Overlay components (`Dialog`, `AlertDialog`, `Sheet`, `Drawer`) use the `--backdrop` token for their semi-transparent overlay background instead of a hardcoded color:
-
-```css
-:root {
-  --backdrop: oklch(0 0 0 / 50%);
-}
-
-.dark {
-  --backdrop: oklch(0 0 0 / 60%);
-}
-```
-
-Override `--backdrop` to customize overlay dimming across all modal components at once.
-
-<Tip>
-  Values use the OKLCH color space for perceptual uniformity. The format is `oklch(lightness chroma hue)` where lightness is 0-1, chroma is the saturation intensity, and hue is degrees. Achromatic colors use `oklch(L 0 0)`.
-</Tip>
+- [30 palettes, one application](/theming/palettes): browse the catalog and build a picker.
+- [Semantic tokens](/theming/tokens): style layouts and brand overrides.
+- [Typography and motion](/theming/typography): use the palette's type and transition choices.
+- [Dark mode](/theming/dark-mode): test system preference and custom controls.
+- [Framework integration](/guides/frameworks): client boundaries and CSS ordering.

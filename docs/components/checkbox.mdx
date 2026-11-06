@@ -3,9 +3,59 @@ title: 'Checkbox'
 description: 'Accessible checkbox input built on Radix UI.'
 ---
 
-# Checkbox
+import { CheckboxPreview } from '../examples/form-demos.tsx';
+
 
 `Checkbox` is an accessible checkbox built on Radix UI's `@radix-ui/react-checkbox` primitive. A check icon appears when the box is checked.
+
+
+## Interactive example
+
+<Specimen label="Checkbox · Live example">
+  <CheckboxPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, Status } from "./demo-shell";
+
+export function CheckboxPreview() {
+  const [items, setItems] = useState(["Design"]);
+  const options = ["Design", "Engineering", "Product"];
+  return (
+    <Demo hint="Choose individual teams or use the indeterminate parent to select all.">
+      <div className="ux-demo-form">
+        <div className="ux-demo-row">
+          <UX.Checkbox
+            id="check-all"
+            checked={items.length === 3 ? true : items.length ? "indeterminate" : false}
+            onCheckedChange={(v) => setItems(v ? options : [])}
+          />
+          <UX.Label htmlFor="check-all">All teams</UX.Label>
+        </div>
+        <UX.Separator />
+        {options.map((team) => (
+          <div className="ux-demo-row" key={team}>
+            <UX.Checkbox
+              id={"check-" + team}
+              checked={items.includes(team)}
+              onCheckedChange={(v) =>
+                setItems(v ? [...items, team] : items.filter((x) => x !== team))
+              }
+            />
+            <UX.Label htmlFor={"check-" + team}>{team}</UX.Label>
+          </div>
+        ))}
+        <Status>{items.length} teams selected</Status>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

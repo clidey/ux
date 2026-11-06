@@ -1,81 +1,53 @@
 ---
-title: 'Introduction'
-description: 'A beautiful, accessible React component library built on Radix UI and Tailwind CSS v4.'
+title: 'One system. Every product.'
+description: 'One design system for the products you build next.'
 ---
 
-# Clidey Design
+Clidey UX gives React applications a shared visual language: composable components, **30 complete theme palettes**, and a **489-icon catalog**. Build an interface once, then change its atmosphere without rebuilding its behavior.
 
-**Clidey Design** is a production-ready React component library built on top of [Radix UI](https://radix-ui.com) primitives with [Tailwind CSS v4](https://tailwindcss.com) styling. It provides 37+ accessible, composable components designed for modern web applications.
+<Card title="Build your app with Claude or Codex" href="/getting-started/quick-start" description="Copy one prompt with the complete UX context, describe your app, and start building." />
 
-## Why Clidey Design?
+![A workspace built with Clidey UX in Paper and Ink dark mode](./images/workspace-dark.png)
 
-<CardGroup cols={3}>
-  <Card title="Accessible by default" icon="shield-check" description="Every component is built on Radix UI primitives — keyboard navigable, screen reader compatible, and ARIA compliant out of the box." />
-  <Card title="Fully typed" icon="code-2" description="Complete TypeScript definitions with strict mode. Your editor autocompletes props, variants, and event handlers." />
-  <Card title="Dark mode built in" icon="moon" description="Every component supports light and dark mode through the ThemeProvider. No extra configuration needed." />
-  <Card title="Composable API" icon="layers" description="Components use a sub-component composition pattern. Mix and match parts to build exactly the UI you need." />
-  <Card title="Tailwind CSS v4" icon="paint-bucket" description="Styled with the latest Tailwind CSS v4. Customize with className or extend through your own Tailwind config." />
-  <Card title="Zero runtime overhead" icon="zap" description="Pure React components with no runtime theme engine. Styles are compiled at build time for maximum performance." />
-</CardGroup>
+The workspace above uses the actual package components. Its data is fictional; the [example source](https://github.com/clidey/ux/tree/main/examples/workspace) is included in this repository.
 
-## What's included
+## A palette changes more than a button
 
-The library ships **37 UI components** plus a complete theming system:
+Surfaces, typography, focus rings, charts, navigation, shape, and motion belong to the same system. A palette gives these decisions a shared direction. Light and dark remain independent choices.
 
-<AccordionGroup>
-  <Accordion title="Actions" icon="pointer">
-    `Button`, `ButtonGroup` — Primary interaction elements with multiple variants and sizes.
-  </Accordion>
-  <Accordion title="Inputs" icon="keyboard">
-    `Input`, `TextArea`, `SearchInput`, `Checkbox`, `Switch`, `Select`, `SearchSelect`, `Label` — Form controls for all data entry needs.
-  </Accordion>
-  <Accordion title="Display" icon="layout">
-    `Badge`, `Card`, `Alert`, `Spinner`, `Skeleton`, `Progress`, `EmptyState`, `Separator` — Components for presenting information and loading states.
-  </Accordion>
-  <Accordion title="Navigation" icon="map">
-    `Tabs`, `Breadcrumb`, `Pagination`, `Sidebar` — Navigation patterns for multi-page and multi-section UIs.
-  </Accordion>
-  <Accordion title="Overlays" icon="layers">
-    `Dialog`, `AlertDialog`, `Drawer`, `Sheet`, `Tooltip`, `Popover` — Floating and modal UI elements.
-  </Accordion>
-  <Accordion title="Menus" icon="menu">
-    `DropdownMenu`, `ContextMenu`, `Command` — Contextual action menus and command palettes.
-  </Accordion>
-  <Accordion title="Layout" icon="columns">
-    `Accordion`, `ResizablePanelGroup`, `ScrollArea`, `StackList` — Structural layout primitives.
-  </Accordion>
-  <Accordion title="Data & Visualization" icon="bar-chart-2">
-    `Table` (with virtualization), `Chart` (Recharts wrapper), `Tree` — Components for displaying and exploring data.
-  </Accordion>
-  <Accordion title="Utilities" icon="settings">
-    `Icon`, `Toaster` (Sonner) — Supporting utilities for icons and notifications.
-  </Accordion>
-</AccordionGroup>
+![The same workspace in three UX palettes](./images/theme-comparison.png)
 
-## Quick navigation
+```tsx
+import { ThemeProvider } from '@clidey/ux';
+import '@clidey/ux/styles.css';
+import '@clidey/ux/theme-fonts.css';
+
+<ThemeProvider defaultPalette="paper-ink" defaultTheme="system">
+  <App />
+</ThemeProvider>
+```
+
+## What you can build
+
+| Need | Start with |
+| --- | --- |
+| Product actions and forms | Button, Input, Select, SearchSelect, Checkbox, Switch |
+| Application navigation | Sidebar, Breadcrumb, Tabs, Command |
+| Decisions and contextual editing | Dialog, Sheet, Drawer, Popover, ConfirmDialog |
+| Data workspaces | Table with automatic row windowing, Tree, MasterDetailPanels |
+| Visual feedback | Alert, Badge, Progress, Skeleton, Toaster |
+| Visualization | ChartContainer and MapContainer |
+| A consistent visual identity | ThemeProvider, semantic tokens, CatalogIcon |
+
+## A useful starting point for people and agents
+
+Guides cover setup, framework integration, accessible composition, and theme design. Component references include imports, examples, and API details. Dory also publishes machine-readable documentation and can expose these guides through MCP when served with its preview server.
 
 <CardGroup cols={2}>
-  <Card title="Installation" icon="package" href="/getting-started/installation" description="Install the package and import styles into your project." />
-  <Card title="Quick Start" icon="rocket" href="/getting-started/quick-start" description="Set up your first component in under 5 minutes." />
-  <Card title="Theming" icon="palette" href="/theming/overview" description="Configure brand colors and dark mode support." />
-  <Card title="Components" icon="box" href="/components/overview" description="Browse all 37+ components with usage examples." />
+  <Card title="Start building" href="/getting-started/installation" description="Install the package, load styles, and render your first interface." />
+  <Card title="Explore the themes" href="/theming/palettes" description="Understand the palette catalog and change your app as a whole." />
+  <Card title="Find a component" href="/components/overview" description="Browse actions, forms, navigation, overlays, and data components." />
+  <Card title="Work with MCP" href="/guides/mcp" description="Give your coding tools the actual component and theme documentation." />
 </CardGroup>
 
-## Tech stack
-
-| Technology | Version | Role |
-| --- | --- | --- |
-| React | ≥ 18.3 | Peer dependency |
-| Radix UI | Latest | Accessible primitives |
-| Tailwind CSS | v4 | Styling |
-| TypeScript | ~5.8 | Type safety |
-| class-variance-authority | 0.7 | Variant management |
-| lucide-react | Latest | Icons |
-| Recharts | 3.x | Charts |
-| Sonner | 2.x | Toast notifications |
-| Vaul | 1.x | Drawer |
-| cmdk | 1.x | Command menu |
-
-## License
-
-Clidey Design is open source under the [Apache License 2.0](https://github.com/clidey/ux/blob/main/LICENSE).
+Clidey UX is open source under [Apache 2.0](https://github.com/clidey/ux/blob/main/LICENSE). React and React DOM 18.3 or later are required.

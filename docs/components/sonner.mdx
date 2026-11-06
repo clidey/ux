@@ -3,9 +3,69 @@ title: 'Toaster (Sonner)'
 description: 'Toast notification system with automatic theme support.'
 ---
 
-# Toaster
+import { ToastPreview } from '../examples/feedback-demos.tsx';
+
 
 The `sonner.tsx` module re-exports `toast` from [Sonner](https://sonner.emilkowal.ski) and provides a theme-aware `Toaster` component. Toast notifications appear in the corner of the screen and auto-dismiss.
+
+
+UX notifications use the active theme’s neutral surface by default. Status is communicated through the icon and message; pass `richColors` explicitly if your product needs filled status colors. The close control stays inside the notification card.
+
+## Interactive example
+
+<Specimen label="Sonner · Live example">
+  <ToastPreview />
+
+```tsx
+import * as UX from "@clidey/ux";
+import { Demo } from "./demo-shell";
+
+export function ToastPreview() {
+  // The documentation layout mounts Toaster once, outside transformed panels.
+  return (
+    <Demo hint="Trigger different notifications. Dismiss them with their close control.">
+      <div className="ux-demo-row">
+        <UX.Button
+          onClick={() =>
+            UX.toast.success("Project saved", {
+              description: "Your changes are ready for the team.",
+            })
+          }
+        >
+          Success toast
+        </UX.Button>
+        <UX.Button
+          variant="outline"
+          onClick={() =>
+            UX.toast.error("Could not sync", {
+              description: "Check your connection and try again.",
+            })
+          }
+        >
+          Error toast
+        </UX.Button>
+        <UX.Button
+          variant="secondary"
+          onClick={() =>
+            UX.toast("Draft archived", {
+              action: {
+                label: "Undo",
+                onClick: () => UX.toast.success("Draft restored"),
+              },
+            })
+          }
+        >
+          Toast with undo
+        </UX.Button>
+      </div>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 

@@ -3,9 +3,48 @@ title: 'Alert'
 description: 'Contextual feedback messages with default and destructive variants.'
 ---
 
-# Alert
+import { AlertPreview } from '../examples/feedback-demos.tsx';
+
 
 `Alert` displays contextual messages such as informational notices, warnings, or error states inline on the page — without blocking interaction.
+
+
+## Interactive example
+
+<Specimen label="Alert · Live example">
+  <AlertPreview />
+
+```tsx
+import { useState } from "react";
+import * as UX from "@clidey/ux";
+import { Demo, DemoIcon } from "./demo-shell";
+
+export function AlertPreview() {
+  const [error, setError] = useState(false);
+  return (
+    <Demo hint="Switch between an informative message and a failure with a recovery action.">
+      <UX.Alert variant={error ? "destructive" : "default"}>
+        <DemoIcon name={error ? "warning" : "info"} />
+        <UX.AlertTitle>
+          {error ? "The import needs another try" : "Your workspace is up to date"}
+        </UX.AlertTitle>
+        <UX.AlertDescription>
+          {error
+            ? "Your original file is safe. Retry when you’re ready."
+            : "Everything you need is available on this device."}
+        </UX.AlertDescription>
+      </UX.Alert>
+      <UX.Button variant="outline" onClick={() => setError(!error)}>
+        {error ? "Retry import" : "Simulate an error"}
+      </UX.Button>
+    </Demo>
+  );
+}
+```
+</Specimen>
+
+The code uses shared demo presentation helpers. Their complete source and styling are included in [the LLM build context](/llms.txt).
+
 
 ## Import
 
@@ -39,7 +78,7 @@ import { Alert, AlertTitle, AlertDescription } from '@clidey/ux';
 ## With an icon
 
 ```tsx
-import { AlertTriangle, Info } from 'lucide-react';
+import { IconWarning as AlertTriangle, IconInfo as Info } from '@clidey/ux';
 
 <Alert>
   <Info className="size-4" />

@@ -1,412 +1,182 @@
 <p align="center">
-  <img src="./docs/logo/logo.png" alt="Clidey Design" height="72" />
+  <img src="./docs/logo/logo.png" alt="Clidey UX" height="64" />
+</p>
+
+<h1 align="center">One system. Every product.</h1>
+
+<p align="center">
+  Composable React components. 30 complete theme palettes. One shared icon language.<br />
+  A shared foundation for product interfaces, from simple forms to data workspaces.
 </p>
 
 <p align="center">
-  <strong>Clidey Design</strong><br/>
-  <strong>A production-ready React component library built on Radix UI and Tailwind CSS v4.</strong><br/>
-  37+ accessible, composable, dark-mode-ready components — drop in and ship.
+  <a href="https://www.npmjs.com/package/@clidey/ux"><img src="https://img.shields.io/npm/v/@clidey/ux?style=flat-square&color=2C6BD4" alt="npm version" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache_2.0-2C6BD4?style=flat-square" alt="Apache 2.0" /></a>
+  <img src="https://img.shields.io/badge/React-18.3%2B-2C6BD4?style=flat-square" alt="React 18.3 or later" />
+  <img src="https://img.shields.io/badge/TypeScript-included-2C6BD4?style=flat-square" alt="TypeScript declarations included" />
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@clidey/ux">
-    <img src="https://img.shields.io/npm/v/@clidey/ux?color=6366f1&labelColor=18181b&style=flat-square" alt="npm version" />
-  </a>
-  <a href="https://www.npmjs.com/package/@clidey/ux">
-    <img src="https://img.shields.io/npm/dm/@clidey/ux?color=6366f1&labelColor=18181b&style=flat-square" alt="downloads" />
-  </a>
-  <a href="https://github.com/clidey/ux/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/license-Apache--2.0-6366f1?labelColor=18181b&style=flat-square" alt="Apache 2.0 license" />
-  </a>
-  <img src="https://img.shields.io/badge/React-18%20%7C%2019-6366f1?labelColor=18181b&style=flat-square" alt="React 18/19" />
-  <img src="https://img.shields.io/badge/TypeScript-ready-6366f1?labelColor=18181b&style=flat-square" alt="TypeScript" />
+  <a href="https://ux.clidey.com">Interactive catalog</a> ·
+  <a href="https://clidey.github.io/ux/">Documentation</a> ·
+  <a href="./examples/workspace">Workspace example</a> ·
+  <a href="./docs/guides/mcp.mdx">MCP & AI workflows</a>
 </p>
 
----
+![A workspace composed from Clidey UX components in Paper and Ink dark mode](./docs/images/workspace-dark.png)
 
-## Why Clidey Design?
+Clidey UX is the shared design system for React products. It brings together Radix-backed controls, semantic design tokens, theme-aware data surfaces, and a catalog of 489 SVG icons. You keep ownership of product behavior; the library gives your interfaces a consistent foundation.
 
-Building a consistent, accessible UI from scratch takes weeks. Clidey Design gives you a complete set of polished components so you can focus on your product, not your design system.
+The screenshots in this README come from the working [workspace example](./examples/workspace) with fictional data and real UX components.
 
-- **Accessible by default** — every component is built on [Radix UI](https://radix-ui.com) primitives. Keyboard navigation, focus management, and ARIA attributes are handled for you.
-- **Dark mode included** — wrap your app with `ThemeProvider` and all components adapt automatically. System preference detection and `localStorage` persistence built in.
-- **Fully typed** — complete TypeScript definitions with strict mode. Autocomplete for every prop, variant, and event handler.
-- **Composable API** — sub-component patterns give you full control over layout and markup without fighting against an opinionated structure.
-- **Tailwind CSS v4** — styled with utility classes you already know. Override anything with `className`.
-- **Zero configuration** — one import, one stylesheet, done.
+## A theme changes the whole experience
 
----
+A primary color is one decision. A product's character comes from how all its decisions work together.
 
-## Installation
+UX's **30 palettes** coordinate surfaces, typography, accents, shape, and motion. Mode is independent: choose a palette once, then offer light, dark, or system preference without maintaining another component tree.
 
-```bash
-npm install @clidey/ux
-# or
-pnpm add @clidey/ux
-# or
-yarn add @clidey/ux
-```
-
-**Import the stylesheet once** at your app entry point:
+![The same workspace across Paper and Ink, Midnight Noir, and Forest Moss](./docs/images/theme-comparison.png)
 
 ```tsx
-// main.tsx / _app.tsx
+import { ThemeProvider, Button, IconArrowRight } from '@clidey/ux';
 import '@clidey/ux/styles.css';
-```
-
-**Wrap with ThemeProvider** to enable dark mode:
-
-```tsx
-import { ThemeProvider } from '@clidey/ux';
+import '@clidey/ux/theme-fonts.css'; // Optional, self-hosted palette typefaces
 
 export default function App() {
   return (
-    <ThemeProvider defaultTheme="system">
-      {/* your app */}
+    <ThemeProvider defaultPalette="paper-ink" defaultTheme="system">
+      <Button>Start building <IconArrowRight /></Button>
     </ThemeProvider>
   );
 }
 ```
 
-That's it. No extra configuration, no Tailwind setup required in your project.
+Switch palettes with `useTheme().setPalette('forest-moss')`. Read the catalog from `themes` rather than duplicating palette metadata in your app. Use semantic tokens in custom layouts so the whole interface follows along.
 
----
+[Explore palettes](./docs/theming/palettes.mdx) · [Understand tokens](./docs/theming/tokens.mdx) · [Typography and motion](./docs/theming/typography.mdx)
 
-## Quick start
+## Install and compose
+
+```sh
+pnpm add @clidey/ux
+```
+
+React and React DOM **18.3 or later** are peer dependencies. Import `@clidey/ux/styles.css` once at your application's entry point. The components arrive styled; your own Tailwind setup is only needed for utility classes you add to application markup.
 
 ```tsx
 import {
-  Button,
-  Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter,
-  Badge,
-  Input,
-  Label,
+  Button, Card, CardHeader, CardTitle, CardDescription,
+  CardContent, CardFooter, Input, Label,
 } from '@clidey/ux';
-import '@clidey/ux/styles.css';
 
-export default function Example() {
+export function WorkspaceCard() {
   return (
-    <Card className="max-w-sm">
+    <Card>
       <CardHeader>
-        <CardTitle>Create account</CardTitle>
-        <CardDescription>Get started in seconds. No credit card required.</CardDescription>
+        <CardTitle>A place for your team</CardTitle>
+        <CardDescription>Give your workspace a name.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="space-y-1">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="you@example.com" />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" showPasswordToggle />
-        </div>
+      <CardContent>
+        <Label htmlFor="workspace">Workspace name</Label>
+        <Input id="workspace" placeholder="Studio" />
       </CardContent>
-      <CardFooter className="flex items-center justify-between">
-        <Badge variant="outline">Free plan</Badge>
-        <Button>Create account</Button>
+      <CardFooter>
+        <Button type="button">Create workspace</Button>
       </CardFooter>
     </Card>
   );
 }
 ```
 
----
+Connect the action to your application state or API. Composition keeps domain logic in your product rather than hiding it behind a framework.
 
-## Components
+[Installation](./docs/getting-started/installation.mdx) · [Next.js and Vite](./docs/guides/frameworks.mdx) · [Composition](./docs/guides/composition.mdx)
 
-### Actions
-| Component | Description |
+## The building blocks
+
+| Area | Components and capabilities |
 | --- | --- |
-| `Button` | 6 variants (`default`, `destructive`, `outline`, `secondary`, `ghost`, `link`) · 4 sizes |
-| `ButtonGroup` | Connected button strip for toolbars and segmented controls |
+| Actions | Button variants, loading states, ButtonGroup, CopyButton |
+| Forms | Input, TextArea, Checkbox, Switch, Select, SearchSelect, MultiSearchSelect |
+| Navigation | Sidebar, Tabs, Breadcrumb, Pagination, Command |
+| Context | Dialog, Sheet, Drawer, Popover, Tooltip, DropdownMenu, ContextMenu |
+| Feedback | Alert, Badge, Progress, Spinner, Skeleton, Toaster, EmptyState |
+| Layout | Card, Accordion, ResizablePanelGroup, MasterDetailPanels, ScrollArea, StackList |
+| Data | Tables, virtualized rows, Tree, Recharts integration, MapLibre layers |
+| Product details | FormSheet, ConfirmDialog, Kbd, animated NotFoundPage |
+| Foundations | ThemeProvider, palette catalog, semantic tokens, SVG catalog |
 
-### Inputs
-| Component | Description |
-| --- | --- |
-| `Input` | Text field with optional password toggle |
-| `TextArea` | Multi-line text input |
-| `SearchInput` | Text field with built-in search icon |
-| `Checkbox` | Accessible checkbox with indeterminate state |
-| `Switch` | Toggle for boolean settings |
-| `Select` | Composable dropdown selector |
-| `SearchSelect` | Dropdown with search filtering and icon support |
-| `Label` | Accessible form label |
+Subcomponents give you control over structure. TypeScript declarations describe the public API. Radix-backed primitives handle focus and keyboard behavior; your product still supplies meaningful labels, readable content, and accessible composition.
 
-### Display
-| Component | Description |
-| --- | --- |
-| `Badge` | Status and category labels · 4 variants |
-| `Card` | Container with header, content, footer, and action slots |
-| `Alert` | Inline feedback messages · `default` and `destructive` |
-| `Spinner` | Animated loader · 5 color variants · 3 sizes |
-| `Skeleton` | Pulsing placeholder for loading states |
-| `Progress` | Linear progress bar |
-| `EmptyState` | Placeholder for empty lists and zero-state screens |
-| `Separator` | Horizontal or vertical divider |
+[Browse the component references](./docs/components/overview.mdx) · [Accessibility guide](./docs/guides/accessibility.mdx)
 
-### Navigation
-| Component | Description |
-| --- | --- |
-| `Tabs` | Tab panels for switching between sections |
-| `Breadcrumb` | Hierarchical path with ellipsis support |
-| `Pagination` | Previous / next and numbered page controls |
-| `Sidebar` | Full sidebar with collapsible menus, submenus, mobile support |
+## One icon language
 
-### Overlays
-| Component | Description |
-| --- | --- |
-| `Dialog` | Modal with focus trap and scroll lock |
-| `AlertDialog` | Blocking confirmation for destructive actions |
-| `Drawer` | Slide-in panel from any edge (powered by Vaul) |
-| `Sheet` | Side panel overlay (powered by Radix Dialog) |
-| `Tooltip` | Hover label with configurable delay and position |
-| `Popover` | Click-anchored floating panel |
-
-### Menus
-| Component | Description |
-| --- | --- |
-| `DropdownMenu` | Trigger menu with checkboxes, radio groups, and sub-menus |
-| `ContextMenu` | Right-click menu with the same rich item types |
-| `Command` | Fuzzy-search command palette (⌘K) powered by cmdk |
-
-### Layout
-| Component | Description |
-| --- | --- |
-| `Accordion` | Collapsible sections with animated expand/collapse |
-| `ResizablePanelGroup` | Drag-to-resize split views |
-| `MasterDetailPanels` | List/detail split; one panel at a time below 768px |
-| `ScrollArea` | Custom scrollbar with styled track and thumb |
-| `StackList` | Key-value metadata list with separators |
-
-### Data & Visualization
-| Component | Description |
-| --- | --- |
-| `Table` | Full table with virtualization for large datasets and JSON preview |
-| `Chart` | Recharts wrapper with theme-aware tooltips and legend |
-| `Tree` | Hierarchical tree / file explorer with expand and selection |
-
-### Utilities
-| Component | Description |
-| --- | --- |
-| `Icon` | SVG wrapper with consistent sizing |
-| `CatalogIcon` | Plain SVG icon selected by catalog name |
-| `IconSearch`, `IconHome`, … | Named components for every catalog SVG, including `Alt` variants |
-| `Toaster` | Toast notifications powered by Sonner |
-
-### Theme
-| Component / Hook | Description |
-| --- | --- |
-| `ThemeProvider` | Context provider for light / dark / system theme |
-| `useTheme` | Hook to read and set the active theme |
-| `ModeToggle` | Ready-made dropdown to switch themes |
-
----
-
-## Usage examples
-
-### Catalog icons
+Use the UX catalog directly in your application:
 
 ```tsx
-import { IconSearch, IconSearchAlt, CatalogIcon } from '@clidey/ux';
+import { Button, IconSearch, CatalogIcon } from '@clidey/ux';
 
-<IconSearch className="size-4" />
-<IconSearchAlt size={20} />
-<CatalogIcon name="source" size={16} />
+<Button size="icon" variant="ghost" aria-label="Search">
+  <IconSearch size={20} />
+</Button>
+<CatalogIcon name="folder" size={20} />
 ```
 
-Catalog icons inherit the current text color and accept SVG props and refs. Add `aria-label` when an icon needs its own accessible name.
+Named React icons inherit text color and accept SVG props and refs. Raw SVG URLs are also available from `@clidey/ux/icons` for non-React surfaces. Validate dynamic names before passing them to `CatalogIcon`.
 
-### Triggers and `asChild`
+[Icon catalog guide](./docs/guides/icons.mdx) · [SVG assets](./icons/README.md)
 
-Wrap interactive children in `DropdownMenuTrigger`, `TooltipTrigger`, `PopoverTrigger`, `DialogTrigger` and friends **without** `asChild`; the trigger renders as the child when it is slot-safe (`Button`, `Badge`, `SidebarMenuButton`, intrinsic `button`/`a`/`span`/`div`, ...) and as its own button otherwise. Pass `asChild` only for non-ux elements that forward refs. See [docs/triggers-and-aschild.md](./docs/triggers-and-aschild.md) for the rule, the safe/unsafe table and the traps.
+## Build with Claude or Codex
 
-```tsx
-<DropdownMenuTrigger>
-  <Button variant="ghost" size="icon"><MoreHorizontal /></Button>
-</DropdownMenuTrigger>
+Give a coding agent the complete UX build context and describe your app. The context includes setup, component guides, public types, all icons and palettes, and full working examples.
+
+```text
+Read https://clidey.github.io/ux/llms.txt and build the following app using Clidey UX:
+
+[Describe your app.]
 ```
 
-### Confirmation dialog
+The public URL works with local and remote coding agents. The Quick Start copy button uses the current host automatically.
 
-```tsx
-import {
-  AlertDialog, AlertDialogTrigger, AlertDialogContent,
-  AlertDialogHeader, AlertDialogTitle, AlertDialogDescription,
-  AlertDialogFooter, AlertDialogCancel, AlertDialogAction,
-  Button,
-} from '@clidey/ux';
-
-<AlertDialog>
-  <AlertDialogTrigger>
-    <Button variant="destructive">Delete account</Button>
-  </AlertDialogTrigger>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-      <AlertDialogDescription>
-        This action cannot be undone. Your data will be permanently deleted.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction>Delete account</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
+```sh
+pnpm docs:setup      # prepare the pinned Dory source compiler
+pnpm docs:build
+pnpm docs:preview
 ```
 
-### Toast notifications
+Reading `llms.txt` requires no MCP setup. Dory's preview server also exposes read-only MCP at `/ux/mcp` for structured searches and page lookups. Static hosting serves the text files; a live MCP endpoint requires the Dory server.
 
-```tsx
-import { Toaster, toast } from '@clidey/ux';
+[Copy the starter prompt](./docs/ai/starter-prompt.txt) · [AI and MCP guide](./docs/guides/mcp.mdx)
 
-// In your root layout
-<Toaster />
+## Explore locally
 
-// Anywhere in your app
-toast.success('Saved successfully!');
-toast.error('Something went wrong.');
-toast.promise(saveData(), {
-  loading: 'Saving...',
-  success: 'Done!',
-  error: 'Failed to save.',
-});
+```sh
+pnpm install --frozen-lockfile --ignore-scripts
+pnpm generate:icons
+pnpm dev             # Interactive component catalog
+pnpm dev:examples    # Workspace example on port 3190
+pnpm docs:dev        # Dory dev server on port 3000, under /ux/
 ```
 
-### Command palette (⌘K)
+![Light-mode workspace with the same components and fictional data](./docs/images/workspace-light.png)
 
-```tsx
-import {
-  CommandDialog, CommandInput, CommandList,
-  CommandEmpty, CommandGroup, CommandItem,
-} from '@clidey/ux';
+## Develop and contribute
 
-<CommandDialog open={open} onOpenChange={setOpen}>
-  <CommandInput placeholder="Search commands..." />
-  <CommandList>
-    <CommandEmpty>No results found.</CommandEmpty>
-    <CommandGroup heading="Navigation">
-      <CommandItem onSelect={() => navigate('/dashboard')}>Dashboard</CommandItem>
-      <CommandItem onSelect={() => navigate('/settings')}>Settings</CommandItem>
-    </CommandGroup>
-  </CommandList>
-</CommandDialog>
+Use the pnpm version pinned in `package.json`. Source components live in `src/components/ui/`; exports live in `src/index.ts`. Add behavior tests and documentation alongside public API changes.
+
+```sh
+pnpm lint
+pnpm test:coverage
+pnpm build:lib
+pnpm docs:check
+pnpm docs:build
 ```
 
-### Large dataset table with virtualization
+The showcase and library builds both use root `dist/`. Documentation is an isolated private workspace and builds to `docs/dist/`. Keep lifecycle scripts disabled as configured, and review the generated site before a push or release.
 
-```tsx
-import {
-  TableProvider, Table, TableHeader, TableHeadRow,
-  TableHead, VirtualizedTableBody, TableRow, TableCell,
-} from '@clidey/ux';
-
-<TableProvider columnCount={3}>
-  <Table>
-    <TableHeader>
-      <TableHeadRow>
-        <TableHead>ID</TableHead>
-        <TableHead>Name</TableHead>
-        <TableHead>Status</TableHead>
-      </TableHeadRow>
-    </TableHeader>
-    <VirtualizedTableBody rowCount={10000} rowHeight={48} height={400}>
-      {({ index, style }) => (
-        <TableRow style={style}>
-          <TableCell>{rows[index].id}</TableCell>
-          <TableCell>{rows[index].name}</TableCell>
-          <TableCell>{rows[index].status}</TableCell>
-        </TableRow>
-      )}
-    </VirtualizedTableBody>
-  </Table>
-</TableProvider>
-```
-
----
-
-## Theming
-
-All visual tokens are exposed as CSS custom properties. Override them in your own stylesheet after importing `@clidey/ux/styles.css`:
-
-```css
-:root {
-  --primary: 250 84% 54%;          /* your brand color */
-  --radius: 0.375rem;              /* border radius */
-}
-```
-
-Dark mode is automatic — `ThemeProvider` applies a `dark` class to `<html>` and all components respond to it via Tailwind's `dark:` modifier.
-
----
-
-## Next.js
-
-```tsx
-// app/providers.tsx
-'use client';
-import { ThemeProvider } from '@clidey/ux';
-
-export function Providers({ children }: { children: React.ReactNode }) {
-  return <ThemeProvider defaultTheme="system">{children}</ThemeProvider>;
-}
-
-// app/layout.tsx
-import '@clidey/ux/styles.css';
-import { Providers } from './providers';
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
-}
-```
-
----
-
-## Peer dependencies
-
-| Package | Version |
-| --- | --- |
-| `react` | `>= 18.3.0` |
-| `react-dom` | `>= 18.3.0` |
-
-All other dependencies (Radix UI, Lucide, Recharts, Sonner, Vaul, cmdk) are bundled — no extra installs needed.
-
----
-
-## Contributing
-
-Contributions, bug reports, and feature requests are welcome. Please open an issue or pull request on [GitHub](https://github.com/clidey/ux).
-
-## Not found page
-
-Use the animated 404 view in your application's fallback route:
-
-```tsx
-import { NotFoundPage } from '@clidey/ux';
-
-<NotFoundPage homeHref="/" homeLabel="Back to home" />
-```
-
-Customize the copy with `title`, `description`, and `eyebrow`. Use `onHome` for router navigation or `action` for a custom action. Playback supports `loop`, `once`, and `off` through `defaultMotion` or controlled `motion` / `onMotionChange` props. Reduced motion preferences automatically show a still pose. Optional playback controls are enabled with `showMotionControls`.
+[Development guide](./docs/contributing/development.mdx) · [Documentation workflow](./docs/contributing/documentation.mdx) · [Report an issue](https://github.com/clidey/ux/issues)
 
 ## License
 
-Licensed under the [Apache License 2.0](LICENSE).
-
-## Clidey Design icons
-
-The full Clidey Design icon collection is available as raw SVG assets without loading it through the main UI entry. Import a single icon URL in a Vite app:
-
-```tsx
-import searchUrl from "@clidey/ux/icons/svg/search.svg?url";
-
-<img src={searchUrl} alt="" />
-```
-
-For a dynamic icon picker, import the `icons` URL map from `@clidey/ux/icons`. See [`icons/README.md`](icons/README.md) for usage examples.
+[Apache License 2.0](./LICENSE). Included fonts retain their own bundled licenses.
