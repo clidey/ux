@@ -13,5 +13,8 @@ verifyStoreIntegrity: true
 minimumReleaseAge: 10080
 trustPolicyExclude:
   - 'reselect@5.1.1'
+# User-approved exact first-party versions for the Dory rollout.
 minimumReleaseAgeExclude:
+  - '@clidey/dory@1.10.0'
+  - '@clidey/ux@1.6.4'
   - vite@8.3.5

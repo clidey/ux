@@ -40,18 +40,14 @@ jobs:
           "$RUNNER_TEMP/ux-secret-scan/gitleaks" dir "$RUNNER_TEMP/ux-source" --redact --no-banner
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm generate:icons
-      - run: pnpm docs:setup
-      - name: Validate compiler boundaries
-        working-directory: .dory/compiler
-        run: |
-          pnpm test
-          node --import tsx --test bin/dependency-overlay.test.mts bin/preview-static.test.mts
       - run: pnpm lint
       - run: pnpm test:coverage
       - run: pnpm build
       - run: pnpm docs:security
       - run: pnpm docs:check
       - run: pnpm docs:build
+      - name: Verify preview spacing in the consumer site
+        run: node scripts/verify-docs-previews.mjs
       - name: Scan generated site for secrets
         run: '"$RUNNER_TEMP/ux-secret-scan/gitleaks" dir docs/dist --redact --no-banner'
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

@@ -13,7 +13,7 @@ const run=(file,args,cwd=root,env=process.env)=>{
 const cli=resolveDoryCli();
 const probe=spawnSync(process.execPath,[cli,'capabilities'],{cwd:docs,encoding:'utf8'});
 let capabilities;
-try{capabilities=JSON.parse(probe.stdout);}catch{throw new Error('This documentation requires Dory native JSX components and local package overrides. Set DORY_CLI to the reviewed local compiler until that Dory release is pinned.');}
+try{capabilities=JSON.parse(probe.stdout);}catch{throw new Error('This documentation requires Dory native JSX components and local package overrides. Install the pinned Dory release with pnpm docs:setup.');}
 if(!capabilities.customComponents||!capabilities.packageOverrides)throw new Error('The selected Dory compiler does not support the required documentation features.');
 run(join(root,'scripts/check-doc-icons.mjs'),[]);
 run(join(root,'scripts/check-doc-demos.mjs'),[]);

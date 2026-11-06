@@ -140,7 +140,7 @@ Read https://clidey.github.io/ux/llms.txt and build the following app using Clid
 The public URL works with local and remote coding agents. The Quick Start copy button uses the current host automatically.
 
 ```sh
-pnpm docs:setup      # prepare the pinned Dory source compiler
+pnpm docs:setup      # install the pinned documentation packages
 pnpm docs:build
 pnpm docs:preview
 ```

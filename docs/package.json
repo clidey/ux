@@ -9,5 +9,12 @@
     "preview": "PORT=3191 node ../scripts/dory.mjs preview",
     "mcp": "node ../scripts/dory.mjs mcp serve",
     "mcp:config": "node ../scripts/dory.mjs mcp config"
+  },
+  "devDependencies": {
+    "@clidey/dory": "1.10.0",
+    "@algolia/client-search": "5.60.0",
+    "algoliasearch": "5.60.0",
+    "search-insights": "2.17.3",
+    "rollup": "4.64.7"
   }
 }

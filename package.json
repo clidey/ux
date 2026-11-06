@@ -57,7 +57,7 @@
     "docs:mcp:config": "pnpm --dir docs mcp:config",
     "dev:examples": "pnpm generate:icons && vite --host 127.0.0.1 --port 3190 --open /examples/workspace/",
     "docs:sync": "node scripts/sync-doc-examples.mjs --write",
-    "docs:setup": "node scripts/setup-docs.mjs",
+    "docs:setup": "pnpm install --frozen-lockfile --ignore-scripts",
     "docs:security": "node --test scripts/secure-docs-output.test.mjs"
   },
   "peerDependencies": {

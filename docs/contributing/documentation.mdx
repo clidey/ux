@@ -3,7 +3,7 @@ title: 'Documentation workflow'
 description: 'Author MDX, preview with Dory, and review the exact site before publishing.'
 ---
 
-The `docs/` directory is a private workspace. `docs/compiler.json` pins the reviewed Dory source revision used locally and in CI. Documentation uses Dory's own theme and font assets; no duplicate font bundle is needed here.
+The `docs/` directory is a private workspace. It pins the published `@clidey/dory` 1.10.0 package for local and CI builds. Documentation uses Dory's own theme and font assets; no duplicate font bundle is needed here.
 
 ## Work locally
 
@@ -49,11 +49,11 @@ Use the copyable prompt in Quick Start or the AI guide. It adjusts its context U
 
 Publishing static files does not publish the MCP server. A server-backed deployment must separately run `dory preview` and route its MCP endpoint. Preview and review documentation code before any push; publishing requires explicit approval.
 
-## Pinned source compiler
+## Pinned documentation package
 
-Run `pnpm docs:setup` once to clone the exact public revision in `docs/compiler.json` under ignored `.dory/compiler/`, install its frozen dependencies with lifecycle scripts disabled, and compile its CLI. CI checks out the same revision. No npm package release is required, and release-age and integrity protections remain enabled.
+Run `pnpm docs:setup` to install the workspace's frozen dependencies with lifecycle scripts disabled. Local and CI builds use the same published Dory package; no adjacent source checkout is required. The repository's release-age and integrity policies still apply. Fresh first-party versions require explicit approval before adding exact waiting-period exceptions.
 
-The documentation commands use that compiler by default. `DORY_CLI=/absolute/path/to/dory/bin/dist/dory.js` can select another reviewed checkout; the build verifies the required capabilities before compiling examples. Setup refuses to replace a different existing checkout.
+For a reviewed compiler change, `DORY_CLI=/absolute/path/to/dory/bin/dist/dory.js` can select a local checkout. The build verifies its required capabilities before compiling examples. `node scripts/verify-docs-previews.mjs` checks desktop and mobile preview spacing against the built consumer site.
 
 ## Security boundaries
 

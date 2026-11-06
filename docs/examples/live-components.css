@@ -356,3 +356,9 @@
 .ux-demo-form { width: min(100%, 28rem); }
 .ux-demo-tree { height: 18rem; }
 .ux-demo-tree > [data-slot="tree"] { height: 100%; }
+
+/* API names in section titles must wrap inside the narrow documentation column. */
+article .dory-h2 > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
