@@ -1,44 +1,193 @@
+# Admin release: Run workflow on main, then choose patch, minor, or major.
+# Tests/build and package scanning finish before the action commits version
+# metadata to main and publishes the tested artifact. No manual version edit.
+# If main advances during validation, start a fresh run from current main.
+# After the version commit succeeds, retry downstream failures with Re-run failed
+# jobs; Re-run all jobs from the old source fails the stale-main guard.
+# Requires Actions to write main and npm to trust this publish.yml workflow.
+# GITHUB_TOKEN version commits do not trigger push workflows; run Documentation
+# manually when the Pages site needs a refresh after releasing.
+
 name: Publish Package
+run-name: Release UX (${{ inputs.version-bump }})
 
 on:
   workflow_dispatch:
+    inputs:
+      version-bump:
+        description: Version bump
+        required: true
+        type: choice
+        default: patch
+        options:
+          - patch
+          - minor
+          - major
 
-permissions: {}
+permissions:
+  contents: read
+
+concurrency:
+  group: ux-release
+  cancel-in-progress: false
 
 jobs:
-  publish:
+  prepare:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      previous: ${{ steps.version.outputs.previous }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: pnpm
+      - name: Test release version handling
+        run: node --test .github/scripts/release-version.test.mjs
+      - name: Prepare next version
+        id: version
+        env:
+          RELEASE_BUMP: ${{ inputs.version-bump }}
+        run: node .github/scripts/release-version.mjs prepare
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm generate:icons
+      - run: pnpm lint
+      - run: pnpm test:coverage
+      - run: pnpm run build:lib
+      - name: Pack and scan the tested release
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ux-package" "$RUNNER_TEMP/ux-package-scan" "$RUNNER_TEMP/ux-scanner"
+          npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP/ux-package"
+          tar -xzf "$RUNNER_TEMP/ux-package/clidey-ux-$PACKAGE_VERSION.tgz" -C "$RUNNER_TEMP/ux-package-scan"
+          curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz -o "$RUNNER_TEMP/ux-scanner/scanner.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/ux-scanner/scanner.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/ux-scanner/scanner.tar.gz" -C "$RUNNER_TEMP/ux-scanner" gitleaks
+          "$RUNNER_TEMP/ux-scanner/gitleaks" dir "$RUNNER_TEMP/ux-package-scan" --redact --no-banner
+          cd "$RUNNER_TEMP/ux-package"
+          sha256sum "clidey-ux-$PACKAGE_VERSION.tgz" > SHA256SUMS
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ux-npm-package-${{ github.sha }}
+          path: ${{ runner.temp }}/ux-package/
+          if-no-files-found: error
+          retention-days: 7
+
+  commit-version:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - name: Commit the tested version
+        id: commit
+        env:
+          RELEASE_VERSION: ${{ needs.prepare.outputs.version }}
+          PREVIOUS_VERSION: ${{ needs.prepare.outputs.previous }}
+          SOURCE_SHA: ${{ github.sha }}
+          RELEASE_BUMP: ${{ inputs.version-bump }}
+        run: node .github/scripts/release-version.mjs commit
+      - name: Push version commit without overwriting concurrent work
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push origin HEAD:refs/heads/main
+
+  publish:
+    needs: [prepare, commit-version]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       id-token: write
       contents: read
+    env:
+      PACKAGE_VERSION: ${{ needs.prepare.outputs.version }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
-
+      # No checkout, dependency installation, or lifecycle scripts in this OIDC job.
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: ux-npm-package-${{ github.sha }}
+          path: ${{ runner.temp }}/ux-package/
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-
-      - run: pnpm install --frozen-lockfile
-
-      - run: pnpm run build:lib
-
-      - run: npm publish
+      - name: Check for an already published identical artifact
+        run: |
+          node --input-type=module <<'JS'
+          import {readFileSync, appendFileSync} from 'node:fs';
+          import {createHash} from 'node:crypto';
+          const version = process.env.PACKAGE_VERSION;
+          const file = `${process.env.RUNNER_TEMP}/ux-package/clidey-ux-${version}.tgz`;
+          const expected = 'sha512-' + createHash('sha512').update(readFileSync(file)).digest('base64');
+          const response = await fetch(`https://registry.npmjs.org/@clidey/ux/${version}`, {headers: {'Cache-Control': 'no-cache'}});
+          let exists = false;
+          if (response.ok) {
+            const published = await response.json();
+            if (published.version !== version || published.dist?.integrity !== expected) throw new Error('This version exists with a different checksum. Release a new version instead.');
+            exists = true;
+          } else if (response.status !== 404) throw new Error(`Registry check failed: ${response.status}`);
+          appendFileSync(process.env.GITHUB_ENV, `UX_ALREADY_PUBLISHED=${exists}\n`);
+          JS
+      - name: Publish through npm trusted publishing
+        if: env.UX_ALREADY_PUBLISHED != 'true'
+        run: |
+          cd "$RUNNER_TEMP/ux-package"
+          sha256sum --check SHA256SUMS
+          npm publish "clidey-ux-$PACKAGE_VERSION.tgz" --ignore-scripts --access public --provenance
+      - name: Confirm npm serves the exact tested artifact
+        run: |
+          node --input-type=module <<'JS'
+          import {readFileSync} from 'node:fs';
+          import {createHash} from 'node:crypto';
+          import {setTimeout} from 'node:timers/promises';
+          const version = process.env.PACKAGE_VERSION;
+          const file = `${process.env.RUNNER_TEMP}/ux-package/clidey-ux-${version}.tgz`;
+          const expected = 'sha512-' + createHash('sha512').update(readFileSync(file)).digest('base64');
+          for (let attempt = 0; attempt < 24; attempt++) {
+            const response = await fetch(`https://registry.npmjs.org/@clidey/ux/${version}`, {headers: {'Cache-Control': 'no-cache'}});
+            if (response.ok) {
+              const published = await response.json();
+              if (published.version !== version || published.dist?.integrity !== expected) throw new Error('Published package differs from the tested artifact.');
+              process.exit(0);
+            }
+            if (response.status !== 404) throw new Error(`Registry check failed: ${response.status}`);
+            await setTimeout(10000);
+          }
+          throw new Error('The exact release is not available from npm yet.');
+          JS
 
   release:
-    needs: publish
+    needs: [prepare, commit-version, publish]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Create GitHub Release
+      - name: Create GitHub Release at the version commit
         env:
           GH_TOKEN: ${{ github.token }}
+          PACKAGE_VERSION: ${{ needs.prepare.outputs.version }}
+          RELEASE_SHA: ${{ needs.commit-version.outputs.sha }}
         run: |
-          VERSION="v$(node -p "require('./package.json').version")"
-          gh release create "$VERSION" --generate-notes --title "$VERSION"
+          if ! gh release view "v$PACKAGE_VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "v$PACKAGE_VERSION" --repo "$GITHUB_REPOSITORY" --target "$RELEASE_SHA" --generate-notes --title "v$PACKAGE_VERSION"
+          fi

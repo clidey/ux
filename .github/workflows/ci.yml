@@ -21,6 +21,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Test release version handling
+        run: node --test .github/scripts/release-version.test.mjs
+
       - name: Test coverage
         run: pnpm test:coverage
 
