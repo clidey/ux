@@ -13,8 +13,6 @@ verifyStoreIntegrity: true
 minimumReleaseAge: 10080
 # User-approved exact first-party versions for the Dory rollout.
 minimumReleaseAgeExclude:
-  # semver 6.3.2 restores provenance for the 6.x line Babel needs; drop after 2026-11-09.
-  - semver@6.3.2
   - '@clidey/dory@1.10.0'
   - '@clidey/ux@1.6.4'
   - vite@8.3.5
