@@ -1,142 +1,37 @@
 # Repository Guidelines
 
-This file is the single source of truth for AI coding assistants (Claude Code, Copilot, Cursor, etc.) working in this repository.
+This file is the single source of truth for AI coding assistants working in this repository.
 
-## Git Commits — Hard Rule
+`@clidey/ux` is a React component library (Radix UI primitives, Tailwind CSS v4, `cva` variants) published to npm; `src/index.tsx` and `src/showcases/` are a demo app, and `k8s/` builds the docs image. Design tokens and visual rules are in `DESIGN.md`, product context in `PRODUCT.md`.
 
-**Never commit to `main` (or any branch) without the user explicitly saying "please commit this for me" (or unambiguously equivalent wording) in that turn.** This applies regardless of task framing — "merge it into main locally" or "just write the code changes in main" means apply the file changes on that branch, not create a commit. If committing seems necessary to accomplish what was asked (e.g. to merge a branch), stop and ask first instead of assuming consent.
+## Team Rules
+
+These apply in every clidey repository, for people and agents alike.
+
+- **Commits and pushes:** never commit or push without the user explicitly asking in that turn ("please commit this for me" or unambiguously equivalent). "Implement it" or "merge it into main locally" means change the files, not commit. If a commit seems necessary, stop and ask.
+- **No AI attribution:** commit messages and PR descriptions carry no AI attribution: no `Co-Authored-By:` trailers for Claude, Codex, or any other agent, and no "Generated with" lines.
+- **Untracked files:** never delete untracked or gitignored files without asking first; they often hold secrets or local state.
+- **Agent replies:** lead with the answer or result. No preamble, no restating the question, no recap unless asked. Keep it short and explain only what isn't obvious; if you need something from the user, ask in one line.
+- **Clarify first:** before starting, ask about anything where a different answer would change the work: scope, behaviour, which repo or environment, or anything hard to undo. Ask all your questions at once, then wait. Don't ask what the code or docs already answer; for small choices that are easy to change later, pick one and say which in your reply.
 
 ## Commands
 
 ```bash
-pnpm dev                   # Start Vite dev server with hot reload
-pnpm build                 # TypeScript check + build demo app
-pnpm build:lib             # Build publishable library (vite.lib.config.ts)
-pnpm preview               # Serve production build locally
-pnpm lint                  # ESLint (typescript-eslint + react-hooks + react-refresh)
-pnpm test                  # Vitest with coverage (watch mode)
-pnpm test:coverage         # Vitest coverage run (CI-style, exits after)
-pnpm docker:push           # Build and push multi-arch Docker image
+pnpm dev                     # demo/showcase dev server
+pnpm build                   # tsc -b + demo build
+pnpm build:lib               # publishable library (vite.lib.config.ts, tsconfig.lib.json)
+pnpm lint                    # oxlint (.oxlintrc.json)
+pnpm fmt                     # oxfmt --write src/
+pnpm test:coverage           # vitest run --coverage (CI-style; `pnpm test` is the same in watch mode)
+pnpm vitest run tests/button.test.tsx    # one file; add -t "name" to filter by test name
+UX_DOCS_VERSION=<v> pnpm docker:push     # multi-arch clidey/ux-docs image
 ```
 
-### Running a Single Test
+## Rules
 
-```bash
-pnpm vitest run tests/button.test.tsx          # Run one test file
-pnpm vitest run -t "renders correctly"         # Run tests matching name
-```
-
-## Architecture
-
-### Overview
-
-This is `@clidey/ux` (v0.43.0) — a React component library built on Radix UI primitives with Tailwind CSS v4 styling. It exports 38 UI components, a theme system, hooks, and utility functions as an ES module package on npm.
-
-### Key Directories
-
-- `src/components/ui/` — All 38 UI components (kebab-case filenames, PascalCase exports)
-- `src/components/theme/` — `ThemeProvider`, `useTheme`, and `ModeToggle`
-- `src/hooks/use-mobile.ts` — `useIsMobile()` hook (breakpoint: 768px)
-- `src/lib/utils.ts` — `cn()` (class merging), `toTitleCase`, `formatDate`
-- `src/lib/use-resize-observer.ts` — `useResizeObserver` hook (used by Tree component)
-- `src/index.ts` — **Package entry point; new public components MUST be exported here**
-- `src/index.tsx` — Demo app entry (renders `<ThemeProvider>` + `<App>`)
-- `src/app.tsx` — Showcase dashboard with tabbed navigation
-- `src/showcases/` — Demo pages (excluded from lib build and coverage)
-- `tests/` — Vitest test files (`<component>.test.tsx`)
-- `k8s/` — Kubernetes manifests and Dockerfile
-- `docs/` — Documentation and logo assets
-
-### Build Configuration
-
-Three Vite configs serve different purposes:
-
-- `vite.config.ts` — Dev server and demo app (uses `@vitejs/plugin-react-swc`)
-- `vite.lib.config.ts` — Library build: ES modules only, externalizes all deps (React, Radix, utilities, maplibre-gl), emits TypeScript declarations via `vite-plugin-dts` using `tsconfig.lib.json`, bundles CSS
-- `vitest.config.ts` — Test runner with jsdom, `@/*` path alias, v8 coverage
-
-### Core Technologies
-
-- **React 18/19** (peer dependency, `>=18.3.0`)
-- **Tailwind CSS v4** with `@tailwindcss/vite` plugin and `tw-animate-css`
-- **Radix UI** for accessible primitives (14 packages)
-- **TypeScript 5.8** in strict mode (`noUnusedLocals`, `noUnusedParameters`, `verbatimModuleSyntax`)
-- **class-variance-authority (cva)** for type-safe variant management
-- **cmdk** — Command palette
-- **sonner** — Toast notifications
-- **vaul** — Drawer component
-- **recharts** — Charts (Bar, Line, Area, Pie)
-- **react-resizable-panels** — Resizable split views
-- **react-map-gl + maplibre-gl** — Interactive maps with markers, lines, arcs, polygons, circle layers, heatmaps
-- **next-themes pattern** — Custom ThemeProvider (not using next-themes directly; uses localStorage key `@clidey/ux/theme`)
-- **lucide-react** — Icon library
-
-### Path Aliases
-
-`@/*` maps to `./src/*` (configured in all tsconfigs and Vite configs).
-
-## Component Patterns
-
-- Built on Radix UI primitives for accessibility
-- Use `forwardRef` for ref forwarding (newer components use function components with `React.ComponentProps`)
-- Use `cva()` for variant definitions with `cn()` for className merging
-- Accept `className` prop for consumer customization
-- Sub-component composition pattern (e.g., `Card` → `CardHeader`, `CardContent`, `CardFooter`)
-- Context providers for complex components: `Table` auto-wraps in `TableProvider` (drawer for overflow preview), `MapContainer` provides `MapContext`, `ChartContainer` provides `ChartContext`, `SidebarProvider` manages sidebar state
-- File naming: kebab-case (`alert-dialog.tsx`); export names: PascalCase
-- Components use `data-slot` attributes for DOM identification
-
-### Adding a New Component
-
-1. Create `src/components/ui/<name>.tsx` following existing patterns
-2. Export all public symbols from `src/index.ts`
-3. Add a test at `tests/<name>.test.tsx`
-4. Add showcase demo in the appropriate `src/showcases/*-showcase.tsx` file
-5. Run `pnpm lint && pnpm test:coverage` to verify
-
-### Notable Component Features
-
-- **Table**: Built-in virtualization (`VirtualizedTableBody`) with O(1)/O(log n) row lookup, overflow detection with eye-icon drawer preview for truncated cells, auto-width sync between header and body
-- **Map**: Declarative MapLibre GL components (`MapContainer`, `MapMarker`, `MapLine`, `MapArc`, `MapPolygon`, `MapCircleLayer`, `MapHeatmap`) with dark/light style auto-detection and `configKey` pattern for theming
-- **SearchSelect**: Combobox combining Popover + Command with search filtering, icon support, controlled/uncontrolled modes
-- **Sidebar**: Full sidebar system with `icon`/`offcanvas` collapse modes, mobile sheet fallback, cookie persistence, keyboard shortcut (B), supports left and right placement
-- **Tree**: File-explorer tree using Radix Accordion with `useResizeObserver` for dynamic sizing
-- **Input**: Includes `showPasswordToggle` prop for password fields
-- **ButtonGroup**: Supports `horizontal`/`vertical` orientation with separators and text labels
-
-## Coding Style
-
-- Use existing patterns (Radix, Tailwind v4, `cn`, `cva`) before introducing new abstractions
-- Follow surrounding file style for quotes and semicolons
-- Use `@/` alias for source imports
-- All source files include Apache 2.0 license header
-- Run `pnpm lint` before submitting changes
-
-## Testing Guidelines
-
-- Tests use Vitest + jsdom + Testing Library (`tests/setup.ts` for global config)
-- Test file naming: `tests/<component>.test.tsx` (or `.test.ts` for hooks/utils)
-- Prefer user-visible queries (`screen.getByRole`, `screen.getByText`)
-- Cover: behavior, variants, accessibility states, disabled/error paths
-- Coverage: v8 provider, outputs text + JSON + HTML
-- Excluded from coverage: `src/showcases/`, `src/app.tsx`, `src/index.tsx`, `src/index.ts`, config files
-
-## Commit Style
-
-Short imperative subjects. Keep commits focused. Occasional conventional prefixes (`feat(docs):`, `fix:`). Pull requests should explain the change, list verification commands run, and include screenshots for visual changes.
-
-## Showcase Dashboard
-
-The dev server (`pnpm dev`) serves a tabbed showcase at localhost with these sections:
-
-- **Buttons** — Variants, sizes, states, Icon component, ButtonGroup
-- **Forms** — Input, TextArea, Checkbox, Switch, Select
-- **Navigation** — Accordion, Tabs, Breadcrumb, Sidebar (basic + embedded dual-sidebar)
-- **Overlays** — Dialog, AlertDialog, Sheet, Drawer, DropdownMenu, ContextMenu, Popover, Tooltip
-- **Feedback** — Alert, Badge, Skeleton, EmptyState, Toast (Sonner), Progress
-- **Data** — Table, Pagination, Command palette, Tree, StackList, VirtualizedTable
-- **Charts** — Bar, Line, Area, Pie (via Recharts + ChartContainer)
-- **Maps** — Markers, Lines, Polygons, CircleLayer, Heatmap, Arcs (globe projection)
-- **Layout** — ResizablePanels, ScrollArea
-
-Each showcase is lazy-loaded with `React.lazy()` for performance.
+- Adding a component: `src/components/ui/<name>.tsx` (kebab-case file, PascalCase exports) with a demo in the matching `src/showcases/*-showcase.tsx`. `scripts/check-components.mjs` (agent Stop hook and CI) requires the `src/index.ts` export, `tests/<name>.test.tsx` and the license header.
+- Trigger `asChild` inference depends on slot-safety markers in `src/lib/slot.ts`. Mark a component with `markSlottable` only if it forwards its `ref` and spreads unknown props onto the DOM node; use `markNotSlottable` for components that swallow them. Consumers rely on this when they omit `asChild`.
+- Use the `@/` alias for source imports.
+- `ThemeProvider` is custom (not `next-themes`) and persists to the localStorage key `@clidey/ux/theme`; consumers depend on that key.
+- Tests run on Vitest with happy-dom and Testing Library; global setup is `tests/setup.ts`. `src/showcases/`, `src/app.tsx`, `src/index.tsx`, and `src/index.ts` are excluded from coverage.
+- Pull requests list the verification commands run and include screenshots for visual changes.

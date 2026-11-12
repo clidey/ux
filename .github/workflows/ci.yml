@@ -1,12 +1,19 @@
 name: CI
 
 on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   test-and-lint:
+    if: github.event.pull_request.draft != true
     runs-on: ubuntu-latest
 
     steps:
@@ -23,6 +30,12 @@ jobs:
 
       - name: Test release version handling
         run: node --test .github/scripts/release-version.test.mjs
+
+      - name: Typecheck
+        run: pnpm exec tsc -b
+
+      - name: Component exports, tests and license headers
+        run: node scripts/check-components.mjs
 
       - name: Test coverage
         run: pnpm test:coverage

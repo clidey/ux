@@ -25,7 +25,11 @@ dist-ssr
 
 # Coverage reports
 coverage/
-.codex
+.codex/*
+!.codex/rules/
+!.codex/hooks.json
+# Personal Claude Code settings
+.claude/settings.local.json
 
 # Local documentation tooling
 .dory/

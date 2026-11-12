@@ -1,0 +1,7 @@
+{
+  "before_finish": [
+    {"paths": ["src/*", "tests/*", "tsconfig*.json", "vite*.ts"], "run": "pnpm exec tsc -b"},
+    {"paths": ["src/*", "tests/*"], "run": "pnpm lint"},
+    {"paths": ["src/*", "tests/*"], "run": "node scripts/check-components.mjs"}
+  ]
+}
