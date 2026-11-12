@@ -108,7 +108,7 @@
     "@vitest/coverage-v8": "4.1.12",
     "happy-dom": "21.0.4",
     "oxfmt": "0.75.0",
-    "oxlint": "1.90.0",
+    "oxlint": "1.91.0",
     "prism-react-renderer": "2.4.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
