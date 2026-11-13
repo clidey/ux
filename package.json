@@ -137,5 +137,5 @@
     "url": "https://github.com/clidey/ux/issues"
   },
   "homepage": "https://github.com/clidey/ux#readme",
-  "packageManager": "pnpm@11.17.0"
+  "packageManager": "pnpm@12.18.0"
 }
