@@ -14,7 +14,7 @@ COPY docs/ ./
 # docs/dory.json sets basePath "/docs", so the build is already rooted there.
 RUN dory build
 
-FROM nginx/nginx-unprivileged:1.31.8-alpine
+FROM nginx/nginx-unprivileged:1.31.9-alpine
 USER root
 RUN rm /etc/nginx/conf.d/default.conf
 COPY k8s/config/nginx-default.conf /etc/nginx/nginx.conf
