@@ -11,7 +11,7 @@
     "mcp:config": "node ../scripts/dory.mjs mcp config"
   },
   "devDependencies": {
-    "@clidey/dory": "1.10.0",
+    "@clidey/dory": "1.15.0",
     "@algolia/client-search": "5.60.0",
     "algoliasearch": "5.60.0",
     "search-insights": "2.17.3",
