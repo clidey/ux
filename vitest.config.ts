@@ -9,6 +9,9 @@ export default defineConfig({
         globals: true,
         environment: 'happy-dom',
         setupFiles: './tests/setup.ts',
+        // Node 25+ ships its own localStorage global, unusable without
+        // --localstorage-file, which shadows the one happy-dom provides.
+        execArgv: ['--no-experimental-webstorage'],
         include: ['tests/**/*.test.{ts,tsx}'],
         exclude: [
             '**/node_modules/**',
