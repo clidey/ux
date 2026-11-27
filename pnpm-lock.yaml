@@ -233,8 +233,8 @@ importers:
         specifier: 1.1.1
         version: 1.1.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       lucide-react:
-        specifier: 1.62.0
-        version: 1.62.0(@types/react@19.3.0)(react@19.3.1)
+        specifier: 1.77.0
+        version: 1.77.0(@types/react@19.3.0)(react@19.3.1)
       maplibre-gl:
         specifier: 6.16.0
         version: 6.16.0
@@ -3838,8 +3838,8 @@ packages:
       '@types/react':
         optional: true
 
-  lucide-react@1.62.0:
-    resolution: {integrity: sha512-2i8QZZhkgYMA3oJvKYpCltHh54VnT/3rIPkDLHbzr3IJQBaCz8+7j7V2k2rczYd2aCqcBaMmNlWQ2KKeDfcxmw==}
+  lucide-react@1.77.0:
+    resolution: {integrity: sha512-VS6sOi8ZUH1qm6swBL/tpI4xAhB6pFTdHvw3pfCJD+DaTJwpyynVzfOS6mdyMZ+OCdY/GMSQbqinOMOPbNSrQA==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -8419,7 +8419,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.3.0
 
-  lucide-react@1.62.0(@types/react@19.3.0)(react@19.3.1):
+  lucide-react@1.77.0(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       react: 19.3.1
     optionalDependencies:
